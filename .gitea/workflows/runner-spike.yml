@@ -1,0 +1,79 @@
+# Purpose:  find out what the Gitea runner supports, so ADR-0001 can fix how the
+#           mock provider runs in CI (MIL-001 task 8). It is a spike: delete it
+#           once ADR-0001 records the answer.
+# Triggers: by hand (workflow_dispatch), and on a push to the spike branch that
+#           touches these files. It never runs on main or on pull requests.
+# Inputs:   runner-label, the label of the runner to test.
+# Secrets:  none. The default token is read-only (contents: read).
+# Changes:  nothing outside the run. Pulls two public images (alpine, nginx).
+# Decision: ADR-0001 (provider test strategy), task 8 of MIL-001.
+# Host:     Gitea Actions; record the Gitea and act_runner versions in the
+#           spike results. Uses only github.* and standard contexts.
+name: Runner spike
+
+on:
+  workflow_dispatch:
+    inputs:
+      runner-label:
+        description: Label of the runner to test
+        type: string
+        default: ubuntu-latest
+  push:
+    branches:
+      - mil-001-runner-spike
+    paths:
+      - .gitea/workflows/runner-spike.yml
+      - scripts/runner-spike/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: runner-spike
+  cancel-in-progress: true
+
+jobs:
+  environment:
+    name: Report the runner environment
+    runs-on: ${{ inputs.runner-label || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Check out the spike scripts
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Report the environment
+        run: bash scripts/runner-spike/report-environment.sh
+
+  in-process-server:
+    name: Run a mock server inside the job
+    runs-on: ${{ inputs.runner-label || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    steps:
+      - name: Check out the spike scripts
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Start, call and stop an in-process server
+        run: bash scripts/runner-spike/check-in-process-server.sh
+
+  docker:
+    name: Use Docker from the job
+    runs-on: ${{ inputs.runner-label || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    steps:
+      - name: Check out the spike scripts
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Pull and run a container
+        run: bash scripts/runner-spike/check-docker.sh
+
+  service-container:
+    name: Reach a service container
+    runs-on: ${{ inputs.runner-label || 'ubuntu-latest' }}
+    timeout-minutes: 10
+    services:
+      mock:
+        image: nginx:1.27-alpine
+        ports:
+          - 8080:80
+    steps:
+      - name: Check out the spike scripts
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Call the service by name, then by mapped port
+        run: bash scripts/runner-spike/check-service.sh http://mock:80/ http://127.0.0.1:8080/
