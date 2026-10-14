@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -89,3 +89,4 @@ stay the same for both providers; variants live inside the adapters.
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [ADR-0001]: ./adr-0001-provider-test-strategy.md
+[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908

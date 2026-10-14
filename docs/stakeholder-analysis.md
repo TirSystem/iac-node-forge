@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
 
 ---
 
@@ -81,9 +81,10 @@ Product Owner assigns a person.
 
 | ID | Role | Status |
 | --- | --- | --- |
-| S01 | Accepts | pending |
-| S02 | Reviews | pending |
+| S01 | Accepts | [cd7ca06] |
+| S02 | Reviews | [cd7ca06] |
 
 ---
 
 [BC-001]: ./business-case.md
+[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
