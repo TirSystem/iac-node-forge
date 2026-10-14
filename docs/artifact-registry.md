@@ -18,7 +18,7 @@ document of a type. `Primary File` may contain a glob (e.g.
 | ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0004 |
 | UCD | Use Case Diagram | docs/use-case-diagram.md | 002 |
 | US | User Story | docs/user-stories.md | 002 |
-| UC | Use Case | docs/uc-*/uc.md | 005 |
+| UC | Use Case | docs/uc-*/uc.md | 016 |
 
 ## Languages
 

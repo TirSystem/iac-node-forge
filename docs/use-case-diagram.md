@@ -4,7 +4,7 @@
 | Key | Value |
 | --- | --- |
 | ID | UCD-001 |
-| CrossReference | [SA-001], [BC-001], [US-001], [UC-001], [UC-002], [UC-003], [UC-004], [UC-006], [UC-007], [UC-008], [UC-012] |
+| CrossReference | [SA-001], [BC-001], [US-001], [UC-001], [UC-002], [UC-003], [UC-004], [UC-005], [UC-006], [UC-007], [UC-008], [UC-009], [UC-010], [UC-011], [UC-012], [UC-013], [UC-014], [UC-015] |
 | Language | en |
 | Domain | it |
 
@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [d6c95d9] |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Linked the use case documents UC-005, UC-009 to UC-011 and UC-013 to UC-015 | [673a8e4] |
 
 ---
 
@@ -25,8 +26,7 @@ clients for the same use cases and are not drawn as separate systems.
 In scope are the candidate use cases UC-001 to UC-015 agreed with the Product
 Owner for [BC-001]. Tailscale or other VPN handling is out of scope for now.
 
-Use cases UC-001, UC-002, UC-003, UC-004, UC-006, UC-007, UC-008 and UC-012
-have Brief documents. The others are candidates and have no document yet.
+All use cases UC-001 to UC-015 have Brief documents.
 
 ## Diagram
 
@@ -121,17 +121,17 @@ does not operate the product, so he is not drawn as an actor.
 | UC-002 Discover capabilities and server options | DevOps | See what a provider and target can do | [UC-002] |
 | UC-003 Define desired server configuration | DevOps | Describe the server wanted | [UC-003] |
 | UC-004 Provision a server | DevOps | Get a running server from a definition | [UC-004] |
-| UC-005 Bootstrap a server after provisioning | DevOps | Make a new server usable | not drafted |
+| UC-005 Bootstrap a server after provisioning | DevOps | Make a new server usable | [UC-005] |
 | UC-006 Track long-running operations | DevOps (via included use cases) | Know the outcome of an operation | [UC-006] |
 | UC-007 List and inspect servers | DevOps | See what exists and what this client manages | [UC-007] |
 | UC-008 Start, stop and restart a server | DevOps | Control power state | [UC-008] |
-| UC-009 Manage snapshots | DevOps | Keep and restore point-in-time copies | not drafted |
-| UC-010 Detect drift | DevOps | See where actual state differs from desired | not drafted |
-| UC-011 Correct drift | DevOps (via detect drift) | Bring actual state back to desired | not drafted |
+| UC-009 Manage snapshots | DevOps | Keep and restore point-in-time copies | [UC-009] |
+| UC-010 Detect drift | DevOps | See where actual state differs from desired | [UC-010] |
+| UC-011 Correct drift | DevOps (via detect drift) | Bring actual state back to desired | [UC-011] |
 | UC-012 Delete or cancel a server | DevOps | Remove a server knowing the consequence | [UC-012] |
-| UC-013 Review operation history and recover failed operations | DevOps | Understand and fix failures | not drafted |
-| UC-014 Manage SSH keys and secrets | DevOps | Provide access keys to servers | not drafted |
-| UC-015 Resize, reinstall or rescue a server | DevOps | Change an existing server | not drafted |
+| UC-013 Review operation history and recover failed operations | DevOps | Understand and fix failures | [UC-013] |
+| UC-014 Manage SSH keys and secrets | DevOps | Provide access keys to servers | [UC-014] |
+| UC-015 Resize, reinstall or rescue a server | DevOps | Change an existing server | [UC-015] |
 
 ## Relationships
 
@@ -153,8 +153,16 @@ does not operate the product, so he is not drawn as an actor.
 [UC-002]: ./uc-002/uc.md
 [UC-003]: ./uc-003/uc.md
 [UC-004]: ./uc-004/uc.md
+[UC-005]: ./uc-005/uc.md
 [UC-006]: ./uc-006/uc.md
 [UC-007]: ./uc-007/uc.md
 [UC-008]: ./uc-008/uc.md
+[UC-009]: ./uc-009/uc.md
+[UC-010]: ./uc-010/uc.md
+[UC-011]: ./uc-011/uc.md
 [UC-012]: ./uc-012/uc.md
+[UC-013]: ./uc-013/uc.md
+[UC-014]: ./uc-014/uc.md
+[UC-015]: ./uc-015/uc.md
 [d6c95d9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d6c95d9d3c454f4927e0639f96e0338880dca5fb
+[673a8e4]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/673a8e48834f9cd28ea18ad4374945b70e5aa03a
