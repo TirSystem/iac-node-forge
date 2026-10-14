@@ -1,3 +1,0 @@
-[submodule "framework"]
-	path = framework
-	url = ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git
