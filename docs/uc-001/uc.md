@@ -1,0 +1,45 @@
+# Configure and validate provider access
+
+## Metadata
+| Key | Value |
+| --- | --- |
+| ID | UC-001 |
+| CrossReference | [US-001], [SA-001] |
+| Language | en |
+| Domain | it |
+
+## Version History
+| Date | Status | Author | Reviewer | Change | Commit |
+| --- | --- | --- | --- | --- | --- |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+
+---
+
+**Format:** Brief
+
+## Brief
+
+DevOps adds a provider configuration, giving its endpoint and, when asked, its credentials. The system checks with the provider that authentication works and that the account has the permissions the product needs, and reports the result. When it works, the configuration is saved without any secret, and the credentials may be cached in the operating system credential store if DevOps agrees.
+
+- **Scope:** iac-node-forge
+- **Level:** user-goal
+- **Primary Actor:** DevOps
+- **Preconditions:**
+  - The provider endpoint is reachable from this machine.
+  - DevOps has valid credentials for the provider.
+- **Postconditions (success guarantee):**
+  - A provider configuration is saved with a credential reference name and no secret.
+  - DevOps knows whether access works, or why it does not.
+
+### Notes
+
+- Credential handling follows [ADR-0003].
+- VPN access (Tailscale) to Proxmox VE is out of scope for now.
+- Trust of a self-signed Proxmox VE certificate needs a decision (verify).
+- Contabo token expiry and renewal need verification.
+
+---
+
+[ADR-0003]: ../adr/adr-0003-credential-storage.md
+[US-001]: ../user-stories.md
+[SA-001]: ../stakeholder-analysis.md

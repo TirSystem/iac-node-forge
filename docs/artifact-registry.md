@@ -16,6 +16,8 @@ document of a type. `Primary File` may contain a glob (e.g.
 | PP | Project Plan | docs/project-plan.md | 002 |
 | MIL | Milestone / Gateway | docs/milestones/mil-*.md | 002 |
 | ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0004 |
+| US | User Story | docs/user-stories.md | 002 |
+| UC | Use Case | docs/uc-*/uc.md | 005 |
 
 ## Languages
 
