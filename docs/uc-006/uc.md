@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -31,7 +32,7 @@ When an action at a provider takes time, the system follows it to completion and
 
 ### Notes
 
-- Proxmox VE has a task status model; Contabo may not, so status may have to be inferred (verify).
+- Proxmox VE returns a task ID with a status (running or stopped) and an exit status. Contabo has no task resource, so progress is the instance status plus the action audit log (verified).
 - Used by UC-004, UC-008, UC-009 and UC-012.
 - Keeping operation history is UC-013.
 

@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -32,7 +33,7 @@ DevOps selects a server and asks to start, stop or restart it. The system checks
 
 ### Notes
 
-- Graceful versus forced stop is open (Proxmox VE has both; verify for Contabo).
+- Both providers offer a graceful shutdown and a hard stop (verified); DevOps chooses, and the forced one needs confirmation.
 - Servers not managed by this client need an extra confirmation.
 - Capability check follows [ADR-0002].
 

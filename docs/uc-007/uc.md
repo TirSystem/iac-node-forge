@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps asks to see the servers across the configured providers. The system shows
 
 - Servers not created by this client are included and marked as not managed by this client.
 - Managed status is kept in the client's own JSONL, so another client may show the same server as not managed.
-- Contabo lists the servers of the account through its API (as stated by the Product Owner).
+- Contabo lists the servers of the account through its API (verified).
 
 ---
 

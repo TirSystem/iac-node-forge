@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [673a8e4] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -34,7 +35,7 @@ After a server has been provisioned, DevOps asks for it to be made usable. The s
 ### Notes
 
 - Extends UC-004; optional.
-- Proxmox VE can use cloud-init if the template supports it; Contabo support for cloud-init or user data needs verification.
+- Contabo accepts cloud-init user data at creation and reinstall (verified). Proxmox VE has cloud-init configuration endpoints; whether the template has a cloud-init drive depends on the template (open).
 - Which first-boot mechanism and script runner are used is open.
 - Priority: Should.
 

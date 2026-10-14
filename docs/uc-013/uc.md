@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [673a8e4] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -33,6 +34,7 @@ DevOps reviews past operations with their outcome and cause. For a failed operat
 ### Notes
 
 - Operation history is kept in the client's own JSONL; how long it is kept is open.
+- Contabo keeps a history of actions and instances through audit endpoints (verified).
 - Which failures can safely be retried, for example a partially provisioned server, is open.
 - Priority: Should.
 

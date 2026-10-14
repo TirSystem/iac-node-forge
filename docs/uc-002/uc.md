@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps asks what a configured provider can do and offer. The system retrieves th
 
 - Capabilities follow [ADR-0002].
 - Whether the result is cached, and for how long, is open.
-- Which options depend on the target (Proxmox VE node and storage, Contabo product) needs verification.
+- Proxmox VE exposes nodes, storage and storage content; Contabo exposes products, a fixed list of regions and images (verified). Further dependence on the target is open.
 
 ---
 

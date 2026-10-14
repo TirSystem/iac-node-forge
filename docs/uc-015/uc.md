@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [673a8e4] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -33,7 +34,7 @@ DevOps asks to change an existing server by resizing it, reinstalling its image,
 
 ### Notes
 
-- Contabo offers upgrade, reinstall and rescue; Proxmox VE resizing means editing CPU, memory and disk (verify).
+- Contabo offers reinstall and rescue (verified). Its upgrade documentation is inconsistent (add-ons only versus product upgrade), so resize stays open. Proxmox VE resize is a configuration and disk edit (verified).
 - Provider differences are large; capability check follows [ADR-0002].
 - A reinstall destroys data and needs the confirmation rules of UC-012.
 - Priority: Open.

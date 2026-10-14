@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | pending |
 
 ---
 
@@ -33,7 +34,7 @@ DevOps selects a server and asks to remove it. The system states what removal me
 
 ### Notes
 
-- Proxmox VE destroys the server; Contabo cancels it, effective at the end of the billing period (verify).
+- Proxmox VE destroys the server immediately (verified). Contabo sets a cancel date on the instance (verified); the rule for that date is not stated (open), so the confirmation shows the date the provider reports.
 - Wording for delete versus cancel is open.
 - Protection against accidental removal is open.
 - Capability check follows [ADR-0002].
