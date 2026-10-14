@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [673a8e4] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | [7bde3e0] |
 
 ---
 
@@ -34,7 +35,8 @@ DevOps lists, creates, restores and deletes snapshots of a server where its prov
 ### Notes
 
 - Includes UC-006.
-- Proxmox VE snapshots depend on the storage type; Contabo snapshots depend on the plan and may have limits (verify).
+- Proxmox VE has snapshots with rollback for VMs and containers; dependence on storage type is not in the API viewer (open).
+- Contabo snapshot names are limited to 30 characters, and a rollback deletes all newer snapshots, so the confirmation must say so (verified). The number of snapshots allowed is not stated (open).
 - Capability check follows [ADR-0002].
 - Priority: Should.
 
@@ -45,3 +47,4 @@ DevOps lists, creates, restores and deletes snapshots of a server where its prov
 [SA-001]: ../stakeholder-analysis.md
 [ADR-0002]: ../adr/adr-0002-provider-capability-model.md
 [673a8e4]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/673a8e48834f9cd28ea18ad4374945b70e5aa03a
+[7bde3e0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/7bde3e007f21106df3dc4cf580c252e7e6996187
