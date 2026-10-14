@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
 
 ---
 
@@ -43,3 +43,4 @@ DevOps adds a provider configuration, giving its endpoint and, when asked, its c
 [ADR-0003]: ../adr/adr-0003-credential-storage.md
 [US-001]: ../user-stories.md
 [SA-001]: ../stakeholder-analysis.md
+[25d8548]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/25d8548745b006859481203e636fc508f46f6957

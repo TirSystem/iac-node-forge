@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
 
 ---
 
@@ -142,3 +142,4 @@ Each story is independent of the others in intent, negotiable in wording, valuab
 [UC-007]: ./uc-007/uc.md
 [UC-008]: ./uc-008/uc.md
 [UC-012]: ./uc-012/uc.md
+[25d8548]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/25d8548745b006859481203e636fc508f46f6957
