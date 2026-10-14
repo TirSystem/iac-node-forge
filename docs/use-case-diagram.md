@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [d6c95d9] |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Linked the use case documents UC-005, UC-009 to UC-011 and UC-013 to UC-015 | pending |
+| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Linked the use case documents UC-005, UC-009 to UC-011 and UC-013 to UC-015 | [673a8e4] |
 
 ---
 
@@ -165,3 +165,4 @@ does not operate the product, so he is not drawn as an actor.
 [UC-014]: ./uc-014/uc.md
 [UC-015]: ./uc-015/uc.md
 [d6c95d9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d6c95d9d3c454f4927e0639f96e0338880dca5fb
+[673a8e4]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/673a8e48834f9cd28ea18ad4374945b70e5aa03a
