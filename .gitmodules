@@ -1,3 +1,6 @@
 [submodule "framework"]
 	path = framework
 	url = ssh://git@git.tirsystem.com:10022/TirSystem/SQA-QC-Framework.git
+[submodule "iac-node-forge-py"]
+	path = iac-node-forge-py
+	url = ssh://git@git.tirsystem.com:10022/TirSystem/iac-node-forge-py.git
