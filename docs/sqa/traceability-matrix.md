@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-055 to RC-063 (power control design) | [f91e283] |
-| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-064 and RC-065 | pending |
+| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-064 and RC-065 | [27af875] |
 
 ---
 
@@ -145,3 +145,4 @@ updated whenever an artifact instance is created or reviewed.
 [f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
 [RC-064]: ./reviews/rc-064-python-code-mil-004.md
 [RC-065]: ./reviews/rc-065-dcd-001-rev5.md
+[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb

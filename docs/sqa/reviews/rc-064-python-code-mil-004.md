@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-16 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-16 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [27af875] |
 
 ---
 
@@ -60,3 +60,4 @@ Go — every Mandatory criterion passes. The one failed criterion (13, Optional)
 
 [MIL-004]: ../../milestones/mil-004-power-control.md
 [QC-PY-001]: ../../../framework/qc/code/qc-programming-python.md
+[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb

@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | [f91e283] |
-| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: aligned with the built power code (MIL-004 task 12) | pending |
+| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: aligned with the built power code (MIL-004 task 12) | [27af875] |
 
 ---
 
@@ -319,3 +319,4 @@ and may name every layer.
 [SSD-005]: ./use-cases/uc-006/ssd.md
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
+[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb
