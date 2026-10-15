@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-046, the Go/No-Go check of MIL-002 | [1c3c503] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-003 and RC-047, RC-048 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-003 and RC-047, RC-048 | [c1c8c1c] |
 
 ---
 
@@ -116,3 +116,4 @@ updated whenever an artifact instance is created or reviewed.
 [MIL-003]: ../milestones/mil-003-contabo-read-only-adapter.md
 [RC-047]: ./reviews/rc-047-mil-003.md
 [RC-048]: ./reviews/rc-048-pp-001-rev.md
+[c1c8c1c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c1c8c1cede20ea80be9c04babfe83175b00328a9

@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [c1c8c1c] |
 
 ---
 
@@ -63,3 +63,4 @@ Go — every criterion passes. The row is accepted in autonomous mode; the windo
 
 [PP-001]: ../../project-plan.md
 [QC-LANG-001]: ../../../framework/qc/artifacts/qc-language-domain.md
+[c1c8c1c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c1c8c1cede20ea80be9c04babfe83175b00328a9
