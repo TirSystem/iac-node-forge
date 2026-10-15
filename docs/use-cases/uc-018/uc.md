@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-027 | pending |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps chooses a server and asks for a backup of the whole server. The system ch
 ### Notes
 
 - Includes UC-006.
-- Proxmox VE has native backup (vzdump) and backup storage. Its API viewer lists upload and download-from-URL for storage, but not a plain download of a backup file; copying a backup to the local PC is open.
+- Proxmox VE has native backup and backup storage. Its API viewer lists upload and download-from-URL for storage, but not a plain download of a backup file; copying a backup to the local PC is open.
 - Contabo documents only snapshots and object storage, no backup API; a backup there may be a snapshot kept at the provider, and whether it can be copied to the local PC is not stated (open).
 - Capability check follows [ADR-0002]; the use case may be unsupported on a provider.
 - Priority: Must.

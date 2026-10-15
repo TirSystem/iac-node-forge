@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Linked the use case documents UC-005, UC-009 to UC-011 and UC-013 to UC-015 | [673a8e4] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore use cases UC-016 to UC-019 and the managed server actor | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Added backup and restore use cases UC-016 to UC-019 and the managed server actor | [31933c9] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Added missing include and provider associations (UC-005, 010, 011, 013, 014, 015); renamed the managed server actor<br>Accepted after RC-008 | pending |
 
 ---
 
@@ -39,7 +39,7 @@ actor "DevOps" as DevOps <<Actor>>
 actor "Proxmox VE" as PVE <<System>>
 actor "Contabo" as CON <<System>>
 actor "OS Credential Store" as CRED <<System>>
-actor "Managed server (SSH)" as SRV <<System>>
+actor "Managed server" as SRV <<System>>
 
 rectangle "iac-node-forge" <<System>> {
   usecase "Configure and validate provider access" as UC01
@@ -85,6 +85,10 @@ UC08 ..> UC06 : <<include>>
 UC09 ..> UC06 : <<include>>
 UC12 ..> UC06 : <<include>>
 UC18 ..> UC06 : <<include>>
+UC05 ..> UC06 : <<include>>
+UC11 ..> UC06 : <<include>>
+UC13 ..> UC06 : <<include>>
+UC15 ..> UC06 : <<include>>
 UC19 ..> UC06 : <<include>>
 UC05 ..> UC04 : <<extend>>
 UC11 ..> UC10 : <<extend>>
@@ -106,6 +110,13 @@ UC09 --> PVE
 UC09 --> CON
 UC12 --> PVE
 UC12 --> CON
+UC05 --> SRV
+UC10 --> PVE
+UC10 --> CON
+UC14 --> PVE
+UC14 --> CON
+UC15 --> PVE
+UC15 --> CON
 UC16 --> SRV
 UC17 --> SRV
 UC18 --> PVE
@@ -123,10 +134,10 @@ The diagram has not been rendered yet; check it with
 | Actor | Stereotype | Stakeholder ID (SA) | Goals (use cases) |
 | --- | --- | --- | --- |
 | DevOps | `<<Actor>>` (primary) | S02 | UC-001, UC-002, UC-003, UC-004, UC-007, UC-008, UC-009, UC-010, UC-012, UC-013, UC-014, UC-015, UC-016, UC-017, UC-018, UC-019 |
-| Proxmox VE | `<<System>>` (secondary) | none, external system | UC-001, UC-002, UC-004, UC-006, UC-007, UC-008, UC-009, UC-012, UC-018, UC-019 |
-| Contabo | `<<System>>` (secondary) | none, external system | UC-001, UC-002, UC-004, UC-006, UC-007, UC-008, UC-009, UC-012, UC-018, UC-019 |
+| Proxmox VE | `<<System>>` (secondary) | none, external system | UC-001, UC-002, UC-004, UC-006, UC-007, UC-008, UC-009, UC-010, UC-012, UC-014, UC-015, UC-018, UC-019 |
+| Contabo | `<<System>>` (secondary) | none, external system | UC-001, UC-002, UC-004, UC-006, UC-007, UC-008, UC-009, UC-010, UC-012, UC-014, UC-015, UC-018, UC-019 |
 | OS Credential Store | `<<System>>` (secondary) | none, external system | UC-001 |
-| Managed server (SSH) | `<<System>>` (secondary) | none, external system | UC-016, UC-017 |
+| Managed server | `<<System>>` (secondary) | none, external system | UC-005, UC-016, UC-017 |
 
 The Product Owner (S01) has no use case of his own: he accepts artifacts and
 does not operate the product, so he is not drawn as an actor.
@@ -164,6 +175,10 @@ does not operate the product, so he is not drawn as an actor.
 | UC-009 `<<include>>` UC-006 | Snapshot actions are long-running at the providers and are always followed. |
 | UC-012 `<<include>>` UC-006 | Removal always follows its operation to completion. |
 | UC-018 `<<include>>` UC-006 | A whole-server backup is long-running and is always followed. |
+| UC-005 `<<include>>` UC-006 | Bootstrap is a long-running operation and is always followed. |
+| UC-011 `<<include>>` UC-006 | Applying corrections is long-running and is always followed. |
+| UC-013 `<<include>>` UC-006 | A retry, resume or clean-up is an operation and is always followed. |
+| UC-015 `<<include>>` UC-006 | Resize, reinstall and rescue are long-running and always followed. |
 | UC-019 `<<include>>` UC-006 | A whole-server restore is long-running and is always followed. |
 | UC-005 `<<extend>>` UC-004 | Bootstrap is optional and happens only after a server has been provisioned. |
 | UC-011 `<<extend>>` UC-010 | Correction is offered only when drift has been detected. |
@@ -189,7 +204,6 @@ does not operate the product, so he is not drawn as an actor.
 [UC-014]: ./use-cases/uc-014/uc.md
 [UC-015]: ./use-cases/uc-015/uc.md
 [d6c95d9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d6c95d9d3c454f4927e0639f96e0338880dca5fb
-[673a8e4]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/673a8e48834f9cd28ea18ad4374945b70e5aa03a
 [UC-016]: ./use-cases/uc-016/uc.md
 [UC-017]: ./use-cases/uc-017/uc.md
 [UC-018]: ./use-cases/uc-018/uc.md

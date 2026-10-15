@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-14 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-012 | pending |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps describes the server wanted: a name, provider and target, size, image, ac
 
 - How much of a definition is provider-neutral and how much provider-specific is open.
 - Whether a definition is a reusable template or describes one server is open.
-- Stored in the client's JSONL; secrets are never included.
+- Stored in the client's own local configuration; secrets are never included.
 
 ---
 
