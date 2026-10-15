@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Gateway schedule lists the candidates UC-01 to UC-19 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Gateway schedule lists the candidates UC-01 to UC-19 | [31933c9] |
 
 ---
 
@@ -88,3 +88,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
+[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb

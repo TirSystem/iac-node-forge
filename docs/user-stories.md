@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added stories US-001.09 to US-001.12 for backup and restore | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added stories US-001.09 to US-001.12 for backup and restore | [31933c9] |
 
 ---
 
@@ -200,3 +200,4 @@ Each story is independent of the others in intent, negotiable in wording, valuab
 [UC-017]: ./uc-017/uc.md
 [UC-018]: ./uc-018/uc.md
 [UC-019]: ./uc-019/uc.md
+[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb

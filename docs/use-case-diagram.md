@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Linked the use case documents UC-005, UC-009 to UC-011 and UC-013 to UC-015 | [673a8e4] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore use cases UC-016 to UC-019 and the managed server actor | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore use cases UC-016 to UC-019 and the managed server actor | [31933c9] |
 
 ---
 
@@ -194,3 +194,4 @@ does not operate the product, so he is not drawn as an actor.
 [UC-017]: ./uc-017/uc.md
 [UC-018]: ./uc-018/uc.md
 [UC-019]: ./uc-019/uc.md
+[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
