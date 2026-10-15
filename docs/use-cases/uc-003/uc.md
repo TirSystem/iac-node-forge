@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-012 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-012 | [d4593ae] |
 
 ---
 
@@ -42,3 +42,4 @@ DevOps describes the server wanted: a name, provider and target, size, image, ac
 [US-001]: ../../user-stories.md
 [SA-001]: ../../stakeholder-analysis.md
 [25d8548]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/25d8548745b006859481203e636fc508f46f6957
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22

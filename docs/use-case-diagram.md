@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Added backup and restore use cases UC-016 to UC-019 and the managed server actor | [31933c9] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Added missing include and provider associations (UC-005, 010, 011, 013, 014, 015); renamed the managed server actor<br>Accepted after RC-008 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Added missing include and provider associations (UC-005, 010, 011, 013, 014, 015); renamed the managed server actor<br>Accepted after RC-008 | [d4593ae] |
 
 ---
 
@@ -209,3 +209,4 @@ does not operate the product, so he is not drawn as an actor.
 [UC-018]: ./use-cases/uc-018/uc.md
 [UC-019]: ./use-cases/uc-019/uc.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22

@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Initial version | [b664ca3] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | [d4593ae] |
 
 ---
 
@@ -79,3 +79,4 @@ updated whenever an artifact instance is created or reviewed.
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
