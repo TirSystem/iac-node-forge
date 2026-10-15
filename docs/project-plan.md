@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Dates confirmed by S01; diagram rendered; accepted after RC-003 | [dbd33d0] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-002, the read-only slice with the Python CLI against Proxmox VE | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-002, the read-only slice with the Python CLI against Proxmox VE | [65fb60d] |
 
 ---
 
@@ -95,3 +95,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
 [dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15
+[65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28

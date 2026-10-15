@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
 
 ---
 
@@ -104,3 +104,4 @@ with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
+[65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
