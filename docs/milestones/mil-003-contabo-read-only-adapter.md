@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [d59571d] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-047 (autonomous mode, stand-in) | [c1c8c1c] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-047 (autonomous mode, stand-in) | [c1c8c1c] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all eight criteria met (RC-052); stand-in decision, open to challenge | pending |
 
 ---
 
@@ -102,5 +102,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-002]: ./mil-002-read-only-slice-proxmox-cli.md
-[d59571d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d59571d87e5e2c2d19aa490850422180c720a45e
 [c1c8c1c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c1c8c1cede20ea80be9c04babfe83175b00328a9
