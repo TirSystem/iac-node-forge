@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Explicit multiplicities; store kind added to Credential reference (RC-032)<br>Accepted after RC-032 | [de601dd] |
 
 ---
 
@@ -37,6 +38,7 @@ class "Provider configuration" as PC {
 }
 class "Credential reference" as CR {
   name
+  store kind
 }
 class "Access check" as AC {
   outcome
@@ -60,12 +62,12 @@ class "Managed server" as MS {
   recorded date
 }
 
-PC "*" --> "1" Provider : connects to
-PC "*" --> "0..1" CR : is secured by
-AC "*" --> "1" PC : reports on
-PC "1" --> "*" Capability : offers
-PC "1" --> "*" SO : offers
-Server "*" --> "1" PC : is run through
+PC "0..*" --> "1" Provider : connects to
+PC "0..*" --> "0..1" CR : is secured by
+AC "0..*" --> "1" PC : reports on
+PC "1" --> "0..*" Capability : offers
+PC "1" --> "0..*" SO : offers
+Server "0..*" --> "1" PC : is run through
 MS "0..1" --> "1" Server : marks
 @enduml
 ```
@@ -76,7 +78,7 @@ MS "0..1" --> "1" Server : marks
 | --- | --- | --- | --- |
 | Provider | A company or platform that supplies servers. | name | [UC-001] "provider" |
 | Provider configuration | Saved settings that connect this client to one provider. | display name, address | [UC-001] "provider configuration", "endpoint" |
-| Credential reference | The name under which a secret is kept; never the secret. | name | [UC-001] "credentials", "credential store" |
+| Credential reference | The name under which a secret is kept; never the secret. | name, store kind | [UC-001] "credentials", "credential store" |
 | Access check | The outcome of validating access at the provider. | outcome, reason | [UC-001] "reports the result" |
 | Capability | An action or option a provider and target support. | name | [UC-002] "capabilities", "actions the provider supports" |
 | Server option | A choice offered when a server is created. | kind, value | [UC-002] "regions or nodes, images or templates, sizes or products" |
@@ -87,12 +89,12 @@ MS "0..1" --> "1" Server : marks
 
 | From | Association name (reading direction) | To | Multiplicity (both ends) |
 | --- | --- | --- | --- |
-| Provider configuration | connects to | Provider | many to 1 |
-| Provider configuration | is secured by | Credential reference | many to 0..1 |
-| Access check | reports on | Provider configuration | many to 1 |
-| Provider configuration | offers | Capability | 1 to many |
-| Provider configuration | offers | Server option | 1 to many |
-| Server | is run through | Provider configuration | many to 1 |
+| Provider configuration | connects to | Provider | 0..* to 1 |
+| Provider configuration | is secured by | Credential reference | 0..* to 0..1 |
+| Access check | reports on | Provider configuration | 0..* to 1 |
+| Provider configuration | offers | Capability | 1 to 0..* |
+| Provider configuration | offers | Server option | 1 to 0..* |
+| Server | is run through | Provider configuration | 0..* to 1 |
 | Managed server | marks | Server | 0..1 to 1 |
 
 ## Generalizations
@@ -107,3 +109,4 @@ None.
 [UCD-001]: ./use-case-diagram.md
 [DICT-001]: ./dictionary.md
 [1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
+[de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
