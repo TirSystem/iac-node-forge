@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-025 | [d4593ae] |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps chooses files or folders on a server and a destination on the local PC. T
 ### Notes
 
 - Provider-independent: works the same on Proxmox VE and Contabo because it uses access to the server itself, not the provider API.
-- Which transfer method is used (SFTP or rsync) is open.
+- Which transfer method is used is open.
 - Server access credentials follow [ADR-0003].
 - Priority: Must.
 
@@ -45,3 +46,4 @@ DevOps chooses files or folders on a server and a destination on the local PC. T
 [SA-001]: ../../stakeholder-analysis.md
 [ADR-0003]: ../../adr/adr-0003-credential-storage.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22

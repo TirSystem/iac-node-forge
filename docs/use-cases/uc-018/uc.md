@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [31933c9] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Removed implementation detail from the Notes<br>Accepted after RC-027 | [d4593ae] |
 
 ---
 
@@ -34,7 +35,7 @@ DevOps chooses a server and asks for a backup of the whole server. The system ch
 ### Notes
 
 - Includes UC-006.
-- Proxmox VE has native backup (vzdump) and backup storage. Its API viewer lists upload and download-from-URL for storage, but not a plain download of a backup file; copying a backup to the local PC is open.
+- Proxmox VE has native backup and backup storage. Its API viewer lists upload and download-from-URL for storage, but not a plain download of a backup file; copying a backup to the local PC is open.
 - Contabo documents only snapshots and object storage, no backup API; a backup there may be a snapshot kept at the provider, and whether it can be copied to the local PC is not stated (open).
 - Capability check follows [ADR-0002]; the use case may be unsupported on a provider.
 - Priority: Must.
@@ -46,3 +47,4 @@ DevOps chooses a server and asks for a backup of the whole server. The system ch
 [SA-001]: ../../stakeholder-analysis.md
 [ADR-0002]: ../../adr/adr-0002-provider-capability-model.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22

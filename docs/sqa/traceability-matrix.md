@@ -4,12 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | TM-001 |
-| CrossReference | [BC-001], [SA-001], [PP-001], [MIL-001] |
+| CrossReference | [BC-001], [SA-001], [PP-001], [MIL-001], [UCD-001], [US-001] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Initial version | [b664ca3] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | [d4593ae] |
 
 ---
 
@@ -31,9 +32,9 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
 | [ADR-0004] | ADR | - | - | [BC-001], [MIL-001], [ADR-0003] | [UC-005], [UC-016], [UC-017] | [RC-007] |
-| [UCD-001] | UCD | en | it | [SA-001], [BC-001] | [UC-001] to [UC-019] | - |
-| [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | - |
-| UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | - |
+| [UCD-001] | UCD | en | it | [SA-001], [BC-001] | [UC-001] to [UC-019] | [RC-008] |
+| [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | [RC-009] |
+| UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
 ---
 
@@ -41,8 +42,8 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Use cases UC-001 to UC-019 and MIL-001, UCD-001, US-001 have no review record yet.
-- Reviews RC-001 to RC-007 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- MIL-001 has no review record yet.
+- Reviews RC-001 to RC-028 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -60,6 +61,8 @@ updated whenever an artifact instance is created or reviewed.
 [RC-005]: ./reviews/rc-005-adr-0002.md
 [RC-006]: ./reviews/rc-006-adr-0003.md
 [RC-007]: ./reviews/rc-007-adr-0004.md
+[RC-008]: ./reviews/rc-008-ucd-001.md
+[RC-009]: ./reviews/rc-009-us-001.md
 [SA-001]: ../stakeholder-analysis.md
 [UC-001]: ../use-cases/uc-001/uc.md
 [UC-002]: ../use-cases/uc-002/uc.md
@@ -76,3 +79,4 @@ updated whenever an artifact instance is created or reviewed.
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22

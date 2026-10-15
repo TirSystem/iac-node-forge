@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added stories US-001.09 to US-001.12 for backup and restore | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Added stories US-001.09 to US-001.12 for backup and restore | [31933c9] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-009 | [d4593ae] |
 
 ---
 
@@ -195,9 +195,9 @@ Each story is independent of the others in intent, negotiable in wording, valuab
 [UC-007]: ./use-cases/uc-007/uc.md
 [UC-008]: ./use-cases/uc-008/uc.md
 [UC-012]: ./use-cases/uc-012/uc.md
-[25d8548]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/25d8548745b006859481203e636fc508f46f6957
 [UC-016]: ./use-cases/uc-016/uc.md
 [UC-017]: ./use-cases/uc-017/uc.md
 [UC-018]: ./use-cases/uc-018/uc.md
 [UC-019]: ./use-cases/uc-019/uc.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
