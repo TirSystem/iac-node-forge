@@ -4,12 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | ADR-0004 |
-| CrossReference | [BC-001], [MIL-001], [ADR-0003] |
+| CrossReference | [BC-001], [MIL-001], [ADR-0003], [UC-005], [UC-016], [UC-017] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [e80473e] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [e80473e] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences; affected use cases linked<br>Accepted after RC-007 | pending |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -49,6 +50,10 @@ Options considered:
    and the user's `known_hosts`, keeping only a reference in the JSONL.
 
 ## Decision
+
+The product never stores a private key or a server password: it uses the user's SSH agent, key files and `known_hosts`, and keeps only non-secret connection facts in the JSONL. A password is prompted for on every use, and an unknown or changed host key stops the transfer until DevOps decides.
+
+### Rules
 
 Use option 3. The product never stores a private key or a password.
 
@@ -101,12 +106,9 @@ Use option 3. The product never stores a private key or a password.
 ## Affected Artifacts
 
 - [BC-001] — Objective 4 (no secrets in configuration).
-- [MIL-001] — a fourth decision record for the baseline; Go criterion 4
-  names three ADRs and would need to include this one.
-- [ADR-0003] — complements it: provider credentials there, server access
-  here.
-- UC-016 and UC-017 (backup and restore of server files) depend on this
-  decision, as does UC-005 (bootstrap).
+- [MIL-001] — a fourth decision record for the baseline; Go criterion 4 names it.
+- [ADR-0003] — complements it: provider credentials there, server access here.
+- [UC-005], [UC-016], [UC-017] — depend on this decision.
 
 ---
 
@@ -114,3 +116,6 @@ Use option 3. The product never stores a private key or a password.
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [ADR-0003]: ./adr-0003-credential-storage.md
 [e80473e]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e80473e106402eeb44c0148b3fa34777c1bc7bd1
+[UC-005]: ../uc-005/uc.md
+[UC-016]: ../uc-016/uc.md
+[UC-017]: ../uc-017/uc.md

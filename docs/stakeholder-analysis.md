@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-14 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Sign-off recorded after RC-002; accepted | pending |
 
 ---
 
@@ -81,8 +82,8 @@ Product Owner assigns a person.
 
 | ID | Role | Status |
 | --- | --- | --- |
-| S01 | Accepts | [cd7ca06] |
-| S02 | Reviews | [cd7ca06] |
+| S01 | Accepts | accepted 2026-10-15 (RC-002) |
+| S02 | Reviews | independent confirmation pending |
 
 ---
 
