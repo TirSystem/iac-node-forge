@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | [704c593] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences with the detail kept below it<br>Accepted after RC-004 | [b664ca3] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences with the detail kept below it<br>Accepted after RC-004 | [b664ca3] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Real Proxmox VE in a local container accepted for integration runs<br>Accepted after RC-044 | pending |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -59,6 +59,8 @@ read-only calls, on demand. No create, update or delete runs against live
 Contabo in automated tests; a real change is a manual acceptance by S01 with
 the cost approved first.
 
+A real Proxmox VE may also run in a container on the Product Owner's machine for local integration runs (chosen by S01 on 2026-10-15; a third-party, privileged image, never in CI or on a shared host); the integration tests are deselected by default and skip without a token.
+
 The mock runs in CI as an in-process HTTP server started by the test run.
 It needs no image pull, runs the same way on a developer machine and on any
 CI host, and was shown to work on the Gitea runner. A service container is
@@ -98,5 +100,4 @@ is not yet set up; the first CI workflow for the CLI has to install it.
 
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
-[704c593]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/704c5936323131397b0d4b17e36056d4e84e123c
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5

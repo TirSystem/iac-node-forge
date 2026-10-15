@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Entities use the IT terms of the dictionary; 1:N notation; sources match the DCD (RC review)<br>Accepted after RC-039 | [de601dd] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Entities use the IT terms of the dictionary; 1:N notation; sources match the DCD (RC review)<br>Accepted after RC-039 | [de601dd] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | recorded_at is an ISO 8601 text with offset, matching the DCD Timestamp<br>Accepted after RC-042 | pending |
 
 ---
 
@@ -76,7 +76,7 @@ ProviderConfiguration ||--o{ ManagedServerRecord
 | --- | --- | --- | --- | --- |
 | configuration_id | text | PK, FK | No | ManagedServerRecord.configurationId |
 | server_identifier | text | PK | No | ManagedServerRecord.serverIdentifier |
-| recorded_at | text | | No | ManagedServerRecord.recordedAt |
+| recorded_at | text (ISO 8601 with offset) | | No | ManagedServerRecord.recordedAt (Timestamp) |
 
 ## Relationship Table
 
@@ -96,5 +96,4 @@ at the expected size (tens of records).
 [DCD-001]: ./dcd.md
 [DICT-001]: ./dictionary.md
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
-[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec

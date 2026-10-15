@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Multiplicities and navigability on every association; Credentials, ProviderKind and persisted attributes added; every method traced (RC review)<br>Accepted after RC-038 | [de601dd] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Multiplicities and navigability on every association; Credentials, ProviderKind and persisted attributes added; every method traced (RC review)<br>Accepted after RC-038 | [de601dd] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | pending |
 
 ---
 
@@ -22,6 +22,10 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised on 2026-10-15 after the implementation of MIL-002: the provider resolver, the
+result types, the credential source and the timestamp type were added; `getServer` and
+`listServers` accept a configuration identifier or display name.
 
 ## Diagram
 
@@ -69,7 +73,7 @@ package domain {
   class ManagedServerRecord {
     - configurationId : ConfigurationId
     - serverIdentifier : Text
-    - recordedAt : Text
+    - recordedAt : Timestamp
   }
 }
 package application {
@@ -92,17 +96,26 @@ package application {
   interface CredentialPrompt {
     + ask(providerKind) : Credentials
   }
+  interface ProviderResolver {
+    + providerFor(configuration) : ProviderPort
+  }
+  class AccessCheck
+  class SavedConfiguration
+  class CapabilityReport
+  class ServerSummary
+  class ServerListing
+  class ProviderFailure
   class ConfigureProviderAccess {
-    + validateAccess(providerKind, address, credentials) : AccessResult
-    + saveProviderConfiguration(providerKind, address, displayName, cacheCredential) : ConfigurationId
+    + validateAccess(providerKind, address, credentials) : AccessCheck
+    + saveProviderConfiguration(providerKind, address, displayName, cacheCredential) : SavedConfiguration
   }
   class DiscoverCapabilities {
-    + discoverCapabilities(configurationId) : List
-    + listServerOptions(configurationId, optionKind) : List
+    + discoverCapabilities(configuration) : CapabilityReport
+    + listServerOptions(configuration, optionKind) : List
   }
   class ListServers {
-    + listServers() : List
-    + inspectServer(configurationId, serverIdentifier) : Server
+    + listServers(configuration) : ServerListing
+    + inspectServer(configuration, serverIdentifier) : ServerSummary
   }
 }
 package infrastructure {
@@ -113,6 +126,8 @@ package infrastructure {
 }
 package presentation {
   class CliApplication
+  class CliProviderResolver
+  class CredentialSource
 }
 
 ProviderConfiguration "0..*" --> "1" ProviderKind
@@ -121,9 +136,10 @@ ManagedServerRecord "0..*" --> "1" ProviderConfiguration
 ConfigureProviderAccess ..> ProviderPort
 ConfigureProviderAccess ..> ConfigurationStore
 ConfigureProviderAccess ..> CredentialStore
-DiscoverCapabilities ..> ProviderPort
+DiscoverCapabilities ..> ProviderResolver
 DiscoverCapabilities ..> ConfigurationStore
-ListServers ..> ProviderPort
+ListServers ..> ProviderResolver
+ProviderResolver ..> ProviderPort
 ListServers ..> ConfigurationStore
 ProxmoxProvider ..|> ProviderPort
 JsonLinesConfigurationStore ..|> ConfigurationStore
@@ -133,6 +149,10 @@ CliApplication ..> ConfigureProviderAccess
 CliApplication ..> DiscoverCapabilities
 CliApplication ..> ListServers
 CliApplication ..> CredentialPrompt
+CliProviderResolver ..|> ProviderResolver
+CliApplication ..> CredentialSource
+CredentialSource ..> CredentialStore
+CredentialSource ..> CredentialPrompt
 @enduml
 ```
 
@@ -153,13 +173,17 @@ CliApplication ..> CredentialPrompt
 | ConfigurationStore | (configuration) | The boundary to the client's saved configuration. | none | save, loadAll, managedServers |
 | CredentialStore | Credential reference | The boundary to the platform credential store. | none | put, get |
 | CredentialPrompt | (credentials) | The boundary to asking the user for a secret. | none | ask |
-| ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration. | none | validateAccess, saveProviderConfiguration |
+| ProviderResolver | (provider) | Gives the provider port for one saved configuration, built with that configuration's credentials. | none | providerFor |
+| AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
+| ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration; keeps the validated credentials in memory until the save or the next check, and never persists them. | none | validateAccess, saveProviderConfiguration |
 | DiscoverCapabilities | Capability | Realises UC-002: discovers capabilities and options. | none | discoverCapabilities, listServerOptions |
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
 | ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface (read-only in this slice). | none | implements ProviderPort |
 | JsonLinesConfigurationStore | (configuration) | Adapter that keeps configuration as JSON Lines without secrets. | none | implements ConfigurationStore |
 | PlatformCredentialStore | Credential reference | Adapter for the operating system credential store. | none | implements CredentialStore |
 | ConsoleCredentialPrompt | (credentials) | Adapter that asks for a secret on the console. | none | implements CredentialPrompt |
+| CliProviderResolver | (provider) | Builds the provider adapter for a configuration after obtaining its credentials. | none | implements ProviderResolver |
+| CredentialSource | Credential reference | Obtains a secret: the credential store first, then the prompt (ADR-0003). | none | obtain |
 | CliApplication | (client) | Entry point and composition root of the command-line client. | none | one command per use case operation |
 
 ## Method Traceability
@@ -168,10 +192,11 @@ CliApplication ..> CredentialPrompt
 | --- | --- |
 | ConfigureProviderAccess.validateAccess(providerKind, address, credentials) : AccessResult | `validateAccess` in [SSD-001] |
 | ConfigureProviderAccess.saveProviderConfiguration(providerKind, address, displayName, cacheCredential) : ConfigurationId | `saveProviderConfiguration` in [OC-001] and [SSD-001] |
-| DiscoverCapabilities.discoverCapabilities(configurationId) : List | `discoverCapabilities` in [SSD-002] |
-| DiscoverCapabilities.listServerOptions(configurationId, optionKind) : List | `listServerOptions` in [SSD-002] |
-| ListServers.listServers() : List | `listServers` in [SSD-003] |
-| ListServers.inspectServer(configurationId, serverIdentifier) : Server | `inspectServer` in [SSD-003] |
+| DiscoverCapabilities.discoverCapabilities(configuration) : CapabilityReport | `discoverCapabilities` in [SSD-002]; `configuration` is an identifier or a display name |
+| DiscoverCapabilities.listServerOptions(configuration, optionKind) : List | `listServerOptions` in [SSD-002] |
+| ListServers.listServers(configuration) : ServerListing | `listServers` in [SSD-003]; the configuration argument is optional and filters |
+| ListServers.inspectServer(configuration, serverIdentifier) : ServerSummary | `inspectServer` in [SSD-003] |
+| ProviderResolver.providerFor(configuration) | Supporting operation of `discoverCapabilities`, `listServerOptions`, `listServers` and `inspectServer` (credentials differ per configuration) |
 | ProviderPort.validateAccess(address, credentials) | `validateAccess` in [SSD-001] |
 | ProviderPort.discoverCapabilities(configuration) | `discoverCapabilities` in [SSD-002] |
 | ProviderPort.listServerOptions(configuration, optionKind) | `listServerOptions` in [SSD-002] |
@@ -189,6 +214,7 @@ CliApplication ..> CredentialPrompt
 | --- | --- | --- |
 | Ports and adapters | ProviderPort, ConfigurationStore, CredentialStore, CredentialPrompt and their adapters | Keeps the application free of provider, file and platform detail; a second provider is a new adapter ([ADR-0002]). |
 | Composition root | CliApplication | The only place that names infrastructure classes. |
+| Resolver | ProviderResolver, CliProviderResolver | The adapter takes its credentials at construction, and one run spans several configurations, so a port instance per configuration is resolved on demand. |
 | Capability set | Capability, ProviderPort.discoverCapabilities | Provider differences are declared, not hidden ([ADR-0002]). |
 
 ## Dependency Check
@@ -206,5 +232,4 @@ and may name every layer.
 [SSD-003]: ./use-cases/uc-007/ssd.md
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
-[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec

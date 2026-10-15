@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the MIL-002 design artifacts DICT-001, DM-001, SSD-001 to SSD-003, OC-001, DCD-001 and ERD-001 | [1f23e1f] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review records RC-032 to RC-039 for the MIL-002 design artifacts | [de601dd] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-040 to RC-045 (revisions after the MIL-002 implementation and the code review) | pending |
 
 ---
 
@@ -28,8 +28,8 @@ updated whenever an artifact instance is created or reviewed.
 | [SA-001] | SA | en | it | [BC-001] | [BC-001], [MIL-001] | [RC-002] |
 | [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031] |
 | [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | [RC-029] |
-| [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030] |
-| [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004] |
+| [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030], [RC-043], [RC-045] |
+| [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
 | [ADR-0004] | ADR | - | - | [BC-001], [MIL-001], [ADR-0003] | [UC-005], [UC-016], [UC-017] | [RC-007] |
@@ -37,10 +37,10 @@ updated whenever an artifact instance is created or reviewed.
 | [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | [RC-009] |
 | [DICT-001] | DICT | en | it | [BC-001], [SA-001] | [DM-001] | [RC-033] |
 | [DM-001] | DM | en | it | [UC-001], [UC-002], [UC-007], [UCD-001] | [SSD-001], [DCD-001] | [RC-032] |
-| [SSD-001] to [SSD-003] | SSD | en | it | [UC-001], [UC-002], [UC-007], [DM-001] | [OC-001], [DCD-001] | [RC-034] to [RC-036] |
+| [SSD-001] to [SSD-003] | SSD | en | it | [UC-001], [UC-002], [UC-007], [DM-001] | [OC-001], [DCD-001] | [RC-034] to [RC-036], [RC-041] |
 | [OC-001] | OC | - | - | [SSD-001], [DM-001] | [DCD-001] | [RC-037] |
-| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [SSD-001] to [SSD-003] | [ERD-001] | [RC-038] |
-| [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039] |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [SSD-001] to [SSD-003] | [ERD-001] | [RC-038], [RC-040] |
+| [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039], [RC-042] |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
 ---
@@ -49,7 +49,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-028 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-045 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -96,7 +96,6 @@ updated whenever an artifact instance is created or reviewed.
 [OC-001]: ../use-cases/uc-001/oc.md
 [DCD-001]: ../dcd.md
 [ERD-001]: ../erd.md
-[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
 [RC-032]: ./reviews/rc-032-dm-001.md
 [RC-033]: ./reviews/rc-033-dict-001.md
 [RC-034]: ./reviews/rc-034-ssd-001.md
@@ -106,3 +105,9 @@ updated whenever an artifact instance is created or reviewed.
 [RC-038]: ./reviews/rc-038-dcd-001.md
 [RC-039]: ./reviews/rc-039-erd-001.md
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
+[RC-040]: ./reviews/rc-040-dcd-001-rev2.md
+[RC-041]: ./reviews/rc-041-ssd-001-rev2.md
+[RC-042]: ./reviews/rc-042-erd-001-rev2.md
+[RC-043]: ./reviews/rc-043-mil-002-rev2.md
+[RC-044]: ./reviews/rc-044-adr-0001-rev3.md
+[RC-045]: ./reviews/rc-045-python-code-mil-002.md

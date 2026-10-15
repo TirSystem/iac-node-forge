@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | [a458b17] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | [a458b17] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Task 8 narrowed to API token; the real server may be a container<br>Accepted after RC-043 | pending |
 
 ---
 
@@ -36,8 +36,8 @@ architecture the later milestones build on.
   relationship diagram of the configuration file.
 - A mock Proxmox VE API and a continuous integration (CI) workflow that runs
   the unit and contract tests.
-- A written result of the integration run against the Proxmox VE virtual
-  machine (VM).
+- A written result of the integration run against a real Proxmox VE (a virtual
+  machine or a container).
 
 ## Go / No-Go Criteria
 
@@ -46,7 +46,7 @@ architecture the later milestones build on.
 | 1 | The design artifacts of this milestone exist and each has a `Go` review record | All | Any missing or not Go |
 | 2 | The acceptance criteria of US-001.01, US-001.02 and US-001.06 are each shown by an automated test | All | Any not shown |
 | 3 | The unit and contract tests pass in Gitea CI on Python 3.13 | Pass | Fail |
-| 4 | The integration run against the Proxmox VE VM is recorded and passes | Passes | Fails or not run |
+| 4 | The integration run against a real Proxmox VE is recorded and passes | Passes | Fails or not run |
 | 5 | A test shows that no secret is written to the configuration file | Passes | Fails |
 | 6 | No create, update or delete call exists in the code of this slice | None found | Any found |
 | 7 | The source code has a `Go` review against the Python code checklist | Go | Not Go |
@@ -92,12 +92,12 @@ with.
 | 5 | Design class diagram and provider interface | Design the common provider interface and capability model of ADR-0002, the use case classes and the ports for configuration and credentials, so the domain does not import infrastructure. | No | DCD |
 | 6 | Configuration file design | Define the JSON Lines (JSONL) records of the per-client configuration: provider, endpoint, credential reference, managed servers; no secrets (ADR-0003). | No | ERD |
 | 7 | Implement the provider interface and capability model | Python code for the provider port, the capability set and the result types, with unit tests that need no network. | No | DCD |
-| 8 | Implement the Proxmox VE adapter (read-only) | Authentication by ticket and by API token, listing nodes, storage and cluster resources, and reporting capabilities, against the documented Proxmox VE API. | No | |
+| 8 | Implement the Proxmox VE adapter (read-only) | Authentication by API token (ticket login is a later task), listing nodes, storage and cluster resources, and reporting capabilities, against the documented Proxmox VE API. | No | |
 | 9 | Implement configuration and credential handling | JSONL reading and writing without secrets, a prompt for secrets and an optional cache in the platform credential store, as ADR-0003 decides. | No | |
 | 10 | Implement the CLI commands | The commands for configuring and validating access, discovering capabilities and listing and inspecting servers, with a clear message when a provider is unreachable. | Yes | UC-001, UC-002, UC-007 |
 | 11 | Mock Proxmox VE API and contract tests | An in-process HTTP server that answers like the documented endpoints, including failures such as an expired token, as ADR-0001 decides. | No | ADR-0001 |
 | 12 | CI workflow | A Gitea workflow that installs Python 3.13 on the runner image (which ships 3.12), runs linters, unit tests and contract tests. | No | ADR-0001 |
-| 13 | Integration run on the Proxmox VE VM | Run the CLI against the VM on the Product Owner's machine and record the result, including the self-signed certificate decision. | No | |
+| 13 | Integration run on a real Proxmox VE | Run the integration tests and the CLI against a real Proxmox VE on the Product Owner's machine (a virtual machine or the container of `tests/integration`), and record the result, including the self-signed certificate decision. | No | |
 | 14 | Review the artifacts and the code | Review records for the design artifacts and the source code against the Python code checklist, and update the traceability matrix. | No | |
 
 ---
@@ -105,5 +105,4 @@ with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
-[65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
 [a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e
