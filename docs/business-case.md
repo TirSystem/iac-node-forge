@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore to the objectives and scope (UC-016 to UC-019) | [31933c9] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-001 criterion 10) | [3876d67] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-001 criterion 10) | [3876d67] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Stated strategic alignment, deadline and budget; accepted after RC-001 | pending |
 
 ---
 
@@ -98,8 +98,9 @@ provider a matter of implementing the same capabilities.
 
 ## Strategic Alignment
 
-pending: the organisational goal this project supports is to be stated by the
-Product Owner.
+iac-node-forge supports TirSystem's goal of running its own infrastructure and
+websites reliably and with little manual work, by giving DevOps one repeatable
+way to provision and operate servers at the providers the company uses.
 
 ## Success Criteria
 
@@ -143,13 +144,16 @@ Product Owner.
 - Source lives in two submodules: `iac-node-forge-py` and
   `iac-node-forge-winui3` on `git.tirsystem.com`.
 - No code under `src/` or `tests/` before an accepted, reviewed milestone.
-- Duration, budget and deadline: pending, to be stated by the Product Owner.
+- No deadline and no budget limit: the work is done in the own time of S01 and S02.
+  The baseline phase (MIL-001) is planned for 2026-10-14 to 2026-10-28, as confirmed
+  by S01 on 2026-10-15.
 - No create, update or delete against the live Contabo account in automated tests, because it costs money. Read-only calls are allowed.
 - CI on Gitea cannot host a Proxmox VE VM (limited resources). CI uses a mock provider container; real Proxmox VE integration runs on a VM outside CI.
 
 ## Cost–Benefit Assessment
 
-Qualitative, because no budget or time constraint has been stated yet.
+Qualitative, because there is no budget limit and no deadline (own time), so no
+money figure can be stated.
 
 | Costs | Benefits |
 | --- | --- |
@@ -172,5 +176,4 @@ milestone can be delimited and verified against one provider.
 ---
 
 [SA-001]: ./stakeholder-analysis.md
-[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
 [3876d67]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3876d67f44db71c2dd2458e0a486da3437a192df

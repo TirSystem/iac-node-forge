@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Sign-off recorded after RC-002; accepted | [b664ca3] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Sign-off recorded after RC-002; accepted | [b664ca3] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out FURPS+ on first use; closes the RC-002 action item | pending |
 
 ---
 
@@ -20,7 +20,9 @@
 
 Identify who has an interest in or authority over iac-node-forge, so every
 artifact can cite exact stakeholder IDs for ownership, review and acceptance.
-The method is a power/interest grid with concerns mapped to FURPS+.
+The method is a power/interest grid with concerns mapped to FURPS+ (Functionality, Usability, Reliability, Performance and
+Supportability, extended with design, implementation, interface and physical
+constraints).
 
 ## Stakeholder Summary Table
 
@@ -88,5 +90,4 @@ Product Owner assigns a person.
 ---
 
 [BC-001]: ./business-case.md
-[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
