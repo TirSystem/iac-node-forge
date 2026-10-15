@@ -15,21 +15,29 @@ it was first written with (`maconrad/proxmox`) does not exist on Docker Hub, so 
 Check the image's page and its source on Docker Hub first. It is a community image, not
 Proxmox's own, and it runs privileged.
 
-## 1.2 Start the container
+## 1.2 Put the password in `pve.env`
 
-Run these in PowerShell, in the `iac-node-forge-py` folder:
+The password comes from the file `tests/integration/pve.env`. The file is ignored by git;
+never commit it. Run these in PowerShell, in the `iac-node-forge-py` folder:
 
 ```powershell
-# the password stays in this session only; choose a new one
-$env:PVE_PASSWORD = '<choose a password>'
-
-docker compose -f tests/integration/docker-compose.proxmox.yml up -d
+Copy-Item tests/integration/pve.env.example tests/integration/pve.env
+notepad tests/integration/pve.env      # set PVE_PASSWORD=<choose a password>
 ```
 
-The compose file has no default password: it stops with an error if `PVE_PASSWORD` is not
-set.
+The file has one `KEY=value` per line and no spaces around the equals sign. A dollar sign
+in the value must be written twice (`$$`), because compose expands variables.
 
-## 1.3 Wait for the web interface
+## 1.3 Start the container
+
+```powershell
+docker compose --env-file tests/integration/pve.env -f tests/integration/docker-compose.proxmox.yml up -d
+```
+
+The compose file has no default password: it stops with an error if `PVE_PASSWORD` is
+missing from the file.
+
+## 1.4 Wait for the web interface
 
 It can take a minute or two. In PowerShell 7:
 
@@ -43,19 +51,21 @@ Invoke-WebRequest -SkipCertificateCheck https://localhost:8006 | Select-Object S
 docker logs proxmox-node1 --tail 60
 ```
 
-## 1.4 Set the root password
+## 1.5 Set the root password
 
-Some images ignore `PVE_PASSWORD`. Set it from the variable, through standard input, so it
-never appears on a command line:
+Some images ignore `PVE_PASSWORD`. Set it from the value the container itself received, so
+it never appears on a command line and PowerShell does not have to read the file:
 
 ```powershell
-"root:$env:PVE_PASSWORD" | docker exec -i proxmox-node1 chpasswd
+docker exec proxmox-node1 sh -c 'echo "root:$PVE_PASSWORD" | chpasswd'
 ```
+
+The single quotes matter: the `$` is expanded inside the container, not by PowerShell.
 
 No output means success. You can check it in a browser at `https://localhost:8006`: user
 `root`, realm `Linux PAM standard authentication`, and your password.
 
-## 1.5 Create the API token
+## 1.6 Create the API token
 
 The token is what the tests use. This keeps it out of the screen and out of files:
 
@@ -80,8 +90,8 @@ $env:PVE_TOKEN = 'root@pam!iacnf=<value from the table>'
 | --- | --- |
 | `pull access denied ... repository does not exist` | The image name in the compose file is wrong. See 1.1. |
 | Mount error for `/lib/modules` | Docker Desktop for Windows has no such host path. Remove that one `volumes:` entry from your local copy and retry; tell the maintainer if the image then fails to start. |
-| `set PVE_PASSWORD in your environment` | The variable is not set in this PowerShell session. Repeat 1.2. |
-| Login rejected in the browser | The image did not use `PVE_PASSWORD`. Repeat 1.4. |
+| `set PVE_PASSWORD in your environment` | `PVE_PASSWORD` is missing from `pve.env`, or `--env-file` was left out. Repeat 1.2 and 1.3. |
+| Login rejected in the browser | The image did not use `PVE_PASSWORD`. Repeat 1.5. |
 | `chpasswd: command not found` | The image is not Debian based; this guide does not cover it. |
 
 Next: [2. Run the tests](Integration-Test-Run).

@@ -14,7 +14,7 @@ accident and never run in CI.
 
 | Part | What you do | Page |
 | --- | --- | --- |
-| 1 | Start a Proxmox VE container, set a password, create an API token | [Set up the container](Integration-Test-Set-Up) |
+| 1 | Put the password in `pve.env`, start a Proxmox VE container, create an API token | [Set up the container](Integration-Test-Set-Up) |
 | 2 | Run `pytest -m integration` against it | [Run the tests](Integration-Test-Run) |
 | 3 | Stop the container and clear the variables | [Take it down](Integration-Test-Take-Down) |
 
@@ -45,6 +45,7 @@ All tests are read-only. No create, update or delete request is sent.
 
 ## Rules for secrets
 
-- The password and the token live only in environment variables of your PowerShell
-  session. Do not write them in a file, a commit or a chat.
+- The password lives only in the git-ignored file `tests/integration/pve.env`; the token
+  lives only in an environment variable of your PowerShell session. Do not write either
+  in a commit, a wiki page or a chat.
 - Choose a new password for every container; it is a throw-away value.

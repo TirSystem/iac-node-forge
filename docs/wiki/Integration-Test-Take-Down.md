@@ -10,19 +10,22 @@ have your result.
 In the `iac-node-forge-py` folder:
 
 ```powershell
-docker compose -f tests/integration/docker-compose.proxmox.yml down
+docker compose --env-file tests/integration/pve.env -f tests/integration/docker-compose.proxmox.yml down
 ```
 
 Add `--volumes` if the compose file ever gets a named volume and you want its data gone
 too. The current file has none, so everything inside the container is removed with it.
 
-## 3.2 Clear the secrets from your session
+## 3.2 Remove the secrets
 
 ```powershell
-Remove-Item Env:PVE_TOKEN, Env:PVE_PASSWORD, Env:PVE_VERIFY -ErrorAction SilentlyContinue
+Remove-Item tests/integration/pve.env
+Remove-Item Env:PVE_TOKEN, Env:PVE_VERIFY -ErrorAction SilentlyContinue
 ```
 
-Closing the PowerShell window does the same. Nothing was written to a file.
+`pve.env` holds the password; delete it when you no longer need the container. The token
+only ever lived in the variable of your session, and closing the PowerShell window clears
+it too.
 
 ## 3.3 Optional: remove the image
 
