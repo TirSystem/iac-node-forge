@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | [e85dc9b] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added MIL-002 and the review records RC-030 and RC-031 | [116d271] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the MIL-002 design artifacts DICT-001, DM-001, SSD-001 to SSD-003, OC-001, DCD-001 and ERD-001 | [1f23e1f] |
 
 ---
 
@@ -35,6 +35,12 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0004] | ADR | - | - | [BC-001], [MIL-001], [ADR-0003] | [UC-005], [UC-016], [UC-017] | [RC-007] |
 | [UCD-001] | UCD | en | it | [SA-001], [BC-001] | [UC-001] to [UC-019] | [RC-008] |
 | [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | [RC-009] |
+| [DICT-001] | DICT | en | it | [BC-001], [SA-001] | [DM-001] | - |
+| [DM-001] | DM | en | it | [UC-001], [UC-002], [UC-007], [UCD-001] | [SSD-001], [DCD-001] | - |
+| [SSD-001] to [SSD-003] | SSD | en | it | [UC-001], [UC-002], [UC-007], [DM-001] | [OC-001], [DCD-001] | - |
+| [OC-001] | OC | - | - | [SSD-001], [DM-001] | [DCD-001] | - |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [SSD-001] to [SSD-003] | [ERD-001] | - |
+| [ERD-001] | ERD | - | - | [DCD-001] | - | - |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
 ---
@@ -78,9 +84,17 @@ updated whenever an artifact instance is created or reviewed.
 [UC-019]: ../use-cases/uc-019/uc.md
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
-[e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37
 [RC-029]: ./reviews/rc-029-mil-001.md
 [RC-030]: ./reviews/rc-030-mil-002.md
 [RC-031]: ./reviews/rc-031-pp-001.md
 [MIL-002]: ../milestones/mil-002-read-only-slice-proxmox-cli.md
 [116d271]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/116d271e1cc736e1bf4ad433cd5c5afc597463a4
+[DICT-001]: ../dictionary.md
+[DM-001]: ../domain-model.md
+[SSD-001]: ../use-cases/uc-001/ssd.md
+[SSD-002]: ../use-cases/uc-002/ssd.md
+[SSD-003]: ../use-cases/uc-007/ssd.md
+[OC-001]: ../use-cases/uc-001/oc.md
+[DCD-001]: ../dcd.md
+[ERD-001]: ../erd.md
+[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf

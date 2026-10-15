@@ -20,6 +20,12 @@ document of a type. `Primary File` may contain a glob (e.g.
 | US | User Story | docs/user-stories.md | 002 |
 | RC | SQA Review Record | docs/sqa/reviews/rc-*.md | 032 |
 | TM | Traceability Matrix | docs/sqa/traceability-matrix.md | 002 |
+| DICT | Domain Dictionary | docs/dictionary.md | 002 |
+| DM | Domain Model | docs/domain-model.md | 002 |
+| SSD | System Sequence Diagram | docs/use-cases/uc-*/ssd.md | 004 |
+| OC | Operation Contract | docs/use-cases/uc-*/oc.md | 002 |
+| DCD | Design Class Diagram | docs/dcd.md | 002 |
+| ERD | Entity Relationship Diagram | docs/erd.md | 002 |
 | UC | Use Case | docs/use-cases/uc-*/uc.md | 020 |
 
 ## Languages
