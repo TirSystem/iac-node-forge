@@ -92,9 +92,9 @@ Nothing was tested against a live server.
 [ADR-0001]: ./adr/adr-0001-provider-test-strategy.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
-[UC-004]: ./uc-004/uc.md
-[UC-006]: ./uc-006/uc.md
-[UC-009]: ./uc-009/uc.md
-[UC-012]: ./uc-012/uc.md
-[UC-014]: ./uc-014/uc.md
-[UC-015]: ./uc-015/uc.md
+[UC-004]: ./use-cases/uc-004/uc.md
+[UC-006]: ./use-cases/uc-006/uc.md
+[UC-009]: ./use-cases/uc-009/uc.md
+[UC-012]: ./use-cases/uc-012/uc.md
+[UC-014]: ./use-cases/uc-014/uc.md
+[UC-015]: ./use-cases/uc-015/uc.md

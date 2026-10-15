@@ -87,6 +87,6 @@ run and never written down.
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
-[UC-001]: ../uc-001/uc.md
+[UC-001]: ../use-cases/uc-001/uc.md
 [ADR-0004]: ./adr-0004-server-access-credentials.md
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
