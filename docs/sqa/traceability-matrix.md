@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-052, the Go/No-Go check of MIL-003 | [5a769e8] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-004 and RC-053, RC-054 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-004 and RC-053, RC-054 | [be0b25a] |
 
 ---
 
@@ -126,3 +126,4 @@ updated whenever an artifact instance is created or reviewed.
 [MIL-004]: ../milestones/mil-004-power-control.md
 [RC-053]: ./reviews/rc-053-mil-004.md
 [RC-054]: ./reviews/rc-054-pp-001-rev.md
+[be0b25a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/be0b25abad56f416ff748198aa6295e480d66bd4

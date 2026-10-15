@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [e23414a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-053 (autonomous mode, stand-in) | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-053 (autonomous mode, stand-in) | [be0b25a] |
 
 ---
 
@@ -109,3 +109,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [US-001]: ../user-stories.md
 [MIL-003]: ./mil-003-contabo-read-only-adapter.md
 [e23414a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e23414a185edb1d4a116688272436fcf931ca7c4
+[be0b25a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/be0b25abad56f416ff748198aa6295e480d66bd4

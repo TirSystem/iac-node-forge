@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Scheduled MIL-004, power control | [e23414a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-054 (autonomous mode, stand-in) | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-054 (autonomous mode, stand-in) | [be0b25a] |
 
 ---
 
@@ -112,3 +112,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-003]: ./milestones/mil-003-contabo-read-only-adapter.md
 [MIL-004]: ./milestones/mil-004-power-control.md
 [e23414a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e23414a185edb1d4a116688272436fcf931ca7c4
+[be0b25a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/be0b25abad56f416ff748198aa6295e480d66bd4
