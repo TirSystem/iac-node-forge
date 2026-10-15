@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Corrected the target date, task wording and abbreviations found in the review (RC-029) | [e85dc9b] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Accepted by S01 (Go) after RC-029 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Accepted by S01 (Go) after RC-029 | [56d0628] |
 
 ---
 
@@ -93,3 +93,4 @@ states no deadline, so there is no constraint to conflict with.
 [SA-001]: ../stakeholder-analysis.md
 [US-001]: ../user-stories.md
 [e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37
+[56d0628]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/56d0628408ed885ac033e3994478e45a26d450c4
