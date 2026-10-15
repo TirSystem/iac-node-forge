@@ -137,6 +137,30 @@ On 2026-10-15 the Product Owner (S01) ran the eight integration tests of `iac-no
 
 What this confirms: the token header, `GET /version`, `/nodes`, `/nodes/{node}/storage` and `/cluster/resources?type=vm`, and the answer shapes the adapter parses. It does not cover a cluster with several nodes, a server that is running, or Proxmox VE versions other than the one in the container.
 
+## Power actions (MIL-004)
+
+Task 11 of [MIL-004]. The columns say what the provider documentation states, what the
+in-process mock does (the power contract suite runs the same behaviours against the fake, the
+Proxmox VE adapter and the Contabo adapter), and what a live run has shown. No live power run
+has been made yet (task 13), so the live column is `Pending` throughout.
+
+| # | Statement | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| W1 | Proxmox VE: `POST .../status/start`, `shutdown`, `stop` and `reboot` answer a task identifier (UPID) | Yes (P3, P7) | Yes | Pending |
+| W2 | Proxmox VE: a task is followed through `.../tasks/{upid}/status` until `status` is `stopped`; `exitstatus` `OK` is success, anything else a failure | Yes (P4) | Yes | Pending |
+| W3 | Proxmox VE: the API token needs `VM.PowerMgmt` for the four requests | Yes (P13) | Not modelled | Pending |
+| W4 | Proxmox VE: an exit status such as `WARNINGS: n` is treated as failed, with the text as the detail | Not stated | Assumed | Pending |
+| W5 | Contabo: `POST /v1/compute/instances/{id}/actions/start`, `shutdown`, `stop` and `restart` accept the request with the bearer token and a request identifier | Yes (C10) | Yes | Pending |
+| W6 | Contabo: there is no task; the instance `status` is polled until it equals the target (`running` after start, `stopped` after shutdown and stop) | Partly (C10) | Yes | Pending |
+| W7 | Contabo: the status sequence between the request and the target, and how long it takes | Not stated | Assumed | Pending |
+| W8 | Contabo: a restart cannot be told apart from no change, so it is reported as succeeded only when the status is `running` after the settle time, with the detail saying so | Not stated | Yes | Pending |
+| W9 | Both: no write request other than the four power actions is ever sent | Not applicable | Yes (recorder answers 405) | Pending |
+| W10 | Both: a time limit that passes ends the operation as `unknown`, and the request is not repeated | Design choice ([ADR-0006]) | Yes | Pending |
+
+What the live run must settle: W4 (the real exit status text), W7 (the real status sequence and
+timing at Contabo) and W3 (the permission error shape). The status and timing numbers in
+[ADR-0006] (120 seconds, 2 seconds) are design defaults, not provider facts.
+
 ## Still open
 
 - Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
@@ -149,6 +173,8 @@ What this confirms: the token header, `GET /version`, `/nodes`, `/nodes/{node}/s
 [ADR-0001]: ./adr/adr-0001-provider-test-strategy.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
+[ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
+[MIL-004]: ./milestones/mil-004-power-control.md
 [UC-004]: ./use-cases/uc-004/uc.md
 [UC-006]: ./use-cases/uc-006/uc.md
 [UC-009]: ./use-cases/uc-009/uc.md
