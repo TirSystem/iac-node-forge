@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version, terms of the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version, terms of the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Used-as lists name only artifact types that exist (RC-033)<br>Accepted after RC-033 | pending |
 
 ---
 
@@ -26,14 +27,14 @@ gets a row here in the same change as in the domain model.
 
 | PO term | Language | IT term | Definition | Used as PO term in | Used as IT term in |
 | --- | --- | --- | --- | --- | --- |
-| Provider | en | Provider | A company or platform that supplies servers and can be managed through an interface, such as Proxmox VE or Contabo. | DM, UC, US | OC, SD, DCD, ERD |
-| Provider configuration | en | ProviderConfiguration | The saved settings that connect this client to one provider: its address, a display name and the name of its credentials. | DM, UC, US | OC, SD, DCD, ERD |
-| Credential reference | en | CredentialReference | The name under which a secret is kept by the platform; the secret itself is never part of the configuration. | DM, UC, US | OC, SD, DCD, ERD |
-| Access check | en | AccessResult | The outcome of checking that the credentials work at the provider and carry the permissions the product needs. | DM, UC, US | OC, SD, DCD, ERD |
-| Capability | en | Capability | An action or option that a provider and target support, for example listing servers. | DM, UC, US | OC, SD, DCD, ERD |
-| Server option | en | ServerOption | A choice the provider offers when a server is created, such as a region, node, image or size. | DM, UC, US | OC, SD, DCD, ERD |
-| Server | en | Server | A machine, virtual or physical, that runs at a provider. | DM, UC, US | OC, SD, DCD, ERD |
-| Managed server | en | ManagedServerRecord | A server that this client has recorded as created or taken over by it. | DM, UC, US | OC, SD, DCD, ERD |
+| Provider | en | Provider | A company or platform that supplies servers and can be managed through an interface, such as Proxmox VE or Contabo. | DM, UC, US | OC, DCD, ERD |
+| Provider configuration | en | ProviderConfiguration | The saved settings that connect this client to one provider: its address, a display name and the name of its credentials. | DM, UC, US | OC, DCD, ERD |
+| Credential reference | en | CredentialReference | The name under which a secret is kept by the platform; the secret itself is never part of the configuration. | DM, UC, US | OC, DCD, ERD |
+| Access check | en | AccessResult | The outcome of checking that the credentials work at the provider and carry the permissions the product needs. | DM, UC, US | OC, DCD, ERD |
+| Capability | en | Capability | An action or option that a provider and target support, for example listing servers. | DM, UC, US | OC, DCD, ERD |
+| Server option | en | ServerOption | A choice the provider offers when a server is created, such as a region, node, image or size. | DM, UC, US | OC, DCD, ERD |
+| Server | en | Server | A machine, virtual or physical, that runs at a provider. | DM, UC, US | OC, DCD, ERD |
+| Managed server | en | ManagedServerRecord | A server that this client has recorded as created or taken over by it. | DM, UC, US | OC, DCD, ERD |
 
 ## Rules
 

@@ -11,13 +11,15 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [1f23e1f] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [1f23e1f] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Alternate flows stated as out of scope (RC review)<br>Accepted after RC-036 | pending |
 
 ---
 
 ## Source Use Case
 
 List and inspect servers ([UC-007]) — scenario: main success scenario.
+Alternate flows (a provider cannot be reached, no provider is configured) are out of scope of this diagram.
 
 ## Diagram
 

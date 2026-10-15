@@ -9,7 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Entities use the IT terms of the dictionary; 1:N notation; sources match the DCD (RC review)<br>Accepted after RC-039 | pending |
 
 ---
 
@@ -25,7 +26,7 @@ no record has a field that could hold one ([ADR-0003]).
 ```plantuml
 @startuml
 hide methods
-entity ProviderConfigurationRecord {
+entity ProviderConfiguration {
   * configuration_id : text <<PK>>
   --
   * provider_kind : text
@@ -33,7 +34,7 @@ entity ProviderConfigurationRecord {
   * address : text
   credential_reference_name : text <<FK>>
 }
-entity CredentialReferenceRecord {
+entity CredentialReference {
   * name : text <<PK>>
   --
   * store_kind : text
@@ -45,14 +46,14 @@ entity ManagedServerRecord {
   * recorded_at : text
 }
 
-CredentialReferenceRecord |o--o{ ProviderConfigurationRecord
-ProviderConfigurationRecord ||--o{ ManagedServerRecord
+CredentialReference |o--o{ ProviderConfiguration
+ProviderConfiguration ||--o{ ManagedServerRecord
 @enduml
 ```
 
 ## Entity Table
 
-### ProviderConfigurationRecord
+### ProviderConfiguration
 
 | Attribute | Type | PK/FK | Nullable | Source (DCD class.attribute) |
 | --- | --- | --- | --- | --- |
@@ -62,12 +63,12 @@ ProviderConfigurationRecord ||--o{ ManagedServerRecord
 | address | text | | No | ProviderConfiguration.address |
 | credential_reference_name | text | FK | Yes | ProviderConfiguration.credentialReference |
 
-### CredentialReferenceRecord
+### CredentialReference
 
 | Attribute | Type | PK/FK | Nullable | Source (DCD class.attribute) |
 | --- | --- | --- | --- | --- |
 | name | text | PK | No | CredentialReference.name |
-| store_kind | text | | No | CredentialReference (kind of platform store) |
+| store_kind | text | | No | CredentialReference.storeKind |
 
 ### ManagedServerRecord
 
@@ -75,14 +76,14 @@ ProviderConfigurationRecord ||--o{ ManagedServerRecord
 | --- | --- | --- | --- | --- |
 | configuration_id | text | PK, FK | No | ManagedServerRecord.configurationId |
 | server_identifier | text | PK | No | ManagedServerRecord.serverIdentifier |
-| recorded_at | text | | No | ManagedServerRecord (date the server was recorded) |
+| recorded_at | text | | No | ManagedServerRecord.recordedAt |
 
 ## Relationship Table
 
 | Entity | Cardinality | Entity | FK | Rule |
 | --- | --- | --- | --- | --- |
-| CredentialReferenceRecord | 1 to 0..many | ProviderConfigurationRecord | credential_reference_name | A reference may be unused; a configuration has at most one. |
-| ProviderConfigurationRecord | 1 to 0..many | ManagedServerRecord | configuration_id | A managed server belongs to exactly one configuration; deleting a configuration removes its records. |
+| CredentialReference | 1:N (0..many) | ProviderConfiguration | credential_reference_name | A reference may be unused; a configuration has at most one. |
+| ProviderConfiguration | 1:N (0..many) | ManagedServerRecord | configuration_id | A managed server belongs to exactly one configuration; deleting a configuration removes its records. |
 
 ## Normalization Notes
 

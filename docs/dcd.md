@@ -9,7 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Multiplicities and navigability on every association; Credentials, ProviderKind and persisted attributes added; every method traced (RC review)<br>Accepted after RC-038 | pending |
 
 ---
 
@@ -41,6 +42,10 @@ package domain {
   }
   class CredentialReference {
     - name : Text
+    - storeKind : Text
+  }
+  class Credentials {
+    - secret : Text
   }
   class AccessResult {
     - succeeded : Boolean
@@ -64,6 +69,7 @@ package domain {
   class ManagedServerRecord {
     - configurationId : ConfigurationId
     - serverIdentifier : Text
+    - recordedAt : Text
   }
 }
 package application {
@@ -109,9 +115,9 @@ package presentation {
   class CliApplication
 }
 
-ProviderConfiguration --> ProviderKind
-ProviderConfiguration --> "0..1" CredentialReference
-ManagedServerRecord ..> ProviderConfiguration
+ProviderConfiguration "0..*" --> "1" ProviderKind
+ProviderConfiguration "0..*" --> "0..1" CredentialReference
+ManagedServerRecord "0..*" --> "1" ProviderConfiguration
 ConfigureProviderAccess ..> ProviderPort
 ConfigureProviderAccess ..> ConfigurationStore
 ConfigureProviderAccess ..> CredentialStore
@@ -134,13 +140,15 @@ CliApplication ..> CredentialPrompt
 
 | Class | Refines (Domain Model concept) | Responsibility | Attributes | Operations |
 | --- | --- | --- | --- | --- |
+| ProviderKind | Provider | Names the provider a configuration connects to. | PROXMOX_VE, CONTABO | none |
 | ProviderConfiguration | Provider configuration | Holds the saved settings for one provider connection. | configurationId, providerKind, displayName, address, credentialReference | none |
-| CredentialReference | Credential reference | Names a secret kept by the platform. | name | none |
+| CredentialReference | Credential reference | Names a secret kept by the platform. | name, storeKind | none |
+| Credentials | Credential reference | Carries a secret for the duration of one call; never persisted. | secret | none |
 | AccessResult | Access check | Carries the outcome of an access check. | succeeded, reason | none |
 | Capability | Capability | Names one supported action or option. | name | none |
 | ServerOption | Server option | One choice offered by a provider. | kind, value | none |
 | Server | Server | Describes a server and whether this client manages it. | serverIdentifier, name, state, size, addresses, managed | none |
-| ManagedServerRecord | Managed server | Records that this client manages a server. | configurationId, serverIdentifier | none |
+| ManagedServerRecord | Managed server | Records that this client manages a server. | configurationId, serverIdentifier, recordedAt | none |
 | ProviderPort | (provider) | The boundary to a provider's interface; one adapter per provider. | none | validateAccess, discoverCapabilities, listServerOptions, listServers, getServer |
 | ConfigurationStore | (configuration) | The boundary to the client's saved configuration. | none | save, loadAll, managedServers |
 | CredentialStore | Credential reference | The boundary to the platform credential store. | none | put, get |
@@ -164,7 +172,16 @@ CliApplication ..> CredentialPrompt
 | DiscoverCapabilities.listServerOptions(configurationId, optionKind) : List | `listServerOptions` in [SSD-002] |
 | ListServers.listServers() : List | `listServers` in [SSD-003] |
 | ListServers.inspectServer(configurationId, serverIdentifier) : Server | `inspectServer` in [SSD-003] |
-| ProviderPort operations, ConfigurationStore, CredentialStore, CredentialPrompt | Supporting operations of the messages above; no message of their own |
+| ProviderPort.validateAccess(address, credentials) | `validateAccess` in [SSD-001] |
+| ProviderPort.discoverCapabilities(configuration) | `discoverCapabilities` in [SSD-002] |
+| ProviderPort.listServerOptions(configuration, optionKind) | `listServerOptions` in [SSD-002] |
+| ProviderPort.listServers(configuration) | `listServers` in [SSD-003] |
+| ProviderPort.getServer(configuration, serverIdentifier) | `inspectServer` in [SSD-003] |
+| ConfigurationStore.save(configuration) | `saveProviderConfiguration` in [OC-001] |
+| ConfigurationStore.loadAll(), managedServers(configurationId) | `listServers` in [SSD-003] (managed marking) and the configuration lookup of every message |
+| CredentialStore.put(reference, credentials) | `saveProviderConfiguration` in [OC-001] (cacheCredential) |
+| CredentialStore.get(reference) | `validateAccess` in [SSD-001] and `discoverCapabilities` in [SSD-002] (stored credentials) |
+| CredentialPrompt.ask(providerKind) | `validateAccess` in [SSD-001] (credentials parameter) |
 
 ## Pattern Annotations
 
