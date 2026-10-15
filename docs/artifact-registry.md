@@ -15,7 +15,7 @@ document of a type. `Primary File` may contain a glob (e.g.
 | SA | Stakeholder Analysis | docs/stakeholder-analysis.md | 002 |
 | PP | Project Plan | docs/project-plan.md | 002 |
 | MIL | Milestone / Gateway | docs/milestones/mil-*.md | 002 |
-| ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0004 |
+| ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0005 |
 | UCD | Use Case Diagram | docs/use-case-diagram.md | 002 |
 | US | User Story | docs/user-stories.md | 002 |
 | UC | Use Case | docs/uc-*/uc.md | 016 |
