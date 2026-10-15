@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | [d4593ae] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | [e85dc9b] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added MIL-002 and the review records RC-030 and RC-031 | [116d271] |
 
 ---
 
@@ -26,8 +26,9 @@ updated whenever an artifact instance is created or reviewed.
 | --- | --- | --- | --- | --- | --- | --- |
 | [BC-001] | BC | en | it | - | [SA-001], [PP-001], [UCD-001] | [RC-001] |
 | [SA-001] | SA | en | it | [BC-001] | [BC-001], [MIL-001] | [RC-002] |
-| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-003] |
+| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031] |
 | [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | [RC-029] |
+| [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -77,5 +78,9 @@ updated whenever an artifact instance is created or reviewed.
 [UC-019]: ../use-cases/uc-019/uc.md
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
-[d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
 [e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37
+[RC-029]: ./reviews/rc-029-mil-001.md
+[RC-030]: ./reviews/rc-030-mil-002.md
+[RC-031]: ./reviews/rc-031-pp-001.md
+[MIL-002]: ../milestones/mil-002-read-only-slice-proxmox-cli.md
+[116d271]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/116d271e1cc736e1bf4ad433cd5c5afc597463a4
