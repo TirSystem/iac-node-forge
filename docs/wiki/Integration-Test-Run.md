@@ -3,12 +3,24 @@
 # 2. Run the tests with pytest
 
 Part 2 of 3 of the [real Proxmox VE integration test](Integration-Test). You need the
-container and the token from [part 1](Integration-Test-Set-Up) and the variables
-`PVE_TOKEN` and `PVE_VERIFY` set in the same PowerShell session.
+container and the token from [part 1](Integration-Test-Set-Up), and the variables
+`PVE_TOKEN` and `PVE_VERIFY` set in the same shell session.
+
+Every command is given for **Linux and macOS (bash)** and **Windows (PowerShell)**. Run
+them in the `iac-node-forge-py` folder.
 
 ## 2.1 Python environment (once)
 
-In the `iac-node-forge-py` folder:
+**Linux and macOS (bash)**
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python --version        # 3.13.x
+pip install -e ".[dev]"
+```
+
+**Windows (PowerShell)**
 
 ```powershell
 python -m venv .venv
@@ -21,9 +33,19 @@ pip install -e ".[dev]"
 
 ## 2.2 Check the variables
 
+**Linux and macOS (bash)**
+
+```bash
+echo "PVE_ADDRESS=${PVE_ADDRESS:-<default>}"
+echo "PVE_VERIFY=${PVE_VERIFY:-<unset>}"
+[ -n "$PVE_TOKEN" ] && echo "PVE_TOKEN is set" || echo "PVE_TOKEN is missing"
+```
+
+**Windows (PowerShell)**
+
 ```powershell
-$env:PVE_ADDRESS        # optional; empty means https://localhost:8006
-$env:PVE_VERIFY         # false for the self-signed certificate
+"PVE_ADDRESS=$env:PVE_ADDRESS"        # empty means https://localhost:8006
+"PVE_VERIFY=$env:PVE_VERIFY"
 if ($env:PVE_TOKEN) { 'PVE_TOKEN is set' } else { 'PVE_TOKEN is missing' }
 ```
 
@@ -35,7 +57,9 @@ if ($env:PVE_TOKEN) { 'PVE_TOKEN is set' } else { 'PVE_TOKEN is missing' }
 
 ## 2.3 Run
 
-```powershell
+The same command in both shells:
+
+```bash
 pytest -m integration -v
 ```
 
@@ -55,15 +79,15 @@ send the token or the password.
 
 ## 2.5 The normal tests
 
-The normal tests do not need the container:
+The normal tests do not need the container. The command is the same in both shells:
 
-```powershell
+```bash
 pytest
 ```
 
-They deselect the integration tests. Run the whole set of checks the way CI does:
+They deselect the integration tests. To run all the checks the way CI does:
 
-```powershell
+```bash
 ruff format --check .
 ruff check .
 mypy src tests
