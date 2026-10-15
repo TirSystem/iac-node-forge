@@ -71,22 +71,41 @@ Nothing was tested against a live server.
 
 What the read-only Contabo adapter assumes, and what has been shown for each point. "Mock"
 means the in-process mock of `iac-node-forge-py`; "live" means a run against a real account
-(MIL-003 task 12, not done yet).
+(MIL-003 task 12, done on 2026-10-15).
 
 | # | Statement the adapter relies on | Documentation | Mock | Live |
 | --- | --- | --- | --- | --- |
-| A1 | The four values are exchanged at the authentication address with `grant_type=password`, `client_id`, `client_secret`, `username` (API user) and `password` (API password) | Yes (C1) | Yes | Pending |
-| A2 | The answer holds an `access_token`, sent as `Authorization: Bearer` | Yes (C1) | Yes | Pending |
-| A3 | A wrong password is rejected with 400 or 401 | Not stated | Assumed | Pending |
-| A4 | The token lifetime is not stated; the adapter renews once after a 401 | Not stated (C2) | Yes (expiry switch) | Pending |
-| A5 | Every API call sends a UUID version 4 `x-request-id`; the token request does not | Yes (C3) | Yes | Pending |
-| A6 | Lists take `page` and `size`, answer a `data` array and `_pagination`; 100 per page is accepted | Partly | Yes | Pending |
-| A7 | `GET /v1/compute/instances/{id}` answers `data` as an array; an unknown id answers 404 | Partly | Yes | Pending |
-| A8 | `GET /v1/data-centers` and `GET /v1/compute/images` list regions and images | Yes | Yes | Pending |
-| A9 | 429 and 5xx are provider errors; no write verb is ever sent | Yes (C19) | Yes (recorder) | Pending |
+| A1 | The four values are exchanged at the authentication address with `grant_type=password`, `client_id`, `client_secret`, `username` (API user) and `password` (API password) | Yes (C1) | Yes | Passed |
+| A2 | The answer holds an `access_token`, sent as `Authorization: Bearer` | Yes (C1) | Yes | Passed |
+| A3 | A wrong password is rejected with 400 or 401 | Not stated | Assumed | Rejected as a failed result; the status code was not recorded |
+| A4 | The token lifetime is not stated; the adapter renews once after a 401 | Not stated (C2) | Yes (expiry switch) | Not observed: no expiry within the run |
+| A5 | Every API call sends a UUID version 4 `x-request-id`; the token request does not | Yes (C3) | Yes | Passed (calls accepted) |
+| A6 | Lists take `page` and `size`, answer a `data` array and `_pagination`; 100 per page is accepted | Partly | Yes | Passed (lists read with `size` 100) |
+| A7 | `GET /v1/compute/instances/{id}` answers `data` as an array; an unknown id answers 404 | Partly | Yes | Passed: an absent id is reported as not found |
+| A8 | `GET /v1/data-centers` and `GET /v1/compute/images` list regions and images | Yes | Yes | Passed |
+| A9 | 429 and 5xx are provider errors; no write verb is ever sent | Yes (C19) | Yes (recorder) | Passed for the verbs (only GET and the token POST); 429 and 5xx not provoked |
 
-Open after this milestone: A3, A4 and the page-size acceptance (A6) can only be settled by a
-live run; the status and size text mapping is a design choice, not a provider fact.
+Still open after the live run: the status code of a wrong password (A3), the token lifetime
+and the renewal on a real expiry (A4), and the behaviour on 429 and 5xx. The status and size
+text mapping is a design choice, not a provider fact.
+
+### Live run of the Contabo adapter
+
+On 2026-10-15 the Product Owner (S01) ran `pytest -m integration -k contabo -v` from `iac-node-forge-py` at `08439f3` against their real Contabo account, with the four credential values in their own shell: **9 passed, 288 deselected in 15.54 seconds**. The result was reported by S01 in chat; the output was not attached, and the number of instances in the account was not recorded.
+
+| Test | Verdict |
+| --- | --- |
+| validate access with the credentials | Passed |
+| validate access with a wrong API password returns a failed result | Passed |
+| capabilities declare no write capability | Passed |
+| server options `region` | Passed |
+| server options `image` | Passed |
+| list servers returns unmanaged servers (an empty account passes) | Passed |
+| an absent server raises not-found | Passed |
+| no credential value in any error | Passed |
+| only GET requests and the token POST are issued | Passed |
+
+What this confirms: the token exchange, the bearer use, the request identifier, the list endpoints with their pagination and the not-found path against the real service. It does not cover a wrong-password status code, a real token expiry, rate limiting, or an account with many instances.
 
 ## Effects on the use cases and ADRs
 
