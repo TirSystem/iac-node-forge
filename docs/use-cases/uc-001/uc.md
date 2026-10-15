@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Applied the provider API verification findings to the Notes | [7bde3e0] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-010 | [d4593ae] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-010 | [d4593ae] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Token header verified by the live run (RC-046) | pending |
 
 ---
 
@@ -38,12 +38,11 @@ DevOps adds a provider configuration, giving its endpoint and, when asked, its c
 - VPN access (Tailscale) to Proxmox VE is out of scope for now.
 - Trust of a self-signed Proxmox VE certificate needs a decision (verify).
 - Contabo needs four values (client ID, client secret, API user, API password) and a request ID on every call (verified); token lifetime is not stated and remains open.
-- How a Proxmox VE API token is sent is not in the API viewer and remains open.
+- A Proxmox VE API token is sent in the header `Authorization: PVEAPIToken=<token>`; this was shown by a live run on 2026-10-15 (verified).
 
 ---
 
 [ADR-0003]: ../../adr/adr-0003-credential-storage.md
 [US-001]: ../../user-stories.md
 [SA-001]: ../../stakeholder-analysis.md
-[7bde3e0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/7bde3e007f21106df3dc4cf580c252e7e6996187
 [d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
