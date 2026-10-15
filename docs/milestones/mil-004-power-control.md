@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [e23414a] |
 
 ---
 
@@ -107,3 +107,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-003]: ./mil-003-contabo-read-only-adapter.md
+[e23414a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e23414a185edb1d4a116688272436fcf931ca7c4
