@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-048 (autonomous mode, stand-in) | [c1c8c1c] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-004, power control | [e23414a] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Scheduled MIL-004, power control | [e23414a] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-054 (autonomous mode, stand-in) | pending |
 
 ---
 
@@ -111,5 +111,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
 [MIL-003]: ./milestones/mil-003-contabo-read-only-adapter.md
 [MIL-004]: ./milestones/mil-004-power-control.md
-[c1c8c1c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c1c8c1cede20ea80be9c04babfe83175b00328a9
 [e23414a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e23414a185edb1d4a116688272436fcf931ca7c4

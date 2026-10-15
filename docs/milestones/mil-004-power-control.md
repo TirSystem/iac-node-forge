@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [e23414a] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [e23414a] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-053 (autonomous mode, stand-in) | pending |
 
 ---
 
