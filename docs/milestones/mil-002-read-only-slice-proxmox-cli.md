@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | pending |
 
 ---
 
@@ -76,7 +77,7 @@ architecture the later milestones build on.
 
 ## Target Date
 
-2026-11-26 — four weeks from 2026-10-29, an assumption to be confirmed by S01.
+2026-11-26 — four weeks from 2026-10-29, confirmed by S01 on 2026-10-15.
 The Business Case states no deadline, so there is no constraint to conflict
 with.
 
