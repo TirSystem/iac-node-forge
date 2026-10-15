@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Gateway schedule lists the candidates UC-01 to UC-19 | [31933c9] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-003 criterion 10) | [dbd33d0] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Dates confirmed by S01; diagram rendered; accepted after RC-003 | [dbd33d0] |
 
 ---
 
@@ -24,8 +24,8 @@ states no duration or deadline yet, so the plan has no fixed end date.
 
 ## Planning Assumptions
 
-- The plan starts on 2026-10-14. This date is an assumption to confirm.
-- Phase length for MIL-001 is two weeks. This is an assumption to confirm.
+- The plan starts on 2026-10-14, confirmed by S01 on 2026-10-15.
+- Phase length for MIL-001 is two weeks, confirmed by S01 on 2026-10-15.
 - Each phase ends with a Go/No-Go decision by S01, after a review by S02
   ([SA-001]).
 - Later phases are planned only after MIL-001 is accepted.
@@ -51,8 +51,8 @@ Project starts 2026-10-14
 | Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases only); software not yet planned |
 | Server lifecycle use cases | MIL-001 (use cases only); software not yet planned |
 | Display of servers not managed by this client | MIL-001 (use case UC-07); software not yet planned |
-| Python CLI and WinUI 3 application | Not yet planned |
-| JSONL configuration file per client | Not yet planned |
+| Python command-line interface (CLI) and WinUI 3 application | Not yet planned |
+| JSON Lines (JSONL) configuration file per client | Not yet planned |
 
 ## Dependencies
 
@@ -70,12 +70,11 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 | Provider API facts turn out different from the assumptions in the use case list | Use cases change after MIL-001 | MIL-001 includes a task that verifies provider behaviour against the documentation before acceptance |
 | Only one reviewer (S02) is available | Review becomes a bottleneck | Keep MIL-001 small; review documents as they are produced |
 | Gitea CI cannot run a Proxmox VE VM | Integration tests on Proxmox cannot gate merges | Test strategy ADR in MIL-001 sets CI to mock-based contract tests; the VM runs outside CI |
-| No deadline or budget stated | Plan cannot be checked against a constraint | Ask S01 to state them before MIL-002 is planned |
+| No deadline or budget limit (confirmed by S01) | Plan cannot be checked against a constraint | Plan later phases by effort; revisit if a deadline appears |
 
 ## Open Issues
 
-- Start date and phase length are assumptions (see Planning Assumptions).
-- The Business Case has no duration, budget or deadline.
+- The diagram was rendered on `plantuml.tirsystem.com` on 2026-10-15 without error.
 - Which provider comes first in the first working slice (Proxmox VE or
   Contabo) is not decided; it shapes the next phase.
 - Which client comes first (CLI or WinUI 3) is not decided.
@@ -87,5 +86,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [BC-001]: ./business-case.md
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
-[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
-[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15
