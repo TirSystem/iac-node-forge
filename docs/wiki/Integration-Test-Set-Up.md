@@ -11,9 +11,10 @@ Use the one for your shell. Run them in the `iac-node-forge-py` folder.
 
 ## 1.1 Choose the image
 
-The compose file `tests/integration/docker-compose.proxmox.yml` names the image. The name
-it was first written with (`maconrad/proxmox`) does not exist on Docker Hub, so set the
-`image:` line to the image you decided to use before you start the container.
+The compose file `tests/integration/docker-compose.proxmox.yml` names the image:
+`dockurr/proxmox:latest`. The product owner changed it from `maconrad/proxmox`, which does
+not exist on Docker Hub, and reports that the container then works. If you want another
+image, change the `image:` line before you start the container.
 
 Check the image's page and its source on Docker Hub first. It is a community image, not
 Proxmox's own, and it runs privileged.
@@ -136,7 +137,7 @@ $env:PVE_TOKEN = 'root@pam!iacnf=<value from the table>'         # PowerShell
 
 | Message or symptom | Cause and fix |
 | --- | --- |
-| `pull access denied ... repository does not exist` | The image name in the compose file is wrong. See 1.1. |
+| `pull access denied ... repository does not exist` | The image name in the compose file is wrong, or you have an old copy that still says `maconrad/proxmox`. See 1.1. |
 | Mount error for `/lib/modules` | Docker Desktop for Windows or macOS has no such host path. Remove that one `volumes:` entry from your local copy and retry; tell the maintainer if the image then fails to start. |
 | `set PVE_PASSWORD in your environment` | `PVE_PASSWORD` is missing from `pve.env`, or `--env-file` was left out. Repeat 1.2 and 1.3. |
 | Login rejected in the browser | The image did not use `PVE_PASSWORD`. Repeat 1.5. |
