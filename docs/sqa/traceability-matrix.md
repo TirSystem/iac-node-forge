@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Initial version | [b664ca3] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | [d4593ae] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | [e85dc9b] |
 
 ---
 
@@ -27,7 +27,7 @@ updated whenever an artifact instance is created or reviewed.
 | [BC-001] | BC | en | it | - | [SA-001], [PP-001], [UCD-001] | [RC-001] |
 | [SA-001] | SA | en | it | [BC-001] | [BC-001], [MIL-001] | [RC-002] |
 | [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-003] |
-| [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | - |
+| [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | [RC-029] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -42,7 +42,6 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- MIL-001 has no review record yet.
 - Reviews RC-001 to RC-028 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
@@ -78,5 +77,5 @@ updated whenever an artifact instance is created or reviewed.
 [UC-019]: ../use-cases/uc-019/uc.md
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
-[b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
 [d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
+[e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37
