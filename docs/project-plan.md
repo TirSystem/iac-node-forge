@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Gateway schedule lists the candidates UC-01 to UC-19 | pending |
 
 ---
 
@@ -33,7 +34,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
 
 | Gateway | Document | Window | Decision date | Owner | Stories | Main deliverable | Milestone |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-15 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
+| Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-19 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
 
 ```plantuml
 @startgantt

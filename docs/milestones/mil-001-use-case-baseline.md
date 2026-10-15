@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added the backup and restore use cases UC-016 to UC-019 to the tasks | pending |
 
 ---
 
@@ -25,7 +26,7 @@ it rests on.
 ## Deliverable
 
 - Use Case Diagram for the agreed actors and use cases.
-- One use case document per agreed candidate (UC-01 to UC-15), at least in
+- One use case document per agreed candidate (UC-01 to UC-19), at least in
   Brief format, in `docs/uc-NNN/`.
 - A note of verified Proxmox VE and Contabo API behaviour for the points the
   use cases depend on.
@@ -73,8 +74,8 @@ it rests on.
 
 | # | Task | Summary | Needs its own Use Case/User Story? | Reference |
 | --- | --- | --- | --- | --- |
-| 1 | Create the Use Case Diagram | Draw actors (DevOps, Product Owner) and the agreed use cases UC-01 to UC-15 so scope is visible in one place. Tailscale stays out of scope. | No | UCD |
-| 2 | Write Brief use cases for Must candidates | Write Brief use cases for UC-01, UC-02, UC-03, UC-04, UC-06, UC-07, UC-08 and UC-12 in `docs/uc-NNN/uc.md`, from the candidate list agreed with the Product Owner. | Yes | UC-01 to UC-04, UC-06 to UC-08, UC-12 |
+| 1 | Create the Use Case Diagram | Draw actors (DevOps, Product Owner) and the agreed use cases UC-01 to UC-19 so scope is visible in one place. Tailscale stays out of scope. | No | UCD |
+| 2 | Write Brief use cases for Must candidates | Write Brief use cases for UC-01, UC-02, UC-03, UC-04, UC-06, UC-07, UC-08, UC-12, UC-16, UC-17, UC-18 and UC-19 in `docs/uc-NNN/uc.md`, from the candidate list agreed with the Product Owner. | Yes | UC-01 to UC-04, UC-06 to UC-08, UC-12, UC-16 to UC-19 |
 | 3 | Write Brief use cases for Should, Could and Open candidates | Cover UC-05, UC-09, UC-10, UC-11, UC-13, UC-14 and UC-15 so priorities can be reviewed together. | Yes | UC-05, UC-09 to UC-11, UC-13 to UC-15 |
 | 4 | Verify provider API behaviour | Check the Proxmox VE and Contabo documentation for authentication, task or status model, snapshots, delete or cancel semantics and cloud-init support, and mark each use case statement as verified or assumption. | No | |
 | 5 | Decide the provider capability model | Record in an ADR how provider differences are expressed (capability checks versus provider variants), because UC-02 feeds UC-04, UC-08, UC-09, UC-12, UC-14 and UC-15. | No | ADR |

@@ -4,7 +4,7 @@
 | Key | Value |
 | --- | --- |
 | ID | US-001 |
-| CrossReference | [BC-001], [MIL-001], [UC-001], [UC-002], [UC-003], [UC-004], [UC-006], [UC-007], [UC-008], [UC-012] |
+| CrossReference | [BC-001], [MIL-001], [UC-001], [UC-002], [UC-003], [UC-004], [UC-006], [UC-007], [UC-008], [UC-012], [UC-016], [UC-017], [UC-018], [UC-019] |
 | Language | en |
 | Domain | it |
 
@@ -12,12 +12,13 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [25d8548] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added stories US-001.09 to US-001.12 for backup and restore | pending |
 
 ---
 
 ## Purpose and Scope
 
-Stories for the Must use cases of [MIL-001]: UC-001, UC-002, UC-003, UC-004, UC-006, UC-007, UC-008 and UC-012. The only actor is DevOps. Each story traces to one use case.
+Stories for the Must use cases of [MIL-001]: UC-001, UC-002, UC-003, UC-004, UC-006, UC-007, UC-008 and UC-012, and the backup use cases UC-016 to UC-019. The only actor is DevOps. Each story traces to one use case.
 
 ## Story List
 
@@ -127,6 +128,58 @@ Stories for the Must use cases of [MIL-001]: UC-001, UC-002, UC-003, UC-004, UC-
 | --- | --- | --- |
 | [UC-012] | fits one iteration | none |
 
+### US-001.09 — Back up server files to the local PC
+
+**As a** DevOps, **I want** to copy files from a server to my local PC, **so that** I keep my own copy of the server's data.
+
+**Acceptance Criteria**
+
+- Given a running server and a destination, when I back up chosen files, then the data is copied and verified complete and nothing on the server is changed.
+- Given a destination without enough room, when I start the backup, then it is refused with the reason.
+
+| Traces to | Size | INVEST exceptions |
+| --- | --- | --- |
+| [UC-016] | fits one iteration | none |
+
+### US-001.10 — Restore files from the local PC to the server
+
+**As a** DevOps, **I want** to copy files from my local PC to a server, **so that** I can put data back or place new data on the server.
+
+**Acceptance Criteria**
+
+- Given data on the local PC, when I restore to a server, then I am told what would be overwritten and must confirm before anything is copied.
+- Given a completed restore, when it ends, then the copy is verified complete and the result is reported.
+
+| Traces to | Size | INVEST exceptions |
+| --- | --- | --- |
+| [UC-017] | fits one iteration | none |
+
+### US-001.11 — Back up a whole server
+
+**As a** DevOps, **I want** to back up a whole server, **so that** I can recover it if it is lost or damaged.
+
+**Acceptance Criteria**
+
+- Given a provider that supports it, when I request a backup, then it is followed to completion and I am told where it is kept.
+- Given a provider that does not support it, when I request a backup, then it is shown as unsupported.
+
+| Traces to | Size | INVEST exceptions |
+| --- | --- | --- |
+| [UC-018] | fits one iteration | none |
+
+### US-001.12 — Restore a whole server from a backup
+
+**As a** DevOps, **I want** to restore a whole server from a backup, **so that** a lost or damaged server is recovered.
+
+**Acceptance Criteria**
+
+- Given a backup, when I request a restore, then I am told what it will replace and must confirm.
+- Given a completed restore, when it ends, then the state of the server is reported and recorded.
+
+| Traces to | Size | INVEST exceptions |
+| --- | --- | --- |
+| [UC-019] | fits one iteration | none |
+
 ## INVEST Check
 
 Each story is independent of the others in intent, negotiable in wording, valuable to DevOps, estimable, small enough for one iteration and testable through its Given/When/Then criteria. Exception: UC-004 and UC-012 depend on UC-006 for the outcome, which is stated in their use cases.
@@ -143,3 +196,7 @@ Each story is independent of the others in intent, negotiable in wording, valuab
 [UC-008]: ./uc-008/uc.md
 [UC-012]: ./uc-012/uc.md
 [25d8548]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/25d8548745b006859481203e636fc508f46f6957
+[UC-016]: ./uc-016/uc.md
+[UC-017]: ./uc-017/uc.md
+[UC-018]: ./uc-018/uc.md
+[UC-019]: ./uc-019/uc.md
