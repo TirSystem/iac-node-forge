@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [e80473e] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences; affected use cases linked<br>Accepted after RC-007 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences; affected use cases linked<br>Accepted after RC-007 | [b664ca3] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -119,3 +119,4 @@ Use option 3. The product never stores a private key or a password.
 [UC-005]: ../uc-005/uc.md
 [UC-016]: ../uc-016/uc.md
 [UC-017]: ../uc-017/uc.md
+[b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5

@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added the backup and restore use cases UC-016 to UC-019 to the tasks | [31933c9] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Criterion 4 and the deliverable include ADR-0004; added task 9 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Criterion 4 and the deliverable include ADR-0004; added task 9 | [b664ca3] |
 
 ---
 
@@ -90,3 +90,4 @@ it rests on.
 [BC-001]: ../business-case.md
 [SA-001]: ../stakeholder-analysis.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
