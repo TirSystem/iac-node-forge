@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [1f23e1f] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-034 | [de601dd] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-034 | [de601dd] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Lifecycle note reconciled with the implementation<br>Accepted after RC-041 | [6e1fc9a] |
 
 ---
 
@@ -43,13 +43,14 @@ S --> A : configurationId
 
 ## Lifecycle Notes
 
-The credentials exist only for the duration of the `validateAccess` call and, when
-caching is chosen, in the platform credential store. Nothing about them is kept in the
-system instance after the call returns.
+The credentials are held in memory by the system instance from `validateAccess` until
+`saveProviderConfiguration` completes or the next `validateAccess` replaces them, because
+the save may need them for the optional cache. They are never written to the configuration;
+when caching is chosen they go to the platform credential store only.
 
 ---
 
 [UC-001]: ./uc.md
 [DM-001]: ../../domain-model.md
-[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4

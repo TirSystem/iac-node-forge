@@ -1,0 +1,51 @@
+# Review of ERD-001 (timestamp type)
+
+## Metadata
+| Key | Value |
+| --- | --- |
+| ID | RC-042 |
+| CrossReference | [ERD-001], [QC-ERD-001] |
+
+## Version History
+| Date | Status | Author | Reviewer | Change | Commit |
+| --- | --- | --- | --- | --- | --- |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [6e1fc9a] |
+
+---
+
+## Artifact Under Review
+
+- Instance reviewed: [ERD-001]
+- Checklist used: [QC-ERD-001]
+- Scope: full review
+- Language and domain: n/a (technical type)
+- Language reviewer: none
+- Mode: autonomous, not independent. The reviewer is `AI as stand-in for S02`; the AI also wrote the artifact. The plan was accepted by S01 on 2026-10-15.
+
+## Checklist Results
+
+| # | Criterion | Status | Evidence/Notes |
+| --- | --- | --- | --- |
+| 1 | Primary keys (PK) identified for every entity (Mandatory) | Pass | Primary keys present. |
+| 2 | Foreign keys (FK) identified for every relationship requiring referential integrity (Mandatory) | Pass | Foreign keys present. |
+| 3 | Schema normalized to at least 3NF unless denormalization is explicitly justified for performance (Optional) | Pass | 3NF stated. |
+| 4 | Relationship cardinalities specified (1:1, 1:N, N:M) for every relationship (Mandatory) | Pass | `1:N` on both relationships. |
+| 5 | Data types consistent with corresponding Operation Contract/DCD attribute types (Mandatory) | Pass | `recorded_at` is ISO 8601 text with offset and the DCD attribute is a Timestamp. |
+| 6 | N:M relationships resolved via explicit junction/associative entities (Mandatory) | Pass | No N:M relationship. |
+| 7 | Naming conventions for entities/attributes are consistent and free of implementation-specific abbreviations (Optional) | Pass | IT terms; snake_case. |
+
+## Overall Verdict
+
+Go — every Mandatory criterion passes. The row is accepted (autonomous mode).
+
+## Action Items
+
+| Action | Owner | Due |
+| --- | --- | --- |
+| Independent confirmation by S02 of this review | S02 | 2026-11-26 (MIL-002 decision date) |
+
+---
+
+[ERD-001]: ../../erd.md
+[QC-ERD-001]: ../../../framework/qc/artifacts/qc-erd.md
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
