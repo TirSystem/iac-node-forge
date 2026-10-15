@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Explicit multiplicities; store kind added to Credential reference (RC-032)<br>Accepted after RC-032 | [de601dd] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added the Operation concept for power control (MIL-004)<br>Accepted after RC-056 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added the Operation concept for power control (MIL-004)<br>Accepted after RC-056 | [f91e283] |
 
 ---
 
@@ -124,3 +124,4 @@ None.
 [UCD-001]: ./use-case-diagram.md
 [DICT-001]: ./dictionary.md
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
+[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0

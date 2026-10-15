@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [f91e283] |
 
 ---
 
@@ -64,3 +64,4 @@ Go — every Mandatory criterion passes. The row is accepted in autonomous mode.
 [DICT-001]: ../../dictionary.md
 [QC-DICT-001]: ../../../framework/qc/artifacts/qc-dictionary.md
 [QC-LANG-001]: ../../../framework/qc/artifacts/qc-language-domain.md
+[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0

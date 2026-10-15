@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | [3b6ed3b] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | [f91e283] |
 
 ---
 
@@ -311,3 +311,4 @@ and may name every layer.
 [SSD-004]: ./use-cases/uc-008/ssd.md
 [SSD-005]: ./use-cases/uc-006/ssd.md
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
+[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0

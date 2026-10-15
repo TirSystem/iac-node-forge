@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | recorded_at is an ISO 8601 text with offset, matching the DCD Timestamp<br>Accepted after RC-042 | [6e1fc9a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added OperationRecord (MIL-004)<br>Accepted after RC-063 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added OperationRecord (MIL-004)<br>Accepted after RC-063 | [f91e283] |
 
 ---
 
@@ -126,3 +126,4 @@ at the expected size (tens of records).
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
 [6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
+[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
