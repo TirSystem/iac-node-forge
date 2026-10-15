@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | [704c593] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -95,3 +95,4 @@ is not yet set up; the first CI workflow for the CLI has to install it.
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
+[704c593]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/704c5936323131397b0d4b17e36056d4e84e123c
