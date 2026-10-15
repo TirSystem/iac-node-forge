@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore to the objectives and scope (UC-016 to UC-019) | [31933c9] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-001 criterion 10) | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-001 criterion 10) | [3876d67] |
 
 ---
 
@@ -173,3 +173,4 @@ milestone can be delimited and verified against one provider.
 
 [SA-001]: ./stakeholder-analysis.md
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[3876d67]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3876d67f44db71c2dd2458e0a486da3437a192df
