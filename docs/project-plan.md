@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Gateway schedule lists the candidates UC-01 to UC-19 | [31933c9] |
 
 ---
 
@@ -33,7 +34,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
 
 | Gateway | Document | Window | Decision date | Owner | Stories | Main deliverable | Milestone |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-15 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
+| Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-19 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
 
 ```plantuml
 @startgantt
@@ -87,3 +88,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
+[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb

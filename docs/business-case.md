@@ -12,6 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added backup and restore to the objectives and scope (UC-016 to UC-019) | [31933c9] |
 
 ---
 
@@ -52,7 +53,8 @@ provider a matter of implementing the same capabilities.
 
 1. Provide agreed use cases for provider access, discovery, provisioning,
    bootstrap, operation tracking, inventory, power control, snapshots, drift
-   detection, drift correction, deletion or cancellation, and history.
+   detection, drift correction, deletion or cancellation, history, and
+   backup and restore of server data.
 2. Support these use cases for Proxmox VE and Contabo, with provider-specific
    behaviour made explicit through capability checks.
 3. Deliver the same capabilities in a Python CLI and a WinUI 3 application,
@@ -66,8 +68,10 @@ provider a matter of implementing the same capabilities.
 
 - Provider access and validation for Proxmox VE and Contabo.
 - Server lifecycle use cases listed in Objectives (candidate set UC-01 to
-  UC-15, to be confirmed in the Use Case Diagram).
+  UC-19, to be confirmed in the Use Case Diagram).
 - Display of servers not created by the tool, as not managed by this client.
+- Backup and restore of server data: files between a server and the local PC,
+  and whole-server backup where the provider supports it.
 - Python 3.13 CLI and a WinUI 3 application (dotnet 10) distributed through
   the Microsoft Store.
 - A JSONL configuration file per client.
@@ -168,3 +172,4 @@ milestone can be delimited and verified against one provider.
 
 [SA-001]: ./stakeholder-analysis.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
+[31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
