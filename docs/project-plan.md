@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Dates confirmed by S01; diagram rendered; accepted after RC-003 | [dbd33d0] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-002, the read-only slice with the Python CLI against Proxmox VE | [65fb60d] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out CI, API, VM and ADR on first use (RC-031) | pending |
 
 ---
 
@@ -30,15 +30,15 @@ states no duration or deadline yet, so the plan has no fixed end date.
   ([SA-001]).
 - Later phases are planned only after the phase before them is accepted. MIL-002 is
   planned after MIL-001 was accepted on 2026-10-15.
-- The first software milestone is a read-only slice: Proxmox VE with the Python CLI,
-  decided by S01 on 2026-10-15.
+- The first software milestone is a read-only slice: Proxmox VE with the Python command-line
+  interface (CLI), decided by S01 on 2026-10-15.
 
 ## Gateway Schedule
 
 | Gateway | Document | Window | Decision date | Owner | Stories | Main deliverable | Milestone |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-19 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
-| Read-only slice: Proxmox VE with the Python CLI | [MIL-002] | 2026-10-29 to 2026-11-26 | 2026-11-26 | S01 | US-001.01, US-001.02, US-001.06 | Python CLI for UC-01, UC-02 and UC-07 against Proxmox VE, design artifacts, mock API, CI | |
+| Read-only slice: Proxmox VE with the Python CLI | [MIL-002] | 2026-10-29 to 2026-11-26 | 2026-11-26 | S01 | US-001.01, US-001.02, US-001.06 | Python CLI for UC-01, UC-02 and UC-07 against Proxmox VE, design artifacts, mock application programming interface (API), continuous integration (CI) | |
 
 ```plantuml
 @startgantt
@@ -75,7 +75,7 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 | --- | --- | --- |
 | Provider API facts turn out different from the assumptions in the use case list | Use cases change after MIL-001 | MIL-001 includes a task that verifies provider behaviour against the documentation before acceptance |
 | Only one reviewer (S02) is available | Review becomes a bottleneck | Keep MIL-001 small; review documents as they are produced |
-| Gitea CI cannot run a Proxmox VE VM | Integration tests on Proxmox cannot gate merges | Test strategy ADR in MIL-001 sets CI to mock-based contract tests; the VM runs outside CI |
+| Gitea CI cannot run a Proxmox VE virtual machine (VM) | Integration tests on Proxmox cannot gate merges | Test strategy architecture decision record (ADR) in MIL-001 sets CI to mock-based contract tests; the VM runs outside CI |
 | No deadline or budget limit (confirmed by S01) | Plan cannot be checked against a constraint | Plan later phases by effort; revisit if a deadline appears |
 
 ## Open Issues
@@ -94,5 +94,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
-[dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15
 [65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
