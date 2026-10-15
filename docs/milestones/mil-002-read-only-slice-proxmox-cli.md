@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | [a458b17] |
 
 ---
 
@@ -76,7 +77,7 @@ architecture the later milestones build on.
 
 ## Target Date
 
-2026-11-26 — four weeks from 2026-10-29, an assumption to be confirmed by S01.
+2026-11-26 — four weeks from 2026-10-29, confirmed by S01 on 2026-10-15.
 The Business Case states no deadline, so there is no constraint to conflict
 with.
 
@@ -105,3 +106,4 @@ with.
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
 [65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
+[a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e

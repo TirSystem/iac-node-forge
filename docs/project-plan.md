@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-002, the read-only slice with the Python CLI against Proxmox VE | [65fb60d] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out CI, API, VM and ADR on first use (RC-031) | [116d271] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out CI, API, VM and ADR on first use (RC-031) | [116d271] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | MIL-002 window confirmed by S01; accepted after RC-031 | [a458b17] |
 
 ---
 
@@ -30,6 +30,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
   ([SA-001]).
 - Later phases are planned only after the phase before them is accepted. MIL-002 is
   planned after MIL-001 was accepted on 2026-10-15.
+- The MIL-002 window (2026-10-29 to 2026-11-26) was confirmed by S01 on 2026-10-15.
 - The first software milestone is a read-only slice: Proxmox VE with the Python command-line
   interface (CLI), decided by S01 on 2026-10-15.
 
@@ -80,7 +81,6 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 
 ## Open Issues
 
-- The MIL-002 window (2026-10-29 to 2026-11-26) is an assumption to be confirmed by S01.
 - Which provider and client follow the read-only slice (Contabo, WinUI 3, state-changing
   use cases) is decided when MIL-002 has a Go.
 - Later phases (state-changing actions, second provider, second client) are
@@ -94,5 +94,5 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
-[65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
 [116d271]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/116d271e1cc736e1bf4ad433cd5c5afc597463a4
+[a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e
