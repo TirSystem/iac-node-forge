@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | DCD-001 |
-| CrossReference | [DM-001], [OC-001], [SSD-001], [SSD-002], [SSD-003], [DICT-001], [ADR-0002], [ADR-0005] |
+| CrossReference | [DM-001], [OC-001], [OC-002], [OC-003], [SSD-001], [SSD-002], [SSD-003], [SSD-004], [SSD-005], [DICT-001], [ADR-0002], [ADR-0005], [ADR-0006] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | [6e1fc9a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | [3b6ed3b] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | [3b6ed3b] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | pending |
 
 ---
 
@@ -22,6 +22,9 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised for MIL-004 on 2026-10-15: `ServerPowerPort` and `OperationStore`, the `Operation` record and
+the use cases `ControlServerPower` and `TrackOperation` ([ADR-0006]).
 
 Revised again on 2026-10-15 for MIL-003: `Credentials` holds named values, `ProviderKind`
 declares the credential names it needs and `ContaboProvider` is a second adapter
@@ -74,6 +77,29 @@ package domain {
     - addresses : List
     - managed : Boolean
   }
+  enum PowerAction {
+    START
+    SHUTDOWN
+    STOP
+    RESTART
+  }
+  enum OperationState {
+    RUNNING
+    SUCCEEDED
+    FAILED
+    UNKNOWN
+  }
+  class Operation {
+    - operationId : OperationId
+    - configurationId : ConfigurationId
+    - serverIdentifier : Text
+    - action : PowerAction
+    - state : OperationState
+    - startedAt : Timestamp
+    - finishedAt : Timestamp
+    - providerReference : Text
+    - detail : Text
+  }
   class ManagedServerRecord {
     - configurationId : ConfigurationId
     - serverIdentifier : Text
@@ -87,6 +113,14 @@ package application {
     + listServerOptions(configuration, optionKind) : List
     + listServers(configuration) : List
     + getServer(configuration, serverIdentifier) : Server
+  }
+  interface ServerPowerPort {
+    + requestPower(configuration, serverIdentifier, action) : Operation
+    + operationState(configuration, operation) : OperationState
+  }
+  interface OperationStore {
+    + save(operation) : void
+    + load(operationId) : Operation
   }
   interface ConfigurationStore {
     + save(configuration) : void
@@ -102,6 +136,14 @@ package application {
   }
   interface ProviderResolver {
     + providerFor(configuration) : ProviderPort
+    + powerFor(configuration) : ServerPowerPort
+  }
+  class ControlServerPower {
+    + requestPowerAction(configuration, serverIdentifier, action, confirmation) : PowerActionResult
+  }
+  class TrackOperation {
+    + followOperation(operationId, timeLimit) : Operation
+    + showOperation(operationId) : Operation
   }
   class AccessCheck
   class SavedConfiguration
@@ -148,6 +190,15 @@ ProviderResolver ..> ProviderPort
 ListServers ..> ConfigurationStore
 ProxmoxProvider ..|> ProviderPort
 ContaboProvider ..|> ProviderPort
+ProxmoxProvider ..|> ServerPowerPort
+ContaboProvider ..|> ServerPowerPort
+ControlServerPower ..> ProviderResolver
+ControlServerPower ..> OperationStore
+ControlServerPower ..> ConfigurationStore
+TrackOperation ..> ProviderResolver
+TrackOperation ..> OperationStore
+Operation "0..*" --> "1" PowerAction
+Operation "0..*" --> "1" OperationState
 JsonLinesConfigurationStore ..|> ConfigurationStore
 PlatformCredentialStore ..|> CredentialStore
 ConsoleCredentialPrompt ..|> CredentialPrompt
@@ -181,6 +232,12 @@ CredentialSource ..> CredentialPrompt
 | CredentialPrompt | (credentials) | The boundary to asking the user for a secret. | none | ask |
 | ProviderResolver | (provider) | Gives the provider port for one saved configuration, built with that configuration's credentials. | none | providerFor |
 | AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
+| PowerAction, OperationState | Operation | The four power actions and the four states of an operation. | START, SHUTDOWN, STOP, RESTART; RUNNING, SUCCEEDED, FAILED, UNKNOWN | none |
+| Operation | Operation | One requested action and its recorded outcome; never holds a secret. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail | none |
+| ServerPowerPort | (provider) | The boundary for the four power requests and for reading an operation's state; a narrow port beside ProviderPort ([ADR-0006]). | none | requestPower, operationState |
+| OperationStore | (configuration) | The boundary to the record of operations. | none | save, load |
+| ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation. | none | requestPowerAction |
+| TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome. | none | followOperation, showOperation |
 | ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration; keeps the validated credentials in memory until the save or the next check, and never persists them. | none | validateAccess, saveProviderConfiguration |
 | DiscoverCapabilities | Capability | Realises UC-002: discovers capabilities and options. | none | discoverCapabilities, listServerOptions |
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
@@ -203,6 +260,12 @@ CredentialSource ..> CredentialPrompt
 | DiscoverCapabilities.listServerOptions(configuration, optionKind) : List | `listServerOptions` in [SSD-002] |
 | ListServers.listServers(configuration) : ServerListing | `listServers` in [SSD-003]; the configuration argument is optional and filters |
 | ListServers.inspectServer(configuration, serverIdentifier) : ServerSummary | `inspectServer` in [SSD-003] |
+| ControlServerPower.requestPowerAction(configuration, serverIdentifier, action, confirmation) : PowerActionResult | `requestPowerAction` in [OC-002] and [SSD-004] |
+| TrackOperation.followOperation(operationId, timeLimit) : Operation | `followOperation` in [OC-003] and [SSD-005] |
+| TrackOperation.showOperation(operationId) : Operation | `showOperation` in [SSD-005] |
+| ServerPowerPort.requestPower(configuration, serverIdentifier, action) | `requestPowerAction` in [OC-002] |
+| ServerPowerPort.operationState(configuration, operation) | `followOperation` in [OC-003] |
+| OperationStore.save(operation), load(operationId) | `requestPowerAction` in [OC-002] and `followOperation` in [OC-003] |
 | ProviderResolver.providerFor(configuration) | Supporting operation of `discoverCapabilities`, `listServerOptions`, `listServers` and `inspectServer` (credentials differ per configuration) |
 | ProviderPort.validateAccess(address, credentials) | `validateAccess` in [SSD-001] |
 | ProviderPort.discoverCapabilities(configuration) | `discoverCapabilities` in [SSD-002] |
@@ -222,6 +285,7 @@ CredentialSource ..> CredentialPrompt
 | Ports and adapters | ProviderPort, ConfigurationStore, CredentialStore, CredentialPrompt and their adapters | Keeps the application free of provider, file and platform detail; a second provider is a new adapter ([ADR-0002]). |
 | Composition root | CliApplication | The only place that names infrastructure classes. |
 | Strategy | ProviderPort, ProxmoxProvider, ContaboProvider | Provider differences sit behind one interface; use cases do not test the provider kind ([ADR-0002]). |
+| Interface segregation | ProviderPort, ServerPowerPort | Read-only code cannot reach a write by type; the write surface is four operations ([ADR-0006]). |
 | Resolver | ProviderResolver, CliProviderResolver | The adapter takes its credentials at construction, and one run spans several configurations, so a port instance per configuration is resolved on demand. |
 | Capability set | Capability, ProviderPort.discoverCapabilities | Provider differences are declared, not hidden ([ADR-0002]). |
 
@@ -240,6 +304,10 @@ and may name every layer.
 [SSD-003]: ./use-cases/uc-007/ssd.md
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
-[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
 [ADR-0005]: ./adr/adr-0005-contabo-credentials-and-token.md
 [3b6ed3b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3b6ed3b78808666c0e523e695c41c2c9629b7052
+[OC-002]: ./use-cases/uc-008/oc.md
+[OC-003]: ./use-cases/uc-006/oc.md
+[SSD-004]: ./use-cases/uc-008/ssd.md
+[SSD-005]: ./use-cases/uc-006/ssd.md
+[ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
