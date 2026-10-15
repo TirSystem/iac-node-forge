@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version, terms of the read-only slice (MIL-002) | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version, terms of the read-only slice (MIL-002) | [1f23e1f] |
 
 ---
 
@@ -46,3 +46,4 @@ gets a row here in the same change as in the domain model.
 [BC-001]: ./business-case.md
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
+[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf

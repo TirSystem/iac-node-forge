@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version for the read-only slice (MIL-002) | [1f23e1f] |
 
 ---
 
@@ -189,3 +189,4 @@ and may name every layer.
 [SSD-003]: ./use-cases/uc-007/ssd.md
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
+[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf

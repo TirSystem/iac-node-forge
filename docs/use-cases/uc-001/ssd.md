@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [1f23e1f] |
 
 ---
 
@@ -50,3 +50,4 @@ system instance after the call returns.
 
 [UC-001]: ./uc.md
 [DM-001]: ../../domain-model.md
+[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf

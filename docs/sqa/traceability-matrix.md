@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added MIL-002 and the review records RC-030 and RC-031 | [116d271] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the MIL-002 design artifacts DICT-001, DM-001, SSD-001 to SSD-003, OC-001, DCD-001 and ERD-001 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the MIL-002 design artifacts DICT-001, DM-001, SSD-001 to SSD-003, OC-001, DCD-001 and ERD-001 | [1f23e1f] |
 
 ---
 
@@ -97,3 +97,4 @@ updated whenever an artifact instance is created or reviewed.
 [OC-001]: ../use-cases/uc-001/oc.md
 [DCD-001]: ../dcd.md
 [ERD-001]: ../erd.md
+[1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
