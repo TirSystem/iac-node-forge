@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | [e85dc9b] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added MIL-002 and the review records RC-030 and RC-031 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added MIL-002 and the review records RC-030 and RC-031 | [116d271] |
 
 ---
 
@@ -83,3 +83,4 @@ updated whenever an artifact instance is created or reviewed.
 [RC-030]: ./reviews/rc-030-mil-002.md
 [RC-031]: ./reviews/rc-031-pp-001.md
 [MIL-002]: ../milestones/mil-002-read-only-slice-proxmox-cli.md
+[116d271]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/116d271e1cc736e1bf4ad433cd5c5afc597463a4
