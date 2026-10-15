@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | [6e1fc9a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | [3b6ed3b] |
 
 ---
 
@@ -242,3 +242,4 @@ and may name every layer.
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
 [6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
 [ADR-0005]: ./adr/adr-0005-contabo-credentials-and-token.md
+[3b6ed3b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3b6ed3b78808666c0e523e695c41c2c9629b7052

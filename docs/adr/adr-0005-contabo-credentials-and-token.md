@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-049 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-049 | [3b6ed3b] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -101,3 +101,4 @@ credential reference as a single entry.
 [ADR-0003]: ./adr-0003-credential-storage.md
 [ADR-0004]: ./adr-0004-server-access-credentials.md
 [UC-001]: ../use-cases/uc-001/uc.md
+[3b6ed3b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3b6ed3b78808666c0e523e695c41c2c9629b7052

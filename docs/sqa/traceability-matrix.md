@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-003 and RC-047, RC-048 | [c1c8c1c] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0005, RC-049 and RC-050 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0005, RC-049 and RC-050 | [3b6ed3b] |
 
 ---
 
@@ -120,3 +120,4 @@ updated whenever an artifact instance is created or reviewed.
 [ADR-0005]: ../adr/adr-0005-contabo-credentials-and-token.md
 [RC-049]: ./reviews/rc-049-adr-0005.md
 [RC-050]: ./reviews/rc-050-dcd-001-rev3.md
+[3b6ed3b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3b6ed3b78808666c0e523e695c41c2c9629b7052
