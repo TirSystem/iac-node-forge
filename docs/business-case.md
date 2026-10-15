@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-001 criterion 10) | [3876d67] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Stated strategic alignment, deadline and budget; accepted after RC-001 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Stated strategic alignment, deadline and budget; accepted after RC-001 | [dbd33d0] |
 
 ---
 
@@ -177,3 +177,4 @@ milestone can be delimited and verified against one provider.
 
 [SA-001]: ./stakeholder-analysis.md
 [3876d67]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3876d67f44db71c2dd2458e0a486da3437a192df
+[dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15

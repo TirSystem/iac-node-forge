@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Sign-off recorded after RC-002; accepted | [b664ca3] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out FURPS+ on first use; closes the RC-002 action item | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Spelled out FURPS+ on first use; closes the RC-002 action item | [dbd33d0] |
 
 ---
 
@@ -91,3 +91,4 @@ Product Owner assigns a person.
 
 [BC-001]: ./business-case.md
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
+[dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15
