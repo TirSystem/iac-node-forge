@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [d59571d] |
 
 ---
 
@@ -101,3 +101,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-002]: ./mil-002-read-only-slice-proxmox-cli.md
+[d59571d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d59571d87e5e2c2d19aa490850422180c720a45e
