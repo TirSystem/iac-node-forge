@@ -29,7 +29,7 @@ Nothing was tested against a live server.
 | # | Statement | Verdict | Evidence |
 | --- | --- | --- | --- |
 | P1 | Authentication by ticket exists | Verified | `POST /access/ticket` |
-| P2 | API tokens exist | Partly | Token management paths `/access/users/{userid}/token/{tokenid}` exist. How a token is sent on a request is not in the API viewer. |
+| P2 | API tokens exist and are sent as `Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET` | Verified (live) | Token management paths exist in the API viewer; the header form is not there, but the adapter's integration tests passed against a real Proxmox VE with it (see Live run). |
 | P3 | Long-running actions return a task ID | Verified | Create, delete, power and snapshot calls return a string (the task ID, UPID) |
 | P4 | A task has a status and an exit status | Verified | `GET /nodes/{node}/tasks/{upid}/status` returns `status` (`running` or `stopped`) and optional `exitstatus`; `/tasks/{upid}/log` exists |
 | P5 | Nodes, storage and resources can be discovered | Verified | `/nodes`, `/nodes/{node}/storage`, `/nodes/{node}/storage/{storage}/content`, `/cluster/resources`, `/cluster/nextid` |
@@ -80,10 +80,27 @@ Nothing was tested against a live server.
 | [ADR-0002] | The capability model fits: task model, snapshot rules and removal semantics really differ. |
 | [ADR-0003] | The four Contabo values are confirmed (C1). Token lifetime is open (C2). Proxmox token usage is open (P2). |
 
+## Live run
+
+On 2026-10-15 the Product Owner (S01) ran the eight integration tests of `iac-node-forge-py` (`pytest -m integration`, `PVE_VERIFY=false`) against a real Proxmox VE in the container `dockurr/proxmox:latest` on their own machine, with an API token of `root@pam` created by `pveum user token add root@pam iacnf --privsep 0`. All eight passed. The result was reported by S01 in chat; the output was not attached and the image digest and Proxmox VE version were not recorded.
+
+| Test | Verdict |
+| --- | --- |
+| validate access with the token | Passed |
+| validate access with a wrong token returns a failed result | Passed |
+| capabilities declare no write capability | Passed |
+| server options `node` lists at least one node | Passed |
+| server options `storage` returns a tuple | Passed |
+| list servers returns unmanaged servers | Passed |
+| an absent server raises not-found | Passed |
+| the token secret does not appear in an error | Passed |
+
+What this confirms: the token header, `GET /version`, `/nodes`, `/nodes/{node}/storage` and `/cluster/resources?type=vm`, and the answer shapes the adapter parses. It does not cover a cluster with several nodes, a server that is running, or Proxmox VE versions other than the one in the container.
+
 ## Still open
 
 - Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
-- Proxmox VE token header and snapshot-by-storage rules (P2, P9).
+- Proxmox VE snapshot-by-storage rules (P9).
 - Anything about real behaviour (timing, error cases). That needs a Proxmox VE VM and read-only Contabo calls, as in [ADR-0001].
 
 ---
