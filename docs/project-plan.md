@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | MIL-002 window confirmed by S01; accepted after RC-031 | [a458b17] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-003, the Contabo read-only adapter | [d59571d] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Scheduled MIL-003, the Contabo read-only adapter | [d59571d] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-048 (autonomous mode, stand-in) | pending |
 
 ---
 
@@ -102,5 +102,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
 [MIL-003]: ./milestones/mil-003-contabo-read-only-adapter.md
-[a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e
 [d59571d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d59571d87e5e2c2d19aa490850422180c720a45e
