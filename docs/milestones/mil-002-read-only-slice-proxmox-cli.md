@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version | [65fb60d] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | [a458b17] |
 
 ---
 
@@ -106,3 +106,4 @@ with.
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
 [65fb60d]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/65fb60dc57f5bb63307d4e905f5f49f567b98f28
+[a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e
