@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | [3b6ed3b] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | [f91e283] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 4: ServerPowerPort, OperationStore, Operation, ControlServerPower, TrackOperation (MIL-004)<br>Accepted after RC-062 | [f91e283] |
+| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: aligned with the built power code (MIL-004 task 12) | [27af875] |
 
 ---
 
@@ -25,6 +25,11 @@ naming convention. Dependencies point inward: `application` depends on `domain`;
 
 Revised for MIL-004 on 2026-10-15: `ServerPowerPort` and `OperationStore`, the `Operation` record and
 the use cases `ControlServerPower` and `TrackOperation` ([ADR-0006]).
+
+Revised again after the code of MIL-004 on 2026-10-16 (revision 5): `operationState` returns the
+`Operation`; `finishedAt`, `providerReference` and `detail` are optional; `previewPowerAction`,
+the result types `Confirmation`, `OperationSummary` and `PowerActionResult`, and the `pollInterval`
+option were added; `TrackOperation` also depends on `ConfigurationStore`.
 
 Revised again on 2026-10-15 for MIL-003: `Credentials` holds named values, `ProviderKind`
 declares the credential names it needs and `ContaboProvider` is a second adapter
@@ -96,9 +101,9 @@ package domain {
     - action : PowerAction
     - state : OperationState
     - startedAt : Timestamp
-    - finishedAt : Timestamp
-    - providerReference : Text
-    - detail : Text
+    - finishedAt : Timestamp [0..1]
+    - providerReference : Text [0..1]
+    - detail : Text [0..1]
   }
   class ManagedServerRecord {
     - configurationId : ConfigurationId
@@ -116,7 +121,7 @@ package application {
   }
   interface ServerPowerPort {
     + requestPower(configuration, serverIdentifier, action) : Operation
-    + operationState(configuration, operation) : OperationState
+    + operationState(configuration, operation) : Operation
   }
   interface OperationStore {
     + save(operation) : void
@@ -139,11 +144,12 @@ package application {
     + powerFor(configuration) : ServerPowerPort
   }
   class ControlServerPower {
+    + previewPowerAction(configuration, serverIdentifier, action) : PowerActionResult
     + requestPowerAction(configuration, serverIdentifier, action, confirmation) : PowerActionResult
   }
   class TrackOperation {
-    + followOperation(operationId, timeLimit) : Operation
-    + showOperation(operationId) : Operation
+    + followOperation(operationId, timeLimit, pollInterval) : OperationSummary
+    + showOperation(operationId) : OperationSummary
   }
   class AccessCheck
   class SavedConfiguration
@@ -197,6 +203,7 @@ ControlServerPower ..> OperationStore
 ControlServerPower ..> ConfigurationStore
 TrackOperation ..> ProviderResolver
 TrackOperation ..> OperationStore
+TrackOperation ..> ConfigurationStore
 Operation "0..*" --> "1" PowerAction
 Operation "0..*" --> "1" OperationState
 JsonLinesConfigurationStore ..|> ConfigurationStore
@@ -231,13 +238,13 @@ CredentialSource ..> CredentialPrompt
 | CredentialStore | Credential reference | The boundary to the platform credential store. | none | put, get |
 | CredentialPrompt | (credentials) | The boundary to asking the user for a secret. | none | ask |
 | ProviderResolver | (provider) | Gives the provider port for one saved configuration, built with that configuration's credentials. | none | providerFor |
-| AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
+| AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure, Confirmation, OperationSummary, PowerActionResult | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
 | PowerAction, OperationState | Operation | The four power actions and the four states of an operation. | START, SHUTDOWN, STOP, RESTART; RUNNING, SUCCEEDED, FAILED, UNKNOWN | none |
-| Operation | Operation | One requested action and its recorded outcome; never holds a secret. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail | none |
-| ServerPowerPort | (provider) | The boundary for the four power requests and for reading an operation's state; a narrow port beside ProviderPort ([ADR-0006]). | none | requestPower, operationState |
+| Operation | Operation | One requested action and its recorded outcome; never holds a secret. `finishedAt`, `providerReference` and `detail` are empty until set; `detail` is bounded to 500 characters. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail | none |
+| ServerPowerPort | (provider) | The boundary for the four power requests and for reading an operation's state; a narrow port beside ProviderPort ([ADR-0006]). | none | requestPower, operationState (one read; returns the operation updated, polling belongs to the caller) |
 | OperationStore | (configuration) | The boundary to the record of operations. | none | save, load |
-| ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation. | none | requestPowerAction |
-| TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome. | none | followOperation, showOperation |
+| ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation; a preview does every check but the confirmation and sends nothing. | none | previewPowerAction, requestPowerAction |
+| TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome; reads the configuration to build the provider. | none | followOperation, showOperation |
 | ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration; keeps the validated credentials in memory until the save or the next check, and never persists them. | none | validateAccess, saveProviderConfiguration |
 | DiscoverCapabilities | Capability | Realises UC-002: discovers capabilities and options. | none | discoverCapabilities, listServerOptions |
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
@@ -260,9 +267,10 @@ CredentialSource ..> CredentialPrompt
 | DiscoverCapabilities.listServerOptions(configuration, optionKind) : List | `listServerOptions` in [SSD-002] |
 | ListServers.listServers(configuration) : ServerListing | `listServers` in [SSD-003]; the configuration argument is optional and filters |
 | ListServers.inspectServer(configuration, serverIdentifier) : ServerSummary | `inspectServer` in [SSD-003] |
+| ControlServerPower.previewPowerAction(configuration, serverIdentifier, action) : PowerActionResult | The checks of `requestPowerAction` in [OC-002] without the request; used by the client to state the action before it asks |
 | ControlServerPower.requestPowerAction(configuration, serverIdentifier, action, confirmation) : PowerActionResult | `requestPowerAction` in [OC-002] and [SSD-004] |
-| TrackOperation.followOperation(operationId, timeLimit) : Operation | `followOperation` in [OC-003] and [SSD-005] |
-| TrackOperation.showOperation(operationId) : Operation | `showOperation` in [SSD-005] |
+| TrackOperation.followOperation(operationId, timeLimit, pollInterval) : OperationSummary | `followOperation` in [OC-003] and [SSD-005] |
+| TrackOperation.showOperation(operationId) : OperationSummary | `showOperation` in [SSD-005] |
 | ServerPowerPort.requestPower(configuration, serverIdentifier, action) | `requestPowerAction` in [OC-002] |
 | ServerPowerPort.operationState(configuration, operation) | `followOperation` in [OC-003] |
 | OperationStore.save(operation), load(operationId) | `requestPowerAction` in [OC-002] and `followOperation` in [OC-003] |
@@ -305,10 +313,10 @@ and may name every layer.
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
 [ADR-0005]: ./adr/adr-0005-contabo-credentials-and-token.md
-[3b6ed3b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/3b6ed3b78808666c0e523e695c41c2c9629b7052
 [OC-002]: ./use-cases/uc-008/oc.md
 [OC-003]: ./use-cases/uc-006/oc.md
 [SSD-004]: ./use-cases/uc-008/ssd.md
 [SSD-005]: ./use-cases/uc-006/ssd.md
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
+[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb
