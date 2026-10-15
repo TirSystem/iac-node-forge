@@ -67,6 +67,27 @@ Nothing was tested against a live server.
 | C19 | Rate limiting exists | Verified | Status 429 is documented; the limits are not |
 | C20 | Server-side tags exist | Verified | `/v1/tags` and assignments. Usable as a provider-side marker if the Product Owner later wants one. |
 
+## Contabo adapter (MIL-003)
+
+What the read-only Contabo adapter assumes, and what has been shown for each point. "Mock"
+means the in-process mock of `iac-node-forge-py`; "live" means a run against a real account
+(MIL-003 task 12, not done yet).
+
+| # | Statement the adapter relies on | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| A1 | The four values are exchanged at the authentication address with `grant_type=password`, `client_id`, `client_secret`, `username` (API user) and `password` (API password) | Yes (C1) | Yes | Pending |
+| A2 | The answer holds an `access_token`, sent as `Authorization: Bearer` | Yes (C1) | Yes | Pending |
+| A3 | A wrong password is rejected with 400 or 401 | Not stated | Assumed | Pending |
+| A4 | The token lifetime is not stated; the adapter renews once after a 401 | Not stated (C2) | Yes (expiry switch) | Pending |
+| A5 | Every API call sends a UUID version 4 `x-request-id`; the token request does not | Yes (C3) | Yes | Pending |
+| A6 | Lists take `page` and `size`, answer a `data` array and `_pagination`; 100 per page is accepted | Partly | Yes | Pending |
+| A7 | `GET /v1/compute/instances/{id}` answers `data` as an array; an unknown id answers 404 | Partly | Yes | Pending |
+| A8 | `GET /v1/data-centers` and `GET /v1/compute/images` list regions and images | Yes | Yes | Pending |
+| A9 | 429 and 5xx are provider errors; no write verb is ever sent | Yes (C19) | Yes (recorder) | Pending |
+
+Open after this milestone: A3, A4 and the page-size acceptance (A6) can only be settled by a
+live run; the status and size text mapping is a design choice, not a provider fact.
+
 ## Effects on the use cases and ADRs
 
 | Item | Effect |
