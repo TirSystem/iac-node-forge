@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | [704c593] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | [704c593] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Decision shortened to two sentences with the detail kept below it<br>Accepted after RC-004 | [b664ca3] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -46,6 +46,10 @@ Options considered:
    live smoke tests on Contabo.
 
 ## Decision
+
+Test providers in layers: fakes for unit tests, a mock provider API for contract tests in Gitea CI, a Proxmox VE VM outside CI for integration tests, and only read-only calls against live Contabo. The mock runs in CI as an in-process HTTP server, and no create, update or delete runs against live Contabo in automated tests.
+
+### Details
 
 Use layered tests. Unit tests use fakes behind the provider interface.
 Contract tests run both providers against a mock provider API in Gitea CI,
@@ -94,5 +98,5 @@ is not yet set up; the first CI workflow for the CLI has to install it.
 
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
-[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
 [704c593]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/704c5936323131397b0d4b17e36056d4e84e123c
+[b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5

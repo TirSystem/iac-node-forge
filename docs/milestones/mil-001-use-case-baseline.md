@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Added the backup and restore use cases UC-016 to UC-019 to the tasks | [31933c9] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Criterion 4 and the deliverable include ADR-0004; added task 9 | [b664ca3] |
 
 ---
 
@@ -30,7 +30,7 @@ it rests on.
   Brief format, in `docs/uc-NNN/`.
 - A note of verified Proxmox VE and Contabo API behaviour for the points the
   use cases depend on.
-- Decision records for the capability model, for credential storage and for the provider test strategy.
+- Decision records for the capability model, for credential storage, for the provider test strategy and for server access credentials.
 
 ## Go / No-Go Criteria
 
@@ -39,7 +39,7 @@ it rests on.
 | 1 | The Use Case Diagram exists and its review record says `Go` | Yes | No |
 | 2 | Every use case marked Must or Should has a use case document with primary actor, preconditions and postconditions | All | Any missing |
 | 3 | Every provider-dependent statement in the use cases is marked verified or assumption | All marked | Any unmarked |
-| 4 | The ADRs for the capability model, credential storage and provider test strategy are `Accepted` | All three | Any not |
+| 4 | The ADRs for the capability model, credential storage, provider test strategy and server access credentials are `Accepted` | All four | Any not |
 | 5 | Each use case document is reviewed with a `Go` record | All | Any not |
 | 6 | Business Case and Stakeholder Analysis are `Accepted` | Both | Either not |
 
@@ -82,11 +82,12 @@ it rests on.
 | 6 | Decide credential storage | Record in an ADR how secrets are prompted for and cached: Windows Credential Manager, Windows Hello gating, and the fallback on hosts without a keyring. | No | ADR |
 | 7 | Decide the provider test strategy | Record in an ADR how providers are tested: unit tests with fakes, contract tests against a mock provider container in Gitea CI, integration tests against a Proxmox VE VM outside CI, read-only smoke tests against live Contabo, and no create, update or delete on live Contabo (cost). | No | ADR |
 | 8 | Test the Gitea runner for the mock provider | Check whether the Gitea CI runner supports Docker, service containers or Docker-in-Docker, so ADR-0001 can fix how the mock provider runs in CI. If it does not, the in-process mock server is used. | No | ADR-0001 |
-| 9 | Review each artifact | Create review records (`RC-*`) for every document of this phase and update the traceability matrix. | No | |
+| 9 | Decide server access credentials | Record in an ADR how the product logs in to servers over SSH for file backup and restore: the user's agent, key files and known_hosts, and no stored private keys or passwords. | No | ADR-0004 |
+| 10 | Review each artifact | Create review records (`RC-*`) for every document of this phase and update the traceability matrix. | No | |
 
 ---
 
 [BC-001]: ../business-case.md
 [SA-001]: ../stakeholder-analysis.md
-[cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
 [31933c9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/31933c95a83dd3e114cc067cd907ddddb750b1bb
+[b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
