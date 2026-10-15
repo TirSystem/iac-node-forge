@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [1c3c503] |
 
 ---
 
@@ -49,3 +49,4 @@ Go — all seven criteria pass. This is the stand-in's decision in autonomous mo
 ---
 
 [MIL-002]: ../../milestones/mil-002-read-only-slice-proxmox-cli.md
+[1c3c503]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1c3c503c273c8317e9d9e814b6ba0628270db1d0

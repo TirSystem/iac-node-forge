@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Task 8 narrowed to API token; the real server may be a container<br>Accepted after RC-043 | [6e1fc9a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all seven criteria met (RC-046); stand-in decision, open to challenge | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all seven criteria met (RC-046); stand-in decision, open to challenge | [1c3c503] |
 
 ---
 
@@ -106,3 +106,4 @@ with.
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
 [6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
+[1c3c503]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1c3c503c273c8317e9d9e814b6ba0628270db1d0

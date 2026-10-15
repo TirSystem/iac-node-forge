@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-040 to RC-045 (revisions after the MIL-002 implementation and the code review) | [6e1fc9a] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-046, the Go/No-Go check of MIL-002 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-046, the Go/No-Go check of MIL-002 | [1c3c503] |
 
 ---
 
@@ -112,3 +112,4 @@ updated whenever an artifact instance is created or reviewed.
 [RC-045]: ./reviews/rc-045-python-code-mil-002.md
 [6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
 [RC-046]: ./reviews/rc-046-mil-002-go-no-go.md
+[1c3c503]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1c3c503c273c8317e9d9e814b6ba0628270db1d0

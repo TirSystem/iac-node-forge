@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Accepted after RC-010 | [d4593ae] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Token header verified by the live run (RC-046) | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Token header verified by the live run (RC-046) | [1c3c503] |
 
 ---
 
@@ -46,3 +46,4 @@ DevOps adds a provider configuration, giving its endpoint and, when asked, its c
 [US-001]: ../../user-stories.md
 [SA-001]: ../../stakeholder-analysis.md
 [d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
+[1c3c503]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1c3c503c273c8317e9d9e814b6ba0628270db1d0
