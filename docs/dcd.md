@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | DCD-001 |
-| CrossReference | [DM-001], [OC-001], [SSD-001], [SSD-002], [SSD-003], [DICT-001], [ADR-0002] |
+| CrossReference | [DM-001], [OC-001], [SSD-001], [SSD-002], [SSD-003], [DICT-001], [ADR-0002], [ADR-0005] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Multiplicities and navigability on every association; Credentials, ProviderKind and persisted attributes added; every method traced (RC review)<br>Accepted after RC-038 | [de601dd] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | [6e1fc9a] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | [6e1fc9a] |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 3: named credential values, ContaboProvider, Strategy annotation (MIL-003)<br>Accepted after RC-050 | pending |
 
 ---
 
@@ -22,6 +22,10 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised again on 2026-10-15 for MIL-003: `Credentials` holds named values, `ProviderKind`
+declares the credential names it needs and `ContaboProvider` is a second adapter
+([ADR-0005]).
 
 Revised on 2026-10-15 after the implementation of MIL-002: the provider resolver, the
 result types, the credential source and the timestamp type were added; `getServer` and
@@ -49,7 +53,7 @@ package domain {
     - storeKind : Text
   }
   class Credentials {
-    - secret : Text
+    - values : Map
   }
   class AccessResult {
     - succeeded : Boolean
@@ -120,6 +124,7 @@ package application {
 }
 package infrastructure {
   class ProxmoxProvider
+  class ContaboProvider
   class JsonLinesConfigurationStore
   class PlatformCredentialStore
   class ConsoleCredentialPrompt
@@ -142,6 +147,7 @@ ListServers ..> ProviderResolver
 ProviderResolver ..> ProviderPort
 ListServers ..> ConfigurationStore
 ProxmoxProvider ..|> ProviderPort
+ContaboProvider ..|> ProviderPort
 JsonLinesConfigurationStore ..|> ConfigurationStore
 PlatformCredentialStore ..|> CredentialStore
 ConsoleCredentialPrompt ..|> CredentialPrompt
@@ -160,10 +166,10 @@ CredentialSource ..> CredentialPrompt
 
 | Class | Refines (Domain Model concept) | Responsibility | Attributes | Operations |
 | --- | --- | --- | --- | --- |
-| ProviderKind | Provider | Names the provider a configuration connects to. | PROXMOX_VE, CONTABO | none |
+| ProviderKind | Provider | Names the provider a configuration connects to and the credential names it needs (`token` for Proxmox VE; `client_id`, `client_secret`, `api_user`, `api_password` for Contabo). | PROXMOX_VE, CONTABO, credentialNames | none |
 | ProviderConfiguration | Provider configuration | Holds the saved settings for one provider connection. | configurationId, providerKind, displayName, address, credentialReference | none |
 | CredentialReference | Credential reference | Names a secret kept by the platform. | name, storeKind | none |
-| Credentials | Credential reference | Carries a secret for the duration of one call; never persisted. | secret | none |
+| Credentials | Credential reference | Carries the named secret values of one provider for the duration of a run; hidden in every representation and never persisted ([ADR-0005]). | values | none |
 | AccessResult | Access check | Carries the outcome of an access check. | succeeded, reason | none |
 | Capability | Capability | Names one supported action or option. | name | none |
 | ServerOption | Server option | One choice offered by a provider. | kind, value | none |
@@ -179,9 +185,10 @@ CredentialSource ..> CredentialPrompt
 | DiscoverCapabilities | Capability | Realises UC-002: discovers capabilities and options. | none | discoverCapabilities, listServerOptions |
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
 | ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface (read-only in this slice). | none | implements ProviderPort |
+| ContaboProvider | (provider) | Adapter for the Contabo interface (read-only): exchanges the four credential values for a bearer token kept in memory, sends a request identifier on every call and renews the token once after a 401. | none | implements ProviderPort |
 | JsonLinesConfigurationStore | (configuration) | Adapter that keeps configuration as JSON Lines without secrets. | none | implements ConfigurationStore |
 | PlatformCredentialStore | Credential reference | Adapter for the operating system credential store. | none | implements CredentialStore |
-| ConsoleCredentialPrompt | (credentials) | Adapter that asks for a secret on the console. | none | implements CredentialPrompt |
+| ConsoleCredentialPrompt | (credentials) | Adapter that asks for each credential name of the provider on the console. | none | implements CredentialPrompt |
 | CliProviderResolver | (provider) | Builds the provider adapter for a configuration after obtaining its credentials. | none | implements ProviderResolver |
 | CredentialSource | Credential reference | Obtains a secret: the credential store first, then the prompt (ADR-0003). | none | obtain |
 | CliApplication | (client) | Entry point and composition root of the command-line client. | none | one command per use case operation |
@@ -214,6 +221,7 @@ CredentialSource ..> CredentialPrompt
 | --- | --- | --- |
 | Ports and adapters | ProviderPort, ConfigurationStore, CredentialStore, CredentialPrompt and their adapters | Keeps the application free of provider, file and platform detail; a second provider is a new adapter ([ADR-0002]). |
 | Composition root | CliApplication | The only place that names infrastructure classes. |
+| Strategy | ProviderPort, ProxmoxProvider, ContaboProvider | Provider differences sit behind one interface; use cases do not test the provider kind ([ADR-0002]). |
 | Resolver | ProviderResolver, CliProviderResolver | The adapter takes its credentials at construction, and one run spans several configurations, so a port instance per configuration is resolved on demand. |
 | Capability set | Capability, ProviderPort.discoverCapabilities | Provider differences are declared, not hidden ([ADR-0002]). |
 
@@ -232,5 +240,5 @@ and may name every layer.
 [SSD-003]: ./use-cases/uc-007/ssd.md
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
-[de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
 [6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
+[ADR-0005]: ./adr/adr-0005-contabo-credentials-and-token.md

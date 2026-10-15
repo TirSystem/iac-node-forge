@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-046, the Go/No-Go check of MIL-002 | [1c3c503] |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-003 and RC-047, RC-048 | [c1c8c1c] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0005, RC-049 and RC-050 | pending |
 
 ---
 
@@ -34,13 +34,14 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
 | [ADR-0004] | ADR | - | - | [BC-001], [MIL-001], [ADR-0003] | [UC-005], [UC-016], [UC-017] | [RC-007] |
+| [ADR-0005] | ADR | - | - | [BC-001], [MIL-003], [ADR-0002], [ADR-0003] | [UC-001] | [RC-049] |
 | [UCD-001] | UCD | en | it | [SA-001], [BC-001] | [UC-001] to [UC-019] | [RC-008] |
 | [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | [RC-009] |
 | [DICT-001] | DICT | en | it | [BC-001], [SA-001] | [DM-001] | [RC-033] |
 | [DM-001] | DM | en | it | [UC-001], [UC-002], [UC-007], [UCD-001] | [SSD-001], [DCD-001] | [RC-032] |
 | [SSD-001] to [SSD-003] | SSD | en | it | [UC-001], [UC-002], [UC-007], [DM-001] | [OC-001], [DCD-001] | [RC-034] to [RC-036], [RC-041] |
 | [OC-001] | OC | - | - | [SSD-001], [DM-001] | [DCD-001] | [RC-037] |
-| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [SSD-001] to [SSD-003] | [ERD-001] | [RC-038], [RC-040] |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [SSD-001] to [SSD-003] | [ERD-001] | [RC-038], [RC-040], [RC-050] |
 | [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039], [RC-042] |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
@@ -50,7 +51,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-048 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-050 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -112,8 +113,10 @@ updated whenever an artifact instance is created or reviewed.
 [RC-044]: ./reviews/rc-044-adr-0001-rev3.md
 [RC-045]: ./reviews/rc-045-python-code-mil-002.md
 [RC-046]: ./reviews/rc-046-mil-002-go-no-go.md
-[1c3c503]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1c3c503c273c8317e9d9e814b6ba0628270db1d0
 [MIL-003]: ../milestones/mil-003-contabo-read-only-adapter.md
 [RC-047]: ./reviews/rc-047-mil-003.md
 [RC-048]: ./reviews/rc-048-pp-001-rev.md
 [c1c8c1c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c1c8c1cede20ea80be9c04babfe83175b00328a9
+[ADR-0005]: ../adr/adr-0005-contabo-credentials-and-token.md
+[RC-049]: ./reviews/rc-049-adr-0005.md
+[RC-050]: ./reviews/rc-050-dcd-001-rev3.md
