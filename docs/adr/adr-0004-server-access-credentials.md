@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [e80473e] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -113,3 +113,4 @@ Use option 3. The product never stores a private key or a password.
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [ADR-0003]: ./adr-0003-credential-storage.md
+[e80473e]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e80473e106402eeb44c0148b3fa34777c1bc7bd1
