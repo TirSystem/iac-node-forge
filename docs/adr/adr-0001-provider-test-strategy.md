@@ -10,6 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-14 | Proposed | Jens Tirsvad Nielsen | S02 | Initial version | [cd7ca06] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Recorded the runner spike results and chose the in-process mock for CI | [704c593] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -26,8 +27,14 @@ provider APIs. Testing against live providers has limits:
 - **Proxmox VE** is a full distribution with a hypervisor. It cannot run
   reliably in a plain Docker container and is too heavy for the Gitea CI
   runners. A Proxmox VE VM is available on the Product Owner's own machine.
-- **Gitea CI** is available, but whether its runners support Docker, service
-  containers or Docker-in-Docker is not known and has not been tested.
+- **Gitea CI** is available. A spike on 2026-10-15 (Gitea 1.27.3, act_runner
+  v3.5.0, labels `ubuntu-latest`, `ubuntu-24.04`, `ubuntu-22.04`) showed that a
+  job runs in a container (`docker.gitea.com/runner-images:ubuntu-latest`,
+  Ubuntu 24.04) with the Docker socket mounted and Docker 29.7.2 reachable.
+  All four spike jobs passed: environment report, an in-process HTTP server,
+  running a container from the job, and a service container reached by its
+  name (`http://mock:80/`). The runner image provides Python 3.12.3, while the
+  CLI targets Python 3.13.
 - Two clients (Python CLI, WinUI 3) share the same use cases, so provider
   behaviour is best tested once, below the clients.
 
@@ -48,10 +55,13 @@ read-only calls, on demand. No create, update or delete runs against live
 Contabo in automated tests; a real change is a manual acceptance by S01 with
 the cost approved first.
 
-How the mock runs in CI (service container, Docker, or an in-process HTTP
-server in the test run) is decided by a spike on the Gitea runner. If the
-runner has no Docker support, the in-process server is used, because it needs
-no container.
+The mock runs in CI as an in-process HTTP server started by the test run.
+It needs no image pull, runs the same way on a developer machine and on any
+CI host, and was shown to work on the Gitea runner. A service container is
+supported by the runner and may be added where a test needs container-level
+realism, but it is not the default. The Python version used in CI is set
+explicitly in the workflow, because the runner image ships 3.12 and the CLI
+targets 3.13.
 
 ## Consequences
 
@@ -72,7 +82,8 @@ no container.
   manual acceptance, never automatically.
 - The mock needs building and maintaining for both providers.
 
-**Open item:** the Gitea runner's Docker support is untested; [MIL-001] task 8 covers the spike.
+**Open item:** the Python 3.13 toolchain on the runner (the image has 3.12.3)
+is not yet set up; the first CI workflow for the CLI has to install it.
 
 ## Affected Artifacts
 
@@ -84,3 +95,4 @@ no container.
 [BC-001]: ../business-case.md
 [MIL-001]: ../milestones/mil-001-use-case-baseline.md
 [cd7ca06]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/cd7ca06b28cdb5ab7298312602798e2b861bc908
+[704c593]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/704c5936323131397b0d4b17e36056d4e84e123c
