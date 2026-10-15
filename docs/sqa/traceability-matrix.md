@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added review records RC-008 to RC-028 for UCD-001, US-001 and UC-001 to UC-019 | [d4593ae] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review record RC-029 for MIL-001 | [e85dc9b] |
 
 ---
 
@@ -78,3 +78,4 @@ updated whenever an artifact instance is created or reviewed.
 [UCD-001]: ../use-case-diagram.md
 [US-001]: ../user-stories.md
 [d4593ae]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d4593aee3a0196cb5ced87130a3194ed20600c22
+[e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37

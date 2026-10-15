@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Criterion 4 and the deliverable include ADR-0004; added task 9 | [b664ca3] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Corrected the target date, task wording and abbreviations found in the review (RC-029) | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Corrected the target date, task wording and abbreviations found in the review (RC-029) | [e85dc9b] |
 
 ---
 
@@ -93,3 +93,4 @@ states no deadline, so there is no constraint to conflict with.
 [SA-001]: ../stakeholder-analysis.md
 [US-001]: ../user-stories.md
 [b664ca3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b664ca34d52e7c4fe1561279e213dd6ffbeca3d5
+[e85dc9b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e85dc9b9b9e808faad25c5d2899f39dfc8550b37
