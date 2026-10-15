@@ -7,7 +7,7 @@ each document lives in *this* project and the next version to use.
 
 Delete rows for types you don't use. Add a row the first time you create a
 document of a type. `Primary File` may contain a glob (e.g.
-`docs/uc-*/uc.md`); `framework/scripts/find-crossreferences.sh` reads it.
+`docs/use-cases/uc-*/uc.md`); `framework/scripts/find-crossreferences.sh` reads it.
 
 | Short Name | Artifact Type | Primary File | Next Available Version |
 | --- | --- | --- | --- |
@@ -20,7 +20,7 @@ document of a type. `Primary File` may contain a glob (e.g.
 | US | User Story | docs/user-stories.md | 002 |
 | RC | SQA Review Record | docs/sqa/reviews/rc-*.md | 008 |
 | TM | Traceability Matrix | docs/sqa/traceability-matrix.md | 002 |
-| UC | Use Case | docs/uc-*/uc.md | 020 |
+| UC | Use Case | docs/use-cases/uc-*/uc.md | 020 |
 
 ## Languages
 
