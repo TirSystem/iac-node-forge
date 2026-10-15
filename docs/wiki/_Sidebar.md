@@ -6,3 +6,4 @@
   - [2. Run the tests](Integration-Test-Run)
   - [3. Take it down](Integration-Test-Take-Down)
 - [Contabo live test](Contabo-Live-Test)
+- [Power control live test](Power-Control-Live-Test)
