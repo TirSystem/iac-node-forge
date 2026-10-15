@@ -4,15 +4,15 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002] |
 | Language | en |
 | Domain | it |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Spelled out CLI and JSONL on first use (RC-003 criterion 10) | [dbd33d0] |
 | 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Dates confirmed by S01; diagram rendered; accepted after RC-003 | [dbd33d0] |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | S02 | Scheduled MIL-002, the read-only slice with the Python CLI against Proxmox VE | pending |
 
 ---
 
@@ -28,19 +28,25 @@ states no duration or deadline yet, so the plan has no fixed end date.
 - Phase length for MIL-001 is two weeks, confirmed by S01 on 2026-10-15.
 - Each phase ends with a Go/No-Go decision by S01, after a review by S02
   ([SA-001]).
-- Later phases are planned only after MIL-001 is accepted.
+- Later phases are planned only after the phase before them is accepted. MIL-002 is
+  planned after MIL-001 was accepted on 2026-10-15.
+- The first software milestone is a read-only slice: Proxmox VE with the Python CLI,
+  decided by S01 on 2026-10-15.
 
 ## Gateway Schedule
 
 | Gateway | Document | Window | Decision date | Owner | Stories | Main deliverable | Milestone |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Use case baseline | [MIL-001] | 2026-10-14 to 2026-10-28 | 2026-10-28 | S01 | UC-01 to UC-19 (candidates) | Use Case Diagram, brief use cases, verified provider facts, ADRs | |
+| Read-only slice: Proxmox VE with the Python CLI | [MIL-002] | 2026-10-29 to 2026-11-26 | 2026-11-26 | S01 | US-001.01, US-001.02, US-001.06 | Python CLI for UC-01, UC-02 and UC-07 against Proxmox VE, design artifacts, mock API, CI | |
 
 ```plantuml
 @startgantt
 Project starts 2026-10-14
 [MIL-001 Use case baseline] starts 2026-10-14 and ends 2026-10-28
 [MIL-001 Go/No-Go] happens 2026-10-28
+[MIL-002 Read-only slice] starts 2026-10-29 and ends 2026-11-26
+[MIL-002 Go/No-Go] happens 2026-11-26
 @endgantt
 ```
 
@@ -48,16 +54,16 @@ Project starts 2026-10-14
 
 | Business Case scope item | Gateway |
 | --- | --- |
-| Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases only); software not yet planned |
-| Server lifecycle use cases | MIL-001 (use cases only); software not yet planned |
-| Display of servers not managed by this client | MIL-001 (use case UC-07); software not yet planned |
-| Python command-line interface (CLI) and WinUI 3 application | Not yet planned |
-| JSON Lines (JSONL) configuration file per client | Not yet planned |
+| Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases); MIL-002 (Proxmox VE with the CLI); Contabo not yet planned |
+| Server lifecycle use cases | MIL-001 (use cases); MIL-002 (discover and list only); others not yet planned |
+| Display of servers not managed by this client | MIL-001 (use case UC-07); MIL-002 (read-only list) |
+| Python command-line interface (CLI) and WinUI 3 application | MIL-002 (CLI, three use cases); WinUI 3 not yet planned |
+| JSON Lines (JSONL) configuration file per client | MIL-002 (CLI client) |
 
 ## Dependencies
 
 ```
-MIL-001 Use case baseline -> (later phases, not yet planned)
+MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> (later phases, not yet planned)
 ```
 
 A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
@@ -74,16 +80,18 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 
 ## Open Issues
 
-- The diagram was rendered on `plantuml.tirsystem.com` on 2026-10-15 without error.
-- Which provider comes first in the first working slice (Proxmox VE or
-  Contabo) is not decided; it shapes the next phase.
-- Which client comes first (CLI or WinUI 3) is not decided.
-- Later phases (first slice on one provider, second provider, second client)
-  are candidates only and have no `MIL-*` document yet.
+- The MIL-002 window (2026-10-29 to 2026-11-26) is an assumption to be confirmed by S01.
+- Which provider and client follow the read-only slice (Contabo, WinUI 3, state-changing
+  use cases) is decided when MIL-002 has a Go.
+- Later phases (state-changing actions, second provider, second client) are
+  candidates only and have no `MIL-*` document yet.
+- The diagram, with MIL-002, was rendered on `plantuml.tirsystem.com` on 2026-10-15
+  without error.
 
 ---
 
 [BC-001]: ./business-case.md
 [SA-001]: ./stakeholder-analysis.md
 [MIL-001]: ./milestones/mil-001-use-case-baseline.md
+[MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
 [dbd33d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dbd33d0175390676b2d84637be50a8657360bf15
