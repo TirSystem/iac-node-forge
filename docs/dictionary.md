@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Initial version, terms of the read-only slice (MIL-002) | [1f23e1f] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Used-as lists name only artifact types that exist (RC-033)<br>Accepted after RC-033 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI (named by S01) | Used-as lists name only artifact types that exist (RC-033)<br>Accepted after RC-033 | [de601dd] |
 
 ---
 
@@ -48,3 +48,4 @@ gets a row here in the same change as in the domain model.
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
 [1f23e1f]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/1f23e1fc3e0a468ef08a393aa5fc50c87c4148cf
+[de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
