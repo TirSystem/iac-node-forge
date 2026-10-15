@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [315ae70] |
 
 ---
 
@@ -60,3 +60,4 @@ Go — every Mandatory criterion passes. The one failed criterion (13, Optional)
 
 [MIL-003]: ../../milestones/mil-003-contabo-read-only-adapter.md
 [QC-PY-001]: ../../../framework/qc/code/qc-programming-python.md
+[315ae70]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/315ae707e109f33fd270dc34d96adad34ae71ea2
