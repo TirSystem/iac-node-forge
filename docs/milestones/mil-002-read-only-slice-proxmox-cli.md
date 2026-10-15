@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Window confirmed by S01; accepted (Go) after RC-030 | [a458b17] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Task 8 narrowed to API token; the real server may be a container<br>Accepted after RC-043 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Task 8 narrowed to API token; the real server may be a container<br>Accepted after RC-043 | [6e1fc9a] |
 
 ---
 
@@ -106,3 +106,4 @@ with.
 [US-001]: ../user-stories.md
 [MIL-001]: ./mil-001-use-case-baseline.md
 [a458b17]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a458b17f2611345ef406b0b05956aca18b52234e
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4

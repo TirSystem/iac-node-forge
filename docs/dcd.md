@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Multiplicities and navigability on every association; Credentials, ProviderKind and persisted attributes added; every method traced (RC review)<br>Accepted after RC-038 | [de601dd] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revised after the implementation: ProviderResolver, result types, CredentialSource, Timestamp<br>Accepted after RC-040 | [6e1fc9a] |
 
 ---
 
@@ -233,3 +233,4 @@ and may name every layer.
 [DICT-001]: ./dictionary.md
 [ADR-0002]: ./adr/adr-0002-provider-capability-model.md
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4

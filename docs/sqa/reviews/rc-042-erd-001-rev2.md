@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [6e1fc9a] |
 
 ---
 
@@ -48,3 +48,4 @@ Go — every Mandatory criterion passes. The row is accepted (autonomous mode).
 
 [ERD-001]: ../../erd.md
 [QC-ERD-001]: ../../../framework/qc/artifacts/qc-erd.md
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4

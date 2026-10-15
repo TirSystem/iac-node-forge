@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI (named by S01) | Added the review records RC-032 to RC-039 for the MIL-002 design artifacts | [de601dd] |
-| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-040 to RC-045 (revisions after the MIL-002 implementation and the code review) | pending |
+| 2026-10-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-040 to RC-045 (revisions after the MIL-002 implementation and the code review) | [6e1fc9a] |
 
 ---
 
@@ -111,3 +111,4 @@ updated whenever an artifact instance is created or reviewed.
 [RC-043]: ./reviews/rc-043-mil-002-rev2.md
 [RC-044]: ./reviews/rc-044-adr-0001-rev3.md
 [RC-045]: ./reviews/rc-045-python-code-mil-002.md
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4

@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI (named by S01) | Entities use the IT terms of the dictionary; 1:N notation; sources match the DCD (RC review)<br>Accepted after RC-039 | [de601dd] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | recorded_at is an ISO 8601 text with offset, matching the DCD Timestamp<br>Accepted after RC-042 | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | recorded_at is an ISO 8601 text with offset, matching the DCD Timestamp<br>Accepted after RC-042 | [6e1fc9a] |
 
 ---
 
@@ -97,3 +97,4 @@ at the expected size (tens of records).
 [DICT-001]: ./dictionary.md
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
 [de601dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/de601dd67be72a7d032de2146b4ec9cc8a213aec
+[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
