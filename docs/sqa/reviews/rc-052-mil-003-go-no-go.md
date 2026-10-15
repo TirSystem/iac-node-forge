@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [5a769e8] |
 
 ---
 
@@ -50,3 +50,4 @@ Go — all eight criteria pass. This is the stand-in's decision in autonomous mo
 ---
 
 [MIL-003]: ../../milestones/mil-003-contabo-read-only-adapter.md
+[5a769e8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/5a769e8102984e49d9f7ad3010d28f91cd4af22a
