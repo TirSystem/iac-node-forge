@@ -14,3 +14,5 @@ iac-node-forge manages servers at Proxmox VE and Contabo from a command-line cli
   - [3. Take it down](Integration-Test-Take-Down)
 - [Contabo read-only live test](Contabo-Live-Test) — run the read-only tests against
   your own Contabo account (nothing is created or changed).
+- [Power control live test](Power-Control-Live-Test) — turn a **disposable** server off and on
+  through the product, at Proxmox VE or Contabo.
