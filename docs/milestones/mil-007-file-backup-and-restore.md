@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-093 (autonomous mode, stand-in) | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-093 (autonomous mode, stand-in) | [d03efee] |
 
 ---
 
@@ -111,3 +111,4 @@ states no deadline, so there is no constraint to conflict with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-006]: ./mil-006-delete-or-cancel.md
+[d03efee]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d03efee52274a1fdb79ec4b7e559bd83bb849a29
