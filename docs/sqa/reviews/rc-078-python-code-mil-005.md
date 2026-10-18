@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [9a23c07] |
 
 ---
 
@@ -60,3 +60,4 @@ Go — every Mandatory criterion passes, with the two findings above fixed by pu
 
 [MIL-005]: ../../milestones/mil-005-provisioning.md
 [QC-PY-001]: ../../../framework/qc/code/qc-programming-python.md
+[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298

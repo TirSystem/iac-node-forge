@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerProvisionPort, DesiredConfigurationStore, ProvisionIntentStore, DesiredConfiguration, ProvisionIntent, DefineDesiredConfiguration, ProvisionServer (MIL-005)<br>Accepted after RC-076 | [aa570c0] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: aligned with the built provisioning code (MIL-005 task 12)<br>Accepted after RC-079 | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: aligned with the built provisioning code (MIL-005 task 12)<br>Accepted after RC-079 | [9a23c07] |
 
 ---
 
@@ -501,3 +501,4 @@ and may name every layer.
 [OC-004]: ./use-cases/uc-003/oc.md
 [OC-005]: ./use-cases/uc-004/oc.md
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298

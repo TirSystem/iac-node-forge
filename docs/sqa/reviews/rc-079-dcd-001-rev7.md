@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [9a23c07] |
 
 ---
 
@@ -51,3 +51,4 @@ Go — every Mandatory criterion passes. Revision 7 corrects the store adapters 
 [DCD-001]: ../../dcd.md
 [RC-076]: ./rc-076-dcd-001-rev6.md
 [QC-DCD-001]: ../../../framework/qc/artifacts/qc-dcd.md
+[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298
