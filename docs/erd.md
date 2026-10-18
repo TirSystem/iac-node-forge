@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | ERD-001 |
-| CrossReference | [DCD-001], [DICT-001], [ADR-0003], [ADR-0006], [ADR-0007] |
+| CrossReference | [DCD-001], [DICT-001], [ADR-0003], [ADR-0006], [ADR-0007], [ADR-0008] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added OperationRecord (MIL-004)<br>Accepted after RC-063 | [f91e283] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added DesiredConfiguration, AccessKeyName, DesiredConfigurationValue, ProvisionIntent and ProvisionIntentValue; OperationRecord.server_identifier is nullable (MIL-005)<br>Accepted after RC-077 | [aa570c0] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added DesiredConfiguration, AccessKeyName, DesiredConfigurationValue, ProvisionIntent and ProvisionIntentValue; OperationRecord.server_identifier is nullable (MIL-005)<br>Accepted after RC-077 | [aa570c0] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: OperationRecord.consequence; ManagedServerRecord is ended, not deleted (ended_at, ended_by_operation_id, recorded_at in the key) (MIL-006)<br>Accepted after RC-089 | pending |
 
 ---
 
@@ -18,7 +18,9 @@
 
 The persisted data of the command-line client in its JSON Lines (JSONL) configuration
 file: provider configurations, credential references, operations, managed servers, desired
-configurations with their access key names and values, and provision intents with their values.
+configurations with their access key names and values, and provision intents with their values. A
+removal adds no entity: its consequence is a field of the operation, and the managed-server record
+is ended, not deleted.
 One client has one file. One line holds one record, and a `record_type` field names the entity;
 a child entity is a line of its own. There is no entity for a secret:
 no record has a field that could hold one ([ADR-0003]).
@@ -89,12 +91,15 @@ entity OperationRecord {
   finished_at : text
   provider_reference : text
   detail : text
+  consequence : text
 }
 entity ManagedServerRecord {
   * configuration_id : text <<PK>> <<FK>>
   * server_identifier : text <<PK>>
+  * recorded_at : text <<PK>>
   --
-  * recorded_at : text
+  ended_at : text
+  ended_by_operation_id : text <<FK>>
 }
 
 CredentialReference |o--o{ ProviderConfiguration
@@ -106,6 +111,7 @@ DesiredConfiguration ||--o{ DesiredConfigurationValue
 DesiredConfiguration ||--o{ ProvisionIntent
 ProvisionIntent ||--o{ ProvisionIntentValue
 OperationRecord |o--o| ProvisionIntent
+OperationRecord |o--o| ManagedServerRecord
 @enduml
 ```
 
@@ -134,7 +140,9 @@ OperationRecord |o--o| ProvisionIntent
 | --- | --- | --- | --- | --- |
 | configuration_id | text | PK, FK | No | ManagedServerRecord.configurationId |
 | server_identifier | text | PK | No | ManagedServerRecord.serverIdentifier |
-| recorded_at | text (ISO 8601 with offset) | | No | ManagedServerRecord.recordedAt (Timestamp) |
+| recorded_at | text (ISO 8601 with offset) | PK | No | ManagedServerRecord.recordedAt (Timestamp) |
+| ended_at | text (ISO 8601 with offset) | | Yes | ManagedServerRecord.endedAt (empty while the server is managed; set when a removal succeeded) |
+| ended_by_operation_id | text | FK | Yes | ManagedServerRecord.endedByOperationId (the removal operation that ended the record) |
 
 ### OperationRecord
 
@@ -143,12 +151,13 @@ OperationRecord |o--o| ProvisionIntent
 | operation_id | text | PK | No | Operation.operationId |
 | configuration_id | text | FK | No | Operation.configurationId |
 | server_identifier | text | | Yes | Operation.serverIdentifier (empty for a provision operation until the provider names the server) |
-| action | text | | No | Operation.action (PowerAction: start, shutdown, stop, restart or provision) |
+| action | text | | No | Operation.action (PowerAction: start, shutdown, stop, restart, provision or remove) |
 | state | text | | No | Operation.state (OperationState) |
 | started_at | text (ISO 8601 with offset) | | No | Operation.startedAt |
 | finished_at | text (ISO 8601 with offset) | | Yes | Operation.finishedAt |
 | provider_reference | text | | Yes | Operation.providerReference (a task identifier, not a secret) |
-| detail | text | | Yes | Operation.detail (bounded, never a credential or header) |
+| detail | text | | Yes | Operation.detail (bounded, never a credential or header; for a cancellation also the effective date the provider reports) |
+| consequence | text (at most 500 characters) | | Yes | Operation.consequence (the text shown before a removal was confirmed; empty for every other action; never a credential) |
 
 ### DesiredConfiguration
 
@@ -210,6 +219,7 @@ OperationRecord |o--o| ProvisionIntent
 | DesiredConfiguration | 1:N (0..many) | DesiredConfigurationValue | configuration_id, desired_name | The provider-specific values; replaced with the desired configuration. |
 | DesiredConfiguration | 1:N (0..many) | ProvisionIntent | configuration_id, desired_name | An intent is made from one desired configuration; replacing the desired configuration keeps the key, so the intent stays valid. |
 | ProvisionIntent | 1:N (0..many) | ProvisionIntentValue | intent_id | The values chosen at the time of the request; removed with the intent. |
+| OperationRecord | 1:1 (optional on both sides) | ManagedServerRecord | ended_by_operation_id | A record is ended by at most one removal operation, and a removal operation ends at most one record (none for a server this client did not manage); the record is kept, never deleted, when it is ended. |
 | OperationRecord | 1:1 (optional on both sides) | ProvisionIntent | operation_id | An intent has at most one operation, set when the request is made; a provision operation has exactly one intent, a power operation none. |
 
 ## Normalization Notes
@@ -218,7 +228,11 @@ Third normal form: each non-key attribute depends on the key, the whole key and 
 but the key. The lists (access key names, values) are child entities, not repeated or
 multi-valued attributes. The one denormalization is deliberate: a ProvisionIntent keeps a copy of
 the image and the values, so that changing the desired configuration later does not change the
-record of what was requested. The file is read whole at start-up; no index is needed
+record of what was requested. A removal keeps the consequence on the operation and ends the
+managed-server record (`ended_at` set) instead of deleting it, so the history of what this client
+managed is kept; the key of the record includes `recorded_at`, because Proxmox VE reuses a freed
+identifier and a server created later with the same identifier is a new record. A line written
+before this revision has no `ended_at` and is read as not ended. The file is read whole at start-up; no index is needed
 at the expected size (tens of records).
 
 ---
@@ -226,8 +240,7 @@ at the expected size (tens of records).
 [DCD-001]: ./dcd.md
 [DICT-001]: ./dictionary.md
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
-[6e1fc9a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6e1fc9ab03ee8c75ad535849fee00964be1a3da4
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
-[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
+[ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
