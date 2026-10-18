@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-098 | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-098 | [f05b1dd] |
 
 ---
 
@@ -67,3 +67,4 @@ only inside the destination. A changed host key is never accepted.
 [SSD-001]: ../uc-001/ssd.md
 [SSD-010]: ../uc-017/ssd.md
 [ADR-0009]: ../../adr/adr-0009-server-access-and-file-transfer.md
+[f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
