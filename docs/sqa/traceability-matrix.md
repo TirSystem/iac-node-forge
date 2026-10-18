@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-16 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-064 and RC-065 | [27af875] |
 | 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-066, the Go/No-Go check of MIL-004 | [5f95f60] |
+| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-005, RC-067 and RC-068 | pending |
 
 ---
 
@@ -26,11 +26,12 @@ updated whenever an artifact instance is created or reviewed.
 | --- | --- | --- | --- | --- | --- | --- |
 | [BC-001] | BC | en | it | - | [SA-001], [PP-001], [UCD-001] | [RC-001] |
 | [SA-001] | SA | en | it | [BC-001] | [BC-001], [MIL-001] | [RC-002] |
-| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031], [RC-048], [RC-054] |
+| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031], [RC-048], [RC-054], [RC-068] |
 | [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | [RC-029] |
 | [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030], [RC-043], [RC-045], [RC-046] |
 | [MIL-003] | MIL | en | it | [BC-001], [US-001], [MIL-002] | - | [RC-047], [RC-051], [RC-052] |
 | [MIL-004] | MIL | en | it | [BC-001], [US-001], [MIL-003] | - | [RC-053], [RC-064], [RC-066] |
+| [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -55,7 +56,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-066 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-068 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -126,6 +127,7 @@ updated whenever an artifact instance is created or reviewed.
 [RC-051]: ./reviews/rc-051-python-code-mil-003.md
 [RC-052]: ./reviews/rc-052-mil-003-go-no-go.md
 [MIL-004]: ../milestones/mil-004-power-control.md
+[MIL-005]: ../milestones/mil-005-provisioning.md
 [RC-053]: ./reviews/rc-053-mil-004.md
 [RC-054]: ./reviews/rc-054-pp-001-rev.md
 [ADR-0006]: ../adr/adr-0006-power-actions-and-operation-tracking.md
@@ -144,6 +146,7 @@ updated whenever an artifact instance is created or reviewed.
 [RC-063]: ./reviews/rc-063-erd-001-rev3.md
 [RC-064]: ./reviews/rc-064-python-code-mil-004.md
 [RC-065]: ./reviews/rc-065-dcd-001-rev5.md
-[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb
 [RC-066]: ./reviews/rc-066-mil-004-go-no-go.md
 [5f95f60]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/5f95f6082305886506f860cadcddaf28cf07af04
+[RC-067]: ./reviews/rc-067-mil-005.md
+[RC-068]: ./reviews/rc-068-pp-001-mil-005.md

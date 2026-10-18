@@ -4,15 +4,15 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005] |
 | Language | en |
 | Domain | it |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | S02 | Scheduled MIL-004, power control | [e23414a] |
-| 2026-10-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-054 (autonomous mode, stand-in) | [be0b25a] |
+| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-054 (autonomous mode, stand-in) | [be0b25a] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-068 (autonomous mode, stand-in) | pending |
 
 ---
 
@@ -35,6 +35,8 @@ states no duration or deadline yet, so the plan has no fixed end date.
 - The second software milestone is the Contabo read-only adapter, chosen by S01 on 2026-10-15.
 - The third software milestone is power control (start, shutdown, stop, restart and operation
   tracking) for both providers, chosen by S01 on 2026-10-15; it is the first action that changes state.
+- The fourth software milestone is provisioning (the desired configuration and the creation of a
+  server), chosen by S01 on 2026-10-18; it is the first action that creates something and may cost money.
 - The first software milestone is a read-only slice: Proxmox VE with the Python command-line
   interface (CLI), decided by S01 on 2026-10-15.
 
@@ -46,6 +48,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
 | Read-only slice: Proxmox VE with the Python CLI | [MIL-002] | 2026-10-29 to 2026-11-26 | 2026-11-26 | S01 | US-001.01, US-001.02, US-001.06 | Python CLI for UC-01, UC-02 and UC-07 against Proxmox VE, design artifacts, mock application programming interface (API), continuous integration (CI) | |
 | Contabo read-only adapter | [MIL-003] | 2026-10-16 to 2026-11-13 | 2026-11-13 | S01 | US-001.01, US-001.02, US-001.06 | Contabo adapter behind the same port, multi-value credentials, mock and provider-neutral contract suite, read-only live run | |
 | Power control | [MIL-004] | 2026-10-16 to 2026-11-27 | 2026-11-27 | S01 | US-001.05, US-001.07 | Power actions and operation tracking for Proxmox VE and Contabo through the CLI, operation record, power contract suite, opt-in live run | |
+| Provisioning | [MIL-005] | 2026-10-19 to 2026-11-30 | 2026-11-30 | S01 | US-001.03, US-001.04 | Desired configuration and server creation for Proxmox VE and Contabo through the CLI, cost confirmation, protection against duplicate creation, managed-server record, provisioning contract suite, opt-in live run in the Docker Proxmox VE | |
 
 ```plantuml
 @startgantt
@@ -58,6 +61,8 @@ Project starts 2026-10-14
 [MIL-003 Go/No-Go] happens 2026-11-13
 [MIL-004 Power control] starts 2026-10-16 and ends 2026-11-27
 [MIL-004 Go/No-Go] happens 2026-11-27
+[MIL-005 Provisioning] starts 2026-10-19 and ends 2026-11-30
+[MIL-005 Go/No-Go] happens 2026-11-30
 @endgantt
 ```
 
@@ -66,7 +71,7 @@ Project starts 2026-10-14
 | Business Case scope item | Gateway |
 | --- | --- |
 | Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases); MIL-002 (Proxmox VE with the CLI); MIL-003 (Contabo, read-only) |
-| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); others not yet planned |
+| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); MIL-005 (define and provision); others not yet planned |
 | Display of servers not managed by this client | MIL-001 (use case UC-07); MIL-002 and MIL-003 (read-only list) |
 | Python command-line interface (CLI) and WinUI 3 application | MIL-002 and MIL-003 (CLI, three use cases); WinUI 3 not yet planned |
 | JSON Lines (JSONL) configuration file per client | MIL-002 (CLI client) |
@@ -74,7 +79,7 @@ Project starts 2026-10-14
 ## Dependencies
 
 ```
-MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> (later phases, not yet planned)
+MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> MIL-005 Provisioning -> (later phases, not yet planned)
 ```
 
 A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
@@ -91,13 +96,16 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 | The live Contabo run needs real API credentials | Go criterion 7 cannot be met without S01 | Read-only calls cost nothing; the run is the last task and S01 supplies the credentials in their own shell |
 | The first state-changing action can turn a real server off | Unwanted downtime or data loss during tests | Tests run against mocks; the live run needs a disposable server named by S01 and an explicit opt-in; no delete, cancel or reinstall request exists in the code |
 | No server is recorded as managed by this client yet | Every power action needs the extra confirmation | Accepted for this milestone; adoption of a server belongs to the provisioning milestone |
+| Provisioning at Contabo commits the account to a contract period and costs money | An unwanted or duplicate order | The cost and period are shown and confirmed before any request; a retry looks for the name first and records its intent; no Contabo instance is created in tests |
+| The product has no delete yet (UC-012 is a later milestone) | A server created in a test cannot be removed by the product | The live test runs only in the Docker Proxmox VE and removes what it created with a test-only helper; the container is deleted afterwards |
 | No deadline or budget limit (confirmed by S01) | Plan cannot be checked against a constraint | Plan later phases by effort; revisit if a deadline appears |
 
 ## Open Issues
 
 - The MIL-003 window (2026-10-16 to 2026-11-13) is an assumption to be confirmed by S01.
 - The MIL-004 window (2026-10-16 to 2026-11-27) is an assumption to be confirmed by S01.
-- Which milestone follows MIL-004 (provisioning, WinUI 3, file backup, snapshots) is decided when MIL-004 has a Go.
+- The MIL-005 window (2026-10-19 to 2026-11-30) is an assumption to be confirmed by S01.
+- Which milestone follows MIL-005 (delete or cancel, file backup, snapshots, WinUI 3) is decided when MIL-005 has a Go.
 - Later phases (state-changing actions, second provider, second client) are
   candidates only and have no `MIL-*` document yet.
 - The diagram, with MIL-002, was rendered on `plantuml.tirsystem.com` on 2026-10-15
@@ -111,5 +119,5 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-002]: ./milestones/mil-002-read-only-slice-proxmox-cli.md
 [MIL-003]: ./milestones/mil-003-contabo-read-only-adapter.md
 [MIL-004]: ./milestones/mil-004-power-control.md
-[e23414a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/e23414a185edb1d4a116688272436fcf931ca7c4
+[MIL-005]: ./milestones/mil-005-provisioning.md
 [be0b25a]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/be0b25abad56f416ff748198aa6295e480d66bd4
