@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-16 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: aligned with the built power code (MIL-004 task 12)<br>Accepted after RC-065 | [27af875] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerProvisionPort, DesiredConfigurationStore, ProvisionIntentStore, DesiredConfiguration, ProvisionIntent, DefineDesiredConfiguration, ProvisionServer (MIL-005)<br>Accepted after RC-076 | [aa570c0] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerProvisionPort, DesiredConfigurationStore, ProvisionIntentStore, DesiredConfiguration, ProvisionIntent, DefineDesiredConfiguration, ProvisionServer (MIL-005)<br>Accepted after RC-076 | [aa570c0] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: aligned with the built provisioning code (MIL-005 task 12)<br>Accepted after RC-079 | [9a23c07] |
 
 ---
 
@@ -22,6 +22,16 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised after the code of MIL-005 on 2026-10-18 (revision 7): the file is kept by four adapters, one per
+port (`JsonLinesConfigurationStore`, `JsonLinesOperationStore`, `JsonLinesDesiredConfigurationStore`,
+`JsonLinesProvisionIntentStore`) over one file, because one class cannot implement `save` and
+`loadAll` of four ports; `ProvisionPreview` also carries `outcome`, `reason` and `providerName`;
+`listDesiredConfigurations` takes `check` (by default it does not call the provider); a failed completion
+uses `REJECTED`; the image of a desired configuration is the single source of the image (the rule named
+`template` or `image` checks it, and no second value of that name is allowed); a timeout of the create
+request, or a 5xx at Contabo, ends the operation as `UNKNOWN` and leaves the intent pending
+([ADR-0007]).
 
 Revised for MIL-005 on 2026-10-18 (revision 6): the write side grows by the creation of a server
 ([ADR-0007]). `ServerProvisionPort` is a third narrow port beside `ProviderPort` and
@@ -229,7 +239,7 @@ package application {
   class DefineDesiredConfiguration {
     + defineDesiredConfiguration(configuration, name, image, accessKeyNames, bootstrapHint, values) : DesiredConfigurationView
     + validateDesiredConfiguration(configuration, name) : DesiredConfigurationView
-    + listDesiredConfigurations(configuration) : List
+    + listDesiredConfigurations(configuration, check) : List
   }
   class ProvisionServer {
     + previewProvisioning(configuration, desiredName, serverName) : ProvisionPreview
@@ -274,6 +284,9 @@ package infrastructure {
   class ProxmoxProvider
   class ContaboProvider
   class JsonLinesConfigurationStore
+  class JsonLinesOperationStore
+  class JsonLinesDesiredConfigurationStore
+  class JsonLinesProvisionIntentStore
   class PlatformCredentialStore
   class ConsoleCredentialPrompt
 }
@@ -326,9 +339,9 @@ ProvisionServer ..> ProvisionIntentStore
 ProvisionServer ..> OperationStore
 ProvisionServer ..> ConfigurationStore
 JsonLinesConfigurationStore ..|> ConfigurationStore
-JsonLinesConfigurationStore ..|> OperationStore
-JsonLinesConfigurationStore ..|> DesiredConfigurationStore
-JsonLinesConfigurationStore ..|> ProvisionIntentStore
+JsonLinesOperationStore ..|> OperationStore
+JsonLinesDesiredConfigurationStore ..|> DesiredConfigurationStore
+JsonLinesProvisionIntentStore ..|> ProvisionIntentStore
 PlatformCredentialStore ..|> CredentialStore
 ConsoleCredentialPrompt ..|> CredentialPrompt
 CliApplication ..> ConfigureProviderAccess
@@ -371,9 +384,9 @@ CredentialSource ..> CredentialPrompt
 | ProviderResolver | (provider) | Gives the provider port, the power port and the provision port for one saved configuration, built with that configuration's credentials. | none | providerFor, powerFor, provisionFor |
 | AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure, Confirmation, OperationSummary, PowerActionResult | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
 | DesiredConfigurationView | Desired configuration | Result of defining, validating or listing a desired configuration: its name, configuration, image, access key names, bootstrap hint, values, whether it is valid and each problem. | configurationId, name, image, accessKeyNames, bootstrapHint, values, valid, problems | none |
-| ProvisionPreview | Provision intent | What will be created: provider, configuration, desired name, server name, target, image, size, values and the cost consequence text (empty when the provider imposes none). | providerKind, configurationId, desiredName, serverName, target, image, size, values, costConsequence | none |
+| ProvisionPreview | Provision intent | What will be created, or why nothing can be: the outcome and reason, provider, configuration, desired name, server name, target, image, size, values and the cost consequence text (empty when the provider imposes none). | outcome, reason, providerName, providerKind, configurationId, desiredName, serverName, target, image, size, values, costConsequence | none |
 | ProvisionResult | Operation | Result of requesting or completing a provisioning: the outcome, the reason, the operation summary when one exists, the server identifier when known, and the state left at the provider. | outcome, reason, operation, serverIdentifier, stateLeft | none |
-| ProvisionOutcome | Operation | The outcomes of a preview, a request and a completion: READY (preview offered), REQUESTED, COMPLETED (server recorded as managed), INCOMPLETE (operation unfinished, unknown or without a server identifier), REJECTED (provider refused), UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED. | READY, REQUESTED, COMPLETED, INCOMPLETE, REJECTED, UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED | none |
+| ProvisionOutcome | Operation | The outcomes of a preview, a request and a completion: READY (preview offered), REQUESTED, COMPLETED (server recorded as managed), INCOMPLETE (operation unfinished, unknown or without a server identifier), REJECTED (provider refused, or the operation ended as failed), UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED. | READY, REQUESTED, COMPLETED, INCOMPLETE, REJECTED, UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED | none |
 | PowerAction, OperationState | Operation | The four power actions plus PROVISION, the kind of an operation (the type keeps its name; `requestPowerAction` refuses PROVISION), and the four states of an operation. | START, SHUTDOWN, STOP, RESTART, PROVISION; RUNNING, SUCCEEDED, FAILED, UNKNOWN | none |
 | Operation | Operation | One requested action and its recorded outcome; never holds a secret. `serverIdentifier`, `finishedAt`, `providerReference` and `detail` are empty until set (`serverIdentifier` for a provision operation until the provider names the server); `detail` is bounded to 500 characters. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail | none |
 | ServerPowerPort | (provider) | The boundary for the four power requests and for reading an operation's state; a narrow port beside ProviderPort ([ADR-0006]). | none | requestPower, operationState (one read; returns the operation updated, polling belongs to the caller) |
@@ -391,7 +404,7 @@ CredentialSource ..> CredentialPrompt
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
 | ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface: the reads, the four power requests and the container and virtual machine creations. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort |
 | ContaboProvider | (provider) | Adapter for the Contabo interface (the reads, the four power requests and the instance creation): exchanges the four credential values for a bearer token kept in memory, sends a request identifier on every call and renews the token once after a 401. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort |
-| JsonLinesConfigurationStore | (configuration) | Adapter that keeps configuration, operations, desired configurations, intents and managed servers as JSON Lines in one file without secrets. | none | implements ConfigurationStore, OperationStore, DesiredConfigurationStore, ProvisionIntentStore |
+| JsonLinesConfigurationStore, JsonLinesOperationStore, JsonLinesDesiredConfigurationStore, JsonLinesProvisionIntentStore | (configuration) | Adapters that keep configuration and managed servers, operations, desired configurations and intents as JSON Lines in one file without secrets; each implements one port, because `save` and `loadAll` differ between the ports. | none | each implements its own port |
 | PlatformCredentialStore | Credential reference | Adapter for the operating system credential store. | none | implements CredentialStore |
 | ConsoleCredentialPrompt | (credentials) | Adapter that asks for each credential name of the provider on the console. | none | implements CredentialPrompt |
 | CliProviderResolver | (provider) | Builds the provider adapter for a configuration after obtaining its credentials. | none | implements ProviderResolver |
@@ -417,7 +430,7 @@ CredentialSource ..> CredentialPrompt
 | OperationStore.save(operation), load(operationId) | `requestPowerAction` in [OC-002] and `followOperation` in [OC-003] |
 | DefineDesiredConfiguration.defineDesiredConfiguration(configuration, name, image, accessKeyNames, bootstrapHint, values) : DesiredConfigurationView | `defineDesiredConfiguration` in [OC-004] and [SSD-006] |
 | DefineDesiredConfiguration.validateDesiredConfiguration(configuration, name) : DesiredConfigurationView | `validateDesiredConfiguration` in [OC-004] and [SSD-006] |
-| DefineDesiredConfiguration.listDesiredConfigurations(configuration) : List | `listDesiredConfigurations` in [SSD-006] (a query; no contract) |
+| DefineDesiredConfiguration.listDesiredConfigurations(configuration, check) : List | `listDesiredConfigurations` in [SSD-006] (a query; no contract) |
 | DesiredConfigurationValidator.check(configuration, desiredConfiguration) : List | Supporting operation: the preconditions on the image and the values of `defineDesiredConfiguration` and `validateDesiredConfiguration` in [OC-004], and of `previewProvisioning` and `requestProvisioning` in [OC-005] |
 | ProvisionServer.previewProvisioning(configuration, desiredName, serverName) : ProvisionPreview | `previewProvisioning` in [OC-005] and [SSD-007] |
 | ProvisionServer.requestProvisioning(configuration, desiredName, serverName, confirmation) : ProvisionResult | `requestProvisioning` in [OC-005] and [SSD-007] |
@@ -487,5 +500,5 @@ and may name every layer.
 [SSD-007]: ./use-cases/uc-004/ssd.md
 [OC-004]: ./use-cases/uc-003/oc.md
 [OC-005]: ./use-cases/uc-004/oc.md
-[27af875]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/27af875ccc6fb626796bf907ef68b63f967cbfdb
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298

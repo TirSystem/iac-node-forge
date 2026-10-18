@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-005, RC-067 and RC-068 | [2034b4b] |
 | 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0007, SSD-006, SSD-007, OC-004, OC-005 and RC-069 to RC-077 (MIL-005 design)<br>Revised the rows of DICT-001, DM-001, DCD-001 and ERD-001 | [aa570c0] |
+| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-078 and RC-079 | [9a23c07] |
 
 ---
 
@@ -31,7 +31,7 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030], [RC-043], [RC-045], [RC-046] |
 | [MIL-003] | MIL | en | it | [BC-001], [US-001], [MIL-002] | - | [RC-047], [RC-051], [RC-052] |
 | [MIL-004] | MIL | en | it | [BC-001], [US-001], [MIL-003] | - | [RC-053], [RC-064], [RC-066] |
-| [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067] |
+| [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067], [RC-078] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -49,7 +49,7 @@ updated whenever an artifact instance is created or reviewed.
 | [SSD-006], [SSD-007] | SSD | en | it | [UC-003], [UC-004], [DM-001] | [OC-004], [OC-005], [DCD-001] | [RC-072], [RC-073] |
 | [OC-004], [OC-005] | OC | - | - | [SSD-006], [SSD-007], [DM-001] | [DCD-001] | [RC-074], [RC-075] |
 | [ADR-0007] | ADR | - | - | [BC-001], [MIL-005], [ADR-0002], [ADR-0004], [ADR-0005], [ADR-0006] | [UC-003], [UC-004] | [RC-069] |
-| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004], [OC-005], [SSD-001] to [SSD-003], [SSD-006], [SSD-007] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076] |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004], [OC-005], [SSD-001] to [SSD-003], [SSD-006], [SSD-007] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076], [RC-079] |
 | [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039], [RC-042], [RC-063], [RC-077] |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
@@ -59,7 +59,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-077 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-079 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -153,7 +153,6 @@ updated whenever an artifact instance is created or reviewed.
 [RC-066]: ./reviews/rc-066-mil-004-go-no-go.md
 [RC-067]: ./reviews/rc-067-mil-005.md
 [RC-068]: ./reviews/rc-068-pp-001-mil-005.md
-[2034b4b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/2034b4bbd73cdebb4b9dce6dd98afd83095a798c
 [ADR-0007]: ../adr/adr-0007-desired-configuration-and-provisioning.md
 [SSD-006]: ../use-cases/uc-003/ssd.md
 [SSD-007]: ../use-cases/uc-004/ssd.md
@@ -169,3 +168,6 @@ updated whenever an artifact instance is created or reviewed.
 [RC-076]: ./reviews/rc-076-dcd-001-rev6.md
 [RC-077]: ./reviews/rc-077-erd-001-rev4.md
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[RC-078]: ./reviews/rc-078-python-code-mil-005.md
+[RC-079]: ./reviews/rc-079-dcd-001-rev7.md
+[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298
