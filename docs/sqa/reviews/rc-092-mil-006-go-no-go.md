@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [603268c] |
 
 ---
 
@@ -52,3 +52,4 @@ Go — all ten criteria pass. This is the stand-in's decision in autonomous mode
 ---
 
 [MIL-006]: ../../milestones/mil-006-delete-or-cancel.md
+[603268c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/603268cce5aa39b3d84628010033a2fcb97603e5

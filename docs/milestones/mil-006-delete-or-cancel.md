@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-081 (autonomous mode, stand-in) | [f4145ff] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all ten criteria met (RC-092); stand-in decision, open to challenge | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all ten criteria met (RC-092); stand-in decision, open to challenge | [603268c] |
 
 ---
 
@@ -114,3 +114,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [US-001]: ../user-stories.md
 [MIL-005]: ./mil-005-provisioning.md
 [f4145ff]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f4145ff47c7aa423e4b15592810956412a9d640a
+[603268c]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/603268cce5aa39b3d84628010033a2fcb97603e5
