@@ -146,18 +146,18 @@ has been made yet (task 13), so the live column is `Pending` throughout.
 
 | # | Statement | Documentation | Mock | Live |
 | --- | --- | --- | --- | --- |
-| W1 | Proxmox VE: `POST .../status/start`, `shutdown`, `stop` and `reboot` answer a task identifier (UPID) | Yes (P3, P7) | Yes | Passed for `start` and `stop`; `shutdown` answered a task; `reboot` not run |
-| W2 | Proxmox VE: a task is followed through `.../tasks/{upid}/status` until `status` is `stopped`; `exitstatus` `OK` is success, anything else a failure | Yes (P4) | Yes | Passed for `start` (exit status `OK`) and `stop`; a failed `shutdown` ended `stopped` with an error exit status |
+| W1 | Proxmox VE: `POST .../status/start`, `shutdown`, `stop` and `reboot` answer a task identifier (UPID) | Yes (P3, P7) | Yes | Passed for `start`, `shutdown`, `stop` and `reboot` of a container (2026-10-18) |
+| W2 | Proxmox VE: a task is followed through `.../tasks/{upid}/status` until `status` is `stopped`; `exitstatus` `OK` is success, anything else a failure | Yes (P4) | Yes | Passed: `OK` for all four of a container (2026-10-18) |
 | W3 | Proxmox VE: the API token needs `VM.PowerMgmt` for the four requests | Yes (P13) | Not modelled | Pending |
 | W4 | Proxmox VE: an exit status such as `WARNINGS: n` is treated as failed, with the text as the detail | Not stated | Assumed | Partly: a shutdown of a VM without a guest OS ended with exit status `TASK ERROR: VM quit/powerdown failed - got timeout`, shown as failed; `WARNINGS: n` not seen |
 | W5 | Contabo: `POST /v1/compute/instances/{id}/actions/start`, `shutdown`, `stop` and `restart` accept the request with the bearer token and a request identifier | Yes (C10) | Yes | Pending |
 | W6 | Contabo: there is no task; the instance `status` is polled until it equals the target (`running` after start, `stopped` after shutdown and stop) | Partly (C10) | Yes | Pending |
 | W7 | Contabo: the status sequence between the request and the target, and how long it takes | Not stated | Assumed | Pending |
 | W8 | Contabo: a restart cannot be told apart from no change, so it is reported as succeeded only when the status is `running` after the settle time, with the detail saying so | Not stated | Yes | Pending |
-| W9 | Both: no write request other than the four power actions is ever sent | Not applicable | Yes (recorder answers 405) | Pending |
-| W10 | Both: a time limit that passes ends the operation as `unknown`, and the request is not repeated | Design choice ([ADR-0006]) | Yes | Pending |
+| W9 | Both: no write request other than the four power actions is ever sent | Not applicable | Yes (recorder answers 405) | Passed (the live tests record the writes) |
+| W10 | Both: a time limit that passes ends the operation as `unknown`, and the request is not repeated | Design choice ([ADR-0006]) | Yes | Not provoked |
 
-### Live run against Proxmox VE, 2026-10-16
+### Live run against Proxmox VE, 2026-10-16 (first attempt)
 
 The AI ran the live power tests against the disposable Proxmox VE container from `tests/integration/docker-compose.proxmox.yml`, with a VM `9001` without disk or guest OS and software emulation (no KVM on the host), an API token for `root@pam` with privilege separation off, and `iac-node-forge-py` at `336854d`. The token was kept in the process environment and removed afterwards.
 
@@ -167,6 +167,17 @@ The AI ran the live power tests against the disposable Proxmox VE container from
 | cycle (already-running check, start, shutdown, restart) | Not passed: start and the already-running check were correct; `shutdown` ended failed because the VM has no guest OS to answer the ACPI request, and the cleanup that restores the original state then left the VM running; it was stopped by hand afterwards |
 
 This is a limit of the test target, not a verdict on graceful shutdown or restart: neither could be shown, and Go criterion 8 (start, shutdown and restart) is **not met**. It needs a server with a guest OS that answers ACPI. The restore step of the tests should also fall back to a hard stop, when that is allowed, so a failed graceful shutdown cannot leave a server running.
+
+### Live run against a Proxmox VE container, 2026-10-18
+
+The AI repeated the run in the same Docker Proxmox VE, this time against an Alpine Linux container (`vmid` 9002, created from the `alpine-3.24-default` template) that answers a graceful shutdown, with `iac-node-forge-py` at `68309a1` (the restore fix included) and a token for `root@pam` that was removed afterwards. `pytest -m integration -k "power and proxmox" -v`: **2 passed, 621 deselected in 583.72 seconds**.
+
+| Test | Verdict |
+| --- | --- |
+| cycle (already-running check, shutdown or start, restart, original state restored) | Passed |
+| hard stop (with the extra opt-in) | Passed |
+
+What this confirms: W1 and W2 for `start`, `shutdown`, `stop` and `reboot` of a container, with the task followed to exit status `OK`; W9 (only the four power requests are sent); W10 was not provoked. It does not cover a virtual machine with a guest OS, the `VM.PowerMgmt` permission error (W3, the token had all privileges), a `WARNINGS` exit status (W4) or any Contabo behaviour (W5 to W8, not run because a Contabo instance costs money).
 
 What the live run must still settle: W4 (the real exit status text), W7 (the real status sequence and
 timing at Contabo) and W3 (the permission error shape). The status and timing numbers in
