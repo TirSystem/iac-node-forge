@@ -4,15 +4,15 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007] |
 | Language | en |
 | Domain | it |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-068 (autonomous mode, stand-in) | [2034b4b] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-082 (autonomous mode, stand-in) | [f4145ff] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-082 (autonomous mode, stand-in) | [f4145ff] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-094 (autonomous mode, stand-in) | pending |
 
 ---
 
@@ -39,6 +39,8 @@ states no duration or deadline yet, so the plan has no fixed end date.
   server), chosen by S01 on 2026-10-18; it is the first action that creates something and may cost money.
 - The fifth software milestone is the removal of a server (delete or cancel), chosen by S01 on 2026-10-18;
   it is the first action that cannot be undone.
+- The sixth software milestone is file backup and restore, chosen by S01 on 2026-10-18; it is the first slice
+  that reaches the inside of a server over SSH and does not depend on the provider.
 - The first software milestone is a read-only slice: Proxmox VE with the Python command-line
   interface (CLI), decided by S01 on 2026-10-15.
 
@@ -52,6 +54,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
 | Power control | [MIL-004] | 2026-10-16 to 2026-11-27 | 2026-11-27 | S01 | US-001.05, US-001.07 | Power actions and operation tracking for Proxmox VE and Contabo through the CLI, operation record, power contract suite, opt-in live run | |
 | Provisioning | [MIL-005] | 2026-10-19 to 2026-11-30 | 2026-11-30 | S01 | US-001.03, US-001.04 | Desired configuration and server creation for Proxmox VE and Contabo through the CLI, cost confirmation, protection against duplicate creation, managed-server record, provisioning contract suite, opt-in live run in the Docker Proxmox VE | |
 | Delete or cancel a server | [MIL-006] | 2026-10-19 to 2026-11-27 | 2026-11-27 | S01 | US-001.08 | Removal of a server at Proxmox VE (destroy) and Contabo (cancel with an effective date) through the CLI, protection against accidental removal, removal record, removal contract suite, opt-in live run in the Docker Proxmox VE | |
+| File backup and restore | [MIL-007] | 2026-10-19 to 2026-12-11 | 2026-12-11 | S01 | US-001.09, US-001.10 | Backup of server files to the local PC and restore to a server over SSH through the CLI, verified copies, overwrite preview, host key rules, transfer contract suite, opt-in round trip against a throw-away SSH server | |
 
 ```plantuml
 @startgantt
@@ -68,6 +71,8 @@ Project starts 2026-10-14
 [MIL-005 Go/No-Go] happens 2026-11-30
 [MIL-006 Delete or cancel] starts 2026-10-19 and ends 2026-11-27
 [MIL-006 Go/No-Go] happens 2026-11-27
+[MIL-007 File backup and restore] starts 2026-10-19 and ends 2026-12-11
+[MIL-007 Go/No-Go] happens 2026-12-11
 @endgantt
 ```
 
@@ -76,7 +81,7 @@ Project starts 2026-10-14
 | Business Case scope item | Gateway |
 | --- | --- |
 | Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases); MIL-002 (Proxmox VE with the CLI); MIL-003 (Contabo, read-only) |
-| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); MIL-005 (define and provision); MIL-006 (delete or cancel); others not yet planned |
+| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); MIL-005 (define and provision); MIL-006 (delete or cancel); MIL-007 (file backup and restore); others not yet planned |
 | Display of servers not managed by this client | MIL-001 (use case UC-07); MIL-002 and MIL-003 (read-only list) |
 | Python command-line interface (CLI) and WinUI 3 application | MIL-002 and MIL-003 (CLI, three use cases); WinUI 3 not yet planned |
 | JSON Lines (JSONL) configuration file per client | MIL-002 (CLI client) |
@@ -84,7 +89,7 @@ Project starts 2026-10-14
 ## Dependencies
 
 ```
-MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> MIL-005 Provisioning -> MIL-006 Delete or cancel -> (later phases, not yet planned)
+MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> MIL-005 Provisioning -> MIL-006 Delete or cancel -> MIL-007 File backup and restore -> (later phases, not yet planned)
 ```
 
 A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
@@ -105,6 +110,8 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 | The product has no delete yet (UC-012 is a later milestone) | A server created in a test cannot be removed by the product | The live test runs only in the Docker Proxmox VE and removes what it created with a test-only helper; the container is deleted afterwards |
 | Removal cannot be undone: Proxmox VE destroys the server and its disks at once | Lost data or a lost server | The consequence is stated first, the identifier is always typed, an unmanaged server needs one more confirmation, a running server is refused; tests run against mocks and a throw-away Docker Proxmox VE |
 | Contabo only records a cancellation, and the rule for the cancel date is not stated | The contract runs on and is billed until the provider's date | The date the provider reports is shown and recorded; no Contabo instance is cancelled in tests |
+| A restore overwrites data on a server | Lost data on the server | The files that would be overwritten are listed first, the identifier is confirmed, a server not managed by this client needs one more confirmation, and a copy is verified by a hash of every file |
+| The product reaches the server with the user's own SSH identity | A wrong or spoofed server receives data | The host key is checked against the user's `known_hosts`; an unknown key needs explicit acceptance and a changed key stops the transfer; no key, password or passphrase is stored or put on a command line |
 | No deadline or budget limit (confirmed by S01) | Plan cannot be checked against a constraint | Plan later phases by effort; revisit if a deadline appears |
 
 ## Open Issues
@@ -113,7 +120,8 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 - The MIL-004 window (2026-10-16 to 2026-11-27) is an assumption to be confirmed by S01.
 - The MIL-005 window (2026-10-19 to 2026-11-30) is an assumption to be confirmed by S01.
 - The MIL-006 window (2026-10-19 to 2026-11-27) is an assumption to be confirmed by S01.
-- Which milestone follows MIL-006 (file backup, snapshots, WinUI 3) is decided when MIL-006 has a Go.
+- The MIL-007 window (2026-10-19 to 2026-12-11) is an assumption to be confirmed by S01.
+- Which milestone follows MIL-007 (whole-server backup, snapshots, WinUI 3) is decided when MIL-007 has a Go.
 - Later phases (state-changing actions, second provider, second client) are
   candidates only and have no `MIL-*` document yet.
 - The diagram, with MIL-002, was rendered on `plantuml.tirsystem.com` on 2026-10-15
@@ -129,5 +137,5 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-004]: ./milestones/mil-004-power-control.md
 [MIL-005]: ./milestones/mil-005-provisioning.md
 [MIL-006]: ./milestones/mil-006-delete-or-cancel.md
-[2034b4b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/2034b4bbd73cdebb4b9dce6dd98afd83095a798c
+[MIL-007]: ./milestones/mil-007-file-backup-and-restore.md
 [f4145ff]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f4145ff47c7aa423e4b15592810956412a9d640a
