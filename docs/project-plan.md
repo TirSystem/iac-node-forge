@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-068 (autonomous mode, stand-in) | [2034b4b] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-082 (autonomous mode, stand-in) | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-082 (autonomous mode, stand-in) | [f4145ff] |
 
 ---
 
@@ -130,3 +130,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-005]: ./milestones/mil-005-provisioning.md
 [MIL-006]: ./milestones/mil-006-delete-or-cancel.md
 [2034b4b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/2034b4bbd73cdebb4b9dce6dd98afd83095a798c
+[f4145ff]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f4145ff47c7aa423e4b15592810956412a9d640a
