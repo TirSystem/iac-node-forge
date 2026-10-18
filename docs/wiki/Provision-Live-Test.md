@@ -85,7 +85,7 @@ docker exec proxmox-node1 pveam download local alpine-3.24-default_20260714_amd6
 
 The token and `PVE_VERIFY` above, and then the four provisioning variables. The node name is
 what `docker exec proxmox-node1 pvesh get /nodes --output-format json` shows. The template is
-`<node>/<storage>:vztmpl/<file>` as the CLI lists it with `server options`.
+the volume id of the file you downloaded, `local:vztmpl/<file>`.
 
 **Linux and macOS (bash)**
 
