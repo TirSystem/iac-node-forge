@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Operation and Power action (MIL-004)<br>Accepted after RC-057 | [f91e283] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Power action also names provision (MIL-005)<br>Accepted after RC-071 | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Power action also names provision (MIL-005)<br>Accepted after RC-071 | [aa570c0] |
 
 ---
 
@@ -54,3 +54,4 @@ gets a row here in the same change as in the domain model.
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
 [f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
+[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381

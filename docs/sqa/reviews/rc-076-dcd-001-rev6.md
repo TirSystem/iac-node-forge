@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [aa570c0] |
 
 ---
 
@@ -51,3 +51,4 @@ Go — every Mandatory criterion passes. The row is accepted in autonomous mode.
 [DCD-001]: ../../dcd.md
 [QC-DCD-001]: ../../../framework/qc/artifacts/qc-dcd.md
 [RC-065]: ./rc-065-dcd-001-rev5.md
+[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381

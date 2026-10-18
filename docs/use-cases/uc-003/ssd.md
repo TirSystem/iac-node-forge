@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-072 | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-072 | [aa570c0] |
 
 ---
 
@@ -61,3 +61,4 @@ access keys are given; a key value is never part of a description.
 [SSD-002]: ../uc-002/ssd.md
 [UC-004]: ../uc-004/uc.md
 [OC-004]: ./oc.md
+[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
