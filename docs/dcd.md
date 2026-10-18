@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | DCD-001 |
-| CrossReference | [DM-001], [OC-001], [OC-002], [OC-003], [SSD-001], [SSD-002], [SSD-003], [SSD-004], [SSD-005], [DICT-001], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [SSD-006], [SSD-007], [OC-004], [OC-005] |
+| CrossReference | [DM-001], [OC-001], [OC-002], [OC-003], [SSD-001], [SSD-002], [SSD-003], [SSD-004], [SSD-005], [DICT-001], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [SSD-006], [SSD-007], [OC-004], [OC-005], [ADR-0008], [SSD-008], [OC-006] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerProvisionPort, DesiredConfigurationStore, ProvisionIntentStore, DesiredConfiguration, ProvisionIntent, DefineDesiredConfiguration, ProvisionServer (MIL-005)<br>Accepted after RC-076 | [aa570c0] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: aligned with the built provisioning code (MIL-005 task 12)<br>Accepted after RC-079 | [9a23c07] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 8: ServerRemovalPort, RemoveServer, RemovalKind, RemovalBlock, RemovalPreview, RemovalResult, RemovalOutcome; Operation.consequence; ManagedServerRecord can be ended (MIL-006)<br>Accepted after RC-088 | [6cdd351] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | [77de1b9] |
 
 ---
 
@@ -22,6 +22,29 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised after the code of MIL-006 on 2026-10-18 (revision 9): the flag of `Confirmation` is named `given`, as it
+was for the power and provisioning requests; the adapters leave `Operation.consequence` empty and the use case
+records the text shown in the preview; `completeRemoval` ends only an active managed record recorded at or
+before the start of the operation, so that completing a removal again cannot end a newer server that reuses
+a Proxmox VE identifier; for a blocked server (running, already removed) the preview shows the server and
+no consequence line ([ADR-0008]).
+
+Revised for MIL-006 on 2026-10-18 (revision 8): the write side grows by the removal of a server
+([ADR-0008]). `ServerRemovalPort` is a fourth narrow port beside `ProviderPort`, `ServerPowerPort`
+and `ServerProvisionPort`; it states its `RemovalKind` (`DESTROY` at Proxmox VE, `CANCEL` at
+Contabo), says through `RemovalBlock` whether a server can be removed now (running, already
+removed), gives the consequence text and sends the one removal request. The use case `RemoveServer`
+realises [UC-012] with `previewRemoval`, `requestRemoval` and `completeRemoval`. The action of an
+`Operation` gains `REMOVE` (the type keeps the name `PowerAction`; `ControlServerPower` refuses
+`REMOVE` as it refuses `PROVISION`), and an `Operation` gains the optional, bounded `consequence`,
+the text that was shown before the confirmation. A removal needs no intent store: a retry meets the
+new state. A `ManagedServerRecord` is ended, not deleted, through a new
+`ConfigurationStore.endManagedServer`, for the same reason `saveManagedServer` is on that port: the
+file of managed servers is read through it. The record gains `endedAt` and `endedByOperationId`, and
+`managedServers` returns only the records that are not ended. `ProviderResolver` gains `removalFor`;
+the capability `remove_server` is a value, not a class. `Confirmation` also carries the identifier
+typed and, for an unmanaged server, the identifier typed again.
 
 Revised after the code of MIL-005 on 2026-10-18 (revision 7): the file is kept by four adapters, one per
 port (`JsonLinesConfigurationStore`, `JsonLinesOperationStore`, `JsonLinesDesiredConfigurationStore`,
@@ -113,6 +136,11 @@ package domain {
     STOP
     RESTART
     PROVISION
+    REMOVE
+  }
+  enum RemovalKind {
+    DESTROY
+    CANCEL
   }
   enum OperationState {
     RUNNING
@@ -130,11 +158,14 @@ package domain {
     - finishedAt : Timestamp [0..1]
     - providerReference : Text [0..1]
     - detail : Text [0..1]
+    - consequence : Text [0..1]
   }
   class ManagedServerRecord {
     - configurationId : ConfigurationId
     - serverIdentifier : Text
     - recordedAt : Timestamp
+    - endedAt : Timestamp [0..1]
+    - endedByOperationId : OperationId [0..1]
   }
   class ProviderValue {
     - name : Text
@@ -192,6 +223,17 @@ package application {
     + requestProvision(configuration, desiredConfiguration, serverName, reservedIdentifier) : Operation
     + operationState(configuration, operation) : Operation
   }
+  enum RemovalBlock {
+    RUNNING
+    ALREADY_REMOVED
+  }
+  interface ServerRemovalPort {
+    + removalKind(configuration) : RemovalKind
+    + removalBlock(configuration, server) : RemovalBlock [0..1]
+    + consequence(configuration, server) : Text
+    + requestRemoval(configuration, server) : Operation
+    + operationState(configuration, operation) : Operation
+  }
   interface OperationStore {
     + save(operation) : void
     + load(operationId) : Operation
@@ -212,6 +254,7 @@ package application {
     + loadAll() : List
     + managedServers(configurationId) : List
     + saveManagedServer(record) : void
+    + endManagedServer(configurationId, serverIdentifier, endedAt, operationId) : void
   }
   interface CredentialStore {
     + put(reference, credentials) : void
@@ -224,6 +267,7 @@ package application {
     + providerFor(configuration) : ProviderPort
     + powerFor(configuration) : ServerPowerPort
     + provisionFor(configuration) : ServerProvisionPort
+    + removalFor(configuration) : ServerRemovalPort
   }
   class ControlServerPower {
     + previewPowerAction(configuration, serverIdentifier, action) : PowerActionResult
@@ -258,9 +302,29 @@ package application {
     INTENT_PENDING
     NOT_CONFIRMED
   }
+  class RemoveServer {
+    + previewRemoval(configuration, serverIdentifier) : RemovalPreview
+    + requestRemoval(configuration, serverIdentifier, confirmation) : RemovalResult
+    + completeRemoval(operationId) : RemovalResult
+  }
+  enum RemovalOutcome {
+    READY
+    REQUESTED
+    COMPLETED
+    INCOMPLETE
+    REJECTED
+    UNSUPPORTED
+    NOT_FOUND
+    RUNNING_REFUSED
+    ALREADY_REMOVED
+    NOT_CONFIRMED
+    IDENTIFIER_MISMATCH
+  }
   class DesiredConfigurationView
   class ProvisionPreview
   class ProvisionResult
+  class RemovalPreview
+  class RemovalResult
   class AccessCheck
   class SavedConfiguration
   class CapabilityReport
@@ -313,6 +377,8 @@ ProxmoxProvider ..|> ServerPowerPort
 ContaboProvider ..|> ServerPowerPort
 ProxmoxProvider ..|> ServerProvisionPort
 ContaboProvider ..|> ServerProvisionPort
+ProxmoxProvider ..|> ServerRemovalPort
+ContaboProvider ..|> ServerRemovalPort
 ControlServerPower ..> ProviderResolver
 ServerProvisionPort ..> ValueRule
 ControlServerPower ..> OperationStore
@@ -320,6 +386,12 @@ ControlServerPower ..> ConfigurationStore
 TrackOperation ..> ProviderResolver
 TrackOperation ..> OperationStore
 TrackOperation ..> ConfigurationStore
+ServerRemovalPort ..> RemovalKind
+ServerRemovalPort ..> RemovalBlock
+RemoveServer ..> ProviderResolver
+RemoveServer ..> OperationStore
+RemoveServer ..> ConfigurationStore
+ManagedServerRecord "0..1" --> "0..1" Operation
 Operation "0..*" --> "1" PowerAction
 Operation "0..*" --> "1" OperationState
 DesiredConfiguration "0..*" --> "1" ProviderConfiguration
@@ -349,6 +421,7 @@ CliApplication ..> DiscoverCapabilities
 CliApplication ..> ListServers
 CliApplication ..> DefineDesiredConfiguration
 CliApplication ..> ProvisionServer
+CliApplication ..> RemoveServer
 CliApplication ..> ControlServerPower
 CliApplication ..> TrackOperation
 CliApplication ..> CredentialPrompt
@@ -368,42 +441,50 @@ CredentialSource ..> CredentialPrompt
 | CredentialReference | Credential reference | Names a secret kept by the platform. | name, storeKind | none |
 | Credentials | Credential reference | Carries the named secret values of one provider for the duration of a run; hidden in every representation and never persisted ([ADR-0005]). | values | none |
 | AccessResult | Access check | Carries the outcome of an access check. | succeeded, reason | none |
-| Capability | Capability | Names one supported action or option, for example `list_servers`, the four power actions and `provision_server`. | name | none |
+| Capability | Capability | Names one supported action or option, for example `list_servers`, the four power actions, `provision_server` and `remove_server`. | name | none |
 | ServerOption | Server option | One choice offered by a provider. The kinds are `node`, `storage` and `template` (Proxmox VE), `region`, `image` and `product` (Contabo) ([ADR-0002], [ADR-0007]). | kind, value | none |
 | Server | Server | Describes a server and whether this client manages it. | serverIdentifier, name, state, size, addresses, managed | none |
-| ManagedServerRecord | Managed server | Records that this client manages a server. | configurationId, serverIdentifier, recordedAt | none |
+| ManagedServerRecord | Managed server | Records that this client manages a server. A removal ends it: `endedAt` and `endedByOperationId` are set and the record is kept; it no longer counts as managed, and a server of the same identifier created later is a new record. | configurationId, serverIdentifier, recordedAt, endedAt, endedByOperationId | none |
 | ProviderValue | Provider-specific value | One named value of a desired configuration or of an intent (a node, a storage, a region, a product, a period, a size); an immutable name and value pair. | name, value | none |
 | DesiredConfiguration | Desired configuration | A named, reusable description of the server wanted, unique by (configurationId, desiredName); holds the neutral core and its ProviderValues, only the names of access keys, never a key value; `bootstrapHint` is bounded to 500 characters. | configurationId, desiredName, image, accessKeyNames, bootstrapHint, values | none |
 | IntentState | Provision intent | The two states of an intent: it is pending until its operation ends. | PENDING, ENDED | none |
 | ProvisionIntent | Provision intent | The record saved before the create request: server name, a copy of the chosen values and, for Proxmox VE, the reserved identifier; linked to its operation by `operationId` once the request is made. Never holds a secret. | intentId, configurationId, desiredName, serverName, image, values, reservedIdentifier, state, recordedAt, operationId | none |
 | ValueRule | Provider-specific value | What a provider declares about one ProviderValue: its name, whether it is required, the option kind it is checked against, or the allowed values or bounds. | name, required, optionKind, allowed, minimum, maximum | none |
 | ProviderPort | (provider) | The boundary to a provider's interface; one adapter per provider. | none | validateAccess, discoverCapabilities, listServerOptions, listServers, getServer |
-| ConfigurationStore | (configuration) | The boundary to the client's saved configuration, including the managed servers. | none | save, loadAll, managedServers, saveManagedServer |
+| ConfigurationStore | (configuration) | The boundary to the client's saved configuration, including the managed servers; `managedServers` returns the records that are not ended, and `endManagedServer` ends one without deleting it. | none | save, loadAll, managedServers, saveManagedServer, endManagedServer |
 | CredentialStore | Credential reference | The boundary to the platform credential store. | none | put, get |
 | CredentialPrompt | (credentials) | The boundary to asking the user for a secret. | none | ask |
-| ProviderResolver | (provider) | Gives the provider port, the power port and the provision port for one saved configuration, built with that configuration's credentials. | none | providerFor, powerFor, provisionFor |
-| AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure, Confirmation, OperationSummary, PowerActionResult | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
+| ProviderResolver | (provider) | Gives the provider port, the power port, the provision port and the removal port for one saved configuration, built with that configuration's credentials. | none | providerFor, powerFor, provisionFor, removalFor |
+| AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure, OperationSummary, PowerActionResult | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
+| Confirmation | Consequence | What the user gave before a request is sent: `given`, and for a removal the identifier typed (`typedIdentifier`) and, for a server not managed by this client, the identifier typed again (`unmanagedIdentifier`). | given, typedIdentifier, unmanagedIdentifier | none |
 | DesiredConfigurationView | Desired configuration | Result of defining, validating or listing a desired configuration: its name, configuration, image, access key names, bootstrap hint, values, whether it is valid and each problem. | configurationId, name, image, accessKeyNames, bootstrapHint, values, valid, problems | none |
 | ProvisionPreview | Provision intent | What will be created, or why nothing can be: the outcome and reason, provider, configuration, desired name, server name, target, image, size, values and the cost consequence text (empty when the provider imposes none). | outcome, reason, providerName, providerKind, configurationId, desiredName, serverName, target, image, size, values, costConsequence | none |
 | ProvisionResult | Operation | Result of requesting or completing a provisioning: the outcome, the reason, the operation summary when one exists, the server identifier when known, and the state left at the provider. | outcome, reason, operation, serverIdentifier, stateLeft | none |
 | ProvisionOutcome | Operation | The outcomes of a preview, a request and a completion: READY (preview offered), REQUESTED, COMPLETED (server recorded as managed), INCOMPLETE (operation unfinished, unknown or without a server identifier), REJECTED (provider refused, or the operation ended as failed), UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED. | READY, REQUESTED, COMPLETED, INCOMPLETE, REJECTED, UNSUPPORTED, INVALID, NAME_EXISTS, INTENT_PENDING, NOT_CONFIRMED | none |
-| PowerAction, OperationState | Operation | The four power actions plus PROVISION, the kind of an operation (the type keeps its name; `requestPowerAction` refuses PROVISION), and the four states of an operation. | START, SHUTDOWN, STOP, RESTART, PROVISION; RUNNING, SUCCEEDED, FAILED, UNKNOWN | none |
-| Operation | Operation | One requested action and its recorded outcome; never holds a secret. `serverIdentifier`, `finishedAt`, `providerReference` and `detail` are empty until set (`serverIdentifier` for a provision operation until the provider names the server); `detail` is bounded to 500 characters. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail | none |
+| PowerAction, OperationState | Operation | The four power actions plus PROVISION and REMOVE, the kind of an operation (the type keeps its name; `requestPowerAction` refuses PROVISION and REMOVE), and the four states of an operation. | START, SHUTDOWN, STOP, RESTART, PROVISION, REMOVE; RUNNING, SUCCEEDED, FAILED, UNKNOWN | none |
+| Operation | Operation | One requested action and its recorded outcome; never holds a secret. `serverIdentifier`, `finishedAt`, `providerReference` and `detail` are empty until set (`serverIdentifier` for a provision operation until the provider names the server); `detail` is bounded to 500 characters. For a removal, `consequence` (bounded to 500 characters, empty for every other action) is the text shown before the confirmation, kept as shown; `detail` holds the outcome and, for a cancellation, the effective date the provider reports. | operationId, configurationId, serverIdentifier, action, state, startedAt, finishedAt, providerReference, detail, consequence | none |
 | ServerPowerPort | (provider) | The boundary for the four power requests and for reading an operation's state; a narrow port beside ProviderPort ([ADR-0006]). | none | requestPower, operationState (one read; returns the operation updated, polling belongs to the caller) |
 | OperationStore | (configuration) | The boundary to the record of operations. | none | save, load |
 | ServerProvisionPort | (provider) | The boundary for the creation of a server: the provider's ValueRules, the reserved identifier (Proxmox VE `nextid`; empty for Contabo), the cost consequence text, the one create request, and the state of a provision operation; a narrow third port beside ProviderPort and ServerPowerPort ([ADR-0007]). | none | valueRules, reserveIdentifier, costConsequence, requestProvision, operationState |
+| RemovalKind | Removal kind | The two ways a provider ends a server: DESTROY (now, disks released; Proxmox VE) and CANCEL (a request with an effective date reported by the provider, the contract running on until then; Contabo). | DESTROY, CANCEL | none |
+| RemovalBlock | Removal kind | Why a server cannot be removed now, as the provider's port reports it: RUNNING (a server that must be stopped first) or ALREADY_REMOVED (destroyed, or cancelled). | RUNNING, ALREADY_REMOVED | none |
+| ServerRemovalPort | (provider) | The boundary for the removal of a server: its RemovalKind, whether a given server can be removed now, the consequence text, the one removal request, and the state of a removal operation; a narrow fourth port beside ProviderPort, ServerPowerPort and ServerProvisionPort ([ADR-0008]). | none | removalKind, removalBlock, consequence, requestRemoval, operationState (one read; polling belongs to the caller) |
 | DesiredConfigurationStore | (configuration) | The boundary to the saved desired configurations; `save` replaces the one with the same key. | none | save, load, loadAll |
 | ProvisionIntentStore | (configuration) | The boundary to the intents, kept apart from OperationStore (see the revision note). | none | save, load, findPending, loadByOperation |
 | DesiredConfigurationValidator | Desired configuration | Checks a desired configuration against the provider's ValueRules and the ServerOptions it offers now; returns each problem and nothing else, so define and provision share one rule. | none | check |
 | DefineDesiredConfiguration | Desired configuration | Realises UC-003: checks and saves a named desired configuration, re-checks a saved one and lists them; saves nothing that fails the check. | none | defineDesiredConfiguration, validateDesiredConfiguration, listDesiredConfigurations |
 | ProvisionServer | Provision intent | Realises UC-004: previews with the cost consequence, and on confirmation saves the intent, sends one create request and records the operation; completes by recording the managed server when the operation succeeded and ending the intent. | none | previewProvisioning, requestProvisioning, completeProvisioning |
-| ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation; a preview does every check but the confirmation and sends nothing. | none | previewPowerAction, requestPowerAction |
-| TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome; reads the configuration to build the provider, and uses the provision port's `operationState` for an operation whose action is PROVISION. | none | followOperation, showOperation |
+| RemoveServer | Operation | Realises UC-012: previews the removal kind and the consequence, and on confirmation (the identifier typed, and once more for an unmanaged server) sends one removal request and records the operation with the consequence; completes by ending the managed-server record when the operation succeeded. Never stops a server and sends nothing else. | none | previewRemoval, requestRemoval, completeRemoval |
+| RemovalPreview | Consequence | What will happen, or why nothing can be removed: the outcome and reason, provider, configuration, server identifier and name, server state, whether it is managed, the removal kind and the consequence text. | outcome, reason, providerName, providerKind, configurationId, serverIdentifier, serverName, serverState, managed, kind, consequence | none |
+| RemovalResult | Operation | Result of requesting or completing a removal: the outcome, the reason, the operation summary when one exists, the consequence recorded, the state left at the provider (for a cancellation the effective date reported) and whether the managed-server record was ended. | outcome, reason, operation, consequence, stateLeft, managedEnded | none |
+| RemovalOutcome | Operation | The outcomes of a preview, a request and a completion: READY (preview offered), REQUESTED, COMPLETED (operation succeeded; managed record ended when there was one), INCOMPLETE (operation unfinished or unknown), REJECTED (provider refused, or the operation ended as failed), UNSUPPORTED, NOT_FOUND (no such server or operation), RUNNING_REFUSED, ALREADY_REMOVED, NOT_CONFIRMED, IDENTIFIER_MISMATCH. | READY, REQUESTED, COMPLETED, INCOMPLETE, REJECTED, UNSUPPORTED, NOT_FOUND, RUNNING_REFUSED, ALREADY_REMOVED, NOT_CONFIRMED, IDENTIFIER_MISMATCH | none |
+| ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation; a preview does every check but the confirmation and sends nothing; refuses the actions PROVISION and REMOVE, which have their own use cases. | none | previewPowerAction, requestPowerAction |
+| TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome; reads the configuration to build the provider, and uses the provision port's `operationState` for an operation whose action is PROVISION and the removal port's for REMOVE. | none | followOperation, showOperation |
 | ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration; keeps the validated credentials in memory until the save or the next check, and never persists them. | none | validateAccess, saveProviderConfiguration |
 | DiscoverCapabilities | Capability | Realises UC-002: discovers capabilities and options. | none | discoverCapabilities, listServerOptions |
 | ListServers | Server | Realises UC-007: lists and inspects servers. | none | listServers, inspectServer |
-| ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface: the reads, the four power requests and the container and virtual machine creations. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort |
-| ContaboProvider | (provider) | Adapter for the Contabo interface (the reads, the four power requests and the instance creation): exchanges the four credential values for a bearer token kept in memory, sends a request identifier on every call and renews the token once after a 401. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort |
+| ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface: the reads, the four power requests, the container and virtual machine creations and their deletion (`DESTROY`). | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort, ServerRemovalPort |
+| ContaboProvider | (provider) | Adapter for the Contabo interface (the reads, the four power requests, the instance creation and its cancellation, `CANCEL`): exchanges the four credential values for a bearer token kept in memory, sends a request identifier on every call and renews the token once after a 401. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort, ServerRemovalPort |
 | JsonLinesConfigurationStore, JsonLinesOperationStore, JsonLinesDesiredConfigurationStore, JsonLinesProvisionIntentStore | (configuration) | Adapters that keep configuration and managed servers, operations, desired configurations and intents as JSON Lines in one file without secrets; each implements one port, because `save` and `loadAll` differ between the ports. | none | each implements its own port |
 | PlatformCredentialStore | Credential reference | Adapter for the operating system credential store. | none | implements CredentialStore |
 | ConsoleCredentialPrompt | (credentials) | Adapter that asks for each credential name of the provider on the console. | none | implements CredentialPrompt |
@@ -423,11 +504,11 @@ CredentialSource ..> CredentialPrompt
 | ListServers.inspectServer(configuration, serverIdentifier) : ServerSummary | `inspectServer` in [SSD-003] |
 | ControlServerPower.previewPowerAction(configuration, serverIdentifier, action) : PowerActionResult | The checks of `requestPowerAction` in [OC-002] without the request; used by the client to state the action before it asks |
 | ControlServerPower.requestPowerAction(configuration, serverIdentifier, action, confirmation) : PowerActionResult | `requestPowerAction` in [OC-002] and [SSD-004] |
-| TrackOperation.followOperation(operationId, timeLimit, pollInterval) : OperationSummary | `followOperation` in [OC-003] and [SSD-005] |
+| TrackOperation.followOperation(operationId, timeLimit, pollInterval) : OperationSummary | `followOperation` in [OC-003] and [SSD-005]; for REMOVE through `ServerRemovalPort.operationState` ([SSD-008]) |
 | TrackOperation.showOperation(operationId) : OperationSummary | `showOperation` in [SSD-005] |
 | ServerPowerPort.requestPower(configuration, serverIdentifier, action) | `requestPowerAction` in [OC-002] |
 | ServerPowerPort.operationState(configuration, operation) | `followOperation` in [OC-003] |
-| OperationStore.save(operation), load(operationId) | `requestPowerAction` in [OC-002] and `followOperation` in [OC-003] |
+| OperationStore.save(operation), load(operationId) | `requestPowerAction` in [OC-002], `followOperation` in [OC-003], and `requestRemoval` and `completeRemoval` in [OC-006] |
 | DefineDesiredConfiguration.defineDesiredConfiguration(configuration, name, image, accessKeyNames, bootstrapHint, values) : DesiredConfigurationView | `defineDesiredConfiguration` in [OC-004] and [SSD-006] |
 | DefineDesiredConfiguration.validateDesiredConfiguration(configuration, name) : DesiredConfigurationView | `validateDesiredConfiguration` in [OC-004] and [SSD-006] |
 | DefineDesiredConfiguration.listDesiredConfigurations(configuration, check) : List | `listDesiredConfigurations` in [SSD-006] (a query; no contract) |
@@ -445,16 +526,26 @@ CredentialSource ..> CredentialPrompt
 | ProvisionIntentStore.save(intent), load(intentId) | `requestProvisioning` and `completeProvisioning` in [OC-005] |
 | ProvisionIntentStore.findPending(configurationId, serverName) | `previewProvisioning` and `requestProvisioning` in [OC-005] (the pending-intent precondition) |
 | ProvisionIntentStore.loadByOperation(operationId) | `completeProvisioning` in [OC-005] |
+| RemoveServer.previewRemoval(configuration, serverIdentifier) : RemovalPreview | `previewRemoval` in [OC-006] and [SSD-008] |
+| RemoveServer.requestRemoval(configuration, serverIdentifier, confirmation) : RemovalResult | `requestRemoval` in [OC-006] and [SSD-008] |
+| RemoveServer.completeRemoval(operationId) : RemovalResult | `completeRemoval` in [OC-006] and [SSD-008] |
+| ServerRemovalPort.removalKind(configuration) | `previewRemoval` in [OC-006] (the Removal kind stated) |
+| ServerRemovalPort.removalBlock(configuration, server) | `previewRemoval` and `requestRemoval` in [OC-006] (the running and already-removed exceptions) |
+| ServerRemovalPort.consequence(configuration, server) | `previewRemoval` in [OC-006] (the Consequence text) and `requestRemoval` (recorded with the Operation) |
+| ServerRemovalPort.requestRemoval(configuration, server) | `requestRemoval` in [OC-006] (the one removal request) |
+| ServerRemovalPort.operationState(configuration, operation) | `followOperation` in [OC-003] for an operation with action REMOVE |
+| ProviderResolver.removalFor(configuration) | Supporting operation of `previewRemoval`, `requestRemoval` and `completeRemoval` (credentials differ per configuration) |
 | ConfigurationStore.saveManagedServer(record) | `completeProvisioning` in [OC-005] (the ManagedServerRecord) |
+| ConfigurationStore.endManagedServer(configurationId, serverIdentifier, endedAt, operationId) | `completeRemoval` in [OC-006] (the Managed server ended) |
 | ProviderResolver.provisionFor(configuration) | Supporting operation of `defineDesiredConfiguration`, `validateDesiredConfiguration`, `previewProvisioning`, `requestProvisioning` and `completeProvisioning` (credentials differ per configuration) |
-| ProviderResolver.providerFor(configuration) | Supporting operation of `discoverCapabilities`, `listServerOptions`, `listServers` and `inspectServer` (credentials differ per configuration) |
+| ProviderResolver.providerFor(configuration) | Supporting operation of `discoverCapabilities`, `listServerOptions`, `listServers`, `inspectServer`, `previewRemoval` and `requestRemoval` (credentials differ per configuration) |
 | ProviderPort.validateAccess(address, credentials) | `validateAccess` in [SSD-001] |
 | ProviderPort.discoverCapabilities(configuration) | `discoverCapabilities` in [SSD-002] |
 | ProviderPort.listServerOptions(configuration, optionKind) | `listServerOptions` in [SSD-002] |
 | ProviderPort.listServers(configuration) | `listServers` in [SSD-003] |
-| ProviderPort.getServer(configuration, serverIdentifier) | `inspectServer` in [SSD-003] |
+| ProviderPort.getServer(configuration, serverIdentifier) | `inspectServer` in [SSD-003]; `previewRemoval` and `requestRemoval` in [OC-006] (the server read first) |
 | ConfigurationStore.save(configuration) | `saveProviderConfiguration` in [OC-001] |
-| ConfigurationStore.loadAll(), managedServers(configurationId) | `listServers` in [SSD-003] (managed marking) and the configuration lookup of every message |
+| ConfigurationStore.loadAll(), managedServers(configurationId) | `listServers` in [SSD-003] (managed marking), `previewRemoval` and `requestRemoval` in [OC-006] (managed or not) and the configuration lookup of every message |
 | CredentialStore.put(reference, credentials) | `saveProviderConfiguration` in [OC-001] (cacheCredential) |
 | CredentialStore.get(reference) | `validateAccess` in [SSD-001] and `discoverCapabilities` in [SSD-002] (stored credentials) |
 | CredentialPrompt.ask(providerKind) | `validateAccess` in [SSD-001] (credentials parameter) |
@@ -466,7 +557,7 @@ CredentialSource ..> CredentialPrompt
 | Ports and adapters | ProviderPort, ConfigurationStore, CredentialStore, CredentialPrompt and their adapters | Keeps the application free of provider, file and platform detail; a second provider is a new adapter ([ADR-0002]). |
 | Composition root | CliApplication | The only place that names infrastructure classes. |
 | Strategy | ProviderPort, ProxmoxProvider, ContaboProvider | Provider differences sit behind one interface; use cases do not test the provider kind ([ADR-0002]). |
-| Interface segregation | ProviderPort, ServerPowerPort, ServerProvisionPort | Read-only code cannot reach a write by type; the write surface is the four power requests ([ADR-0006]) and the create requests ([ADR-0007]). |
+| Interface segregation | ProviderPort, ServerPowerPort, ServerProvisionPort, ServerRemovalPort | Read-only code cannot reach a write by type; the write surface is the four power requests ([ADR-0006]), the create requests ([ADR-0007]) and the two removal requests ([ADR-0008]). |
 | Write-ahead record | ProvisionIntent, ProvisionIntentStore, ProvisionServer | The intent is saved before the create request, so a lost answer leaves a pending intent that a retry meets ([ADR-0007]). |
 | Data-driven validation | ValueRule, DesiredConfigurationValidator | Each provider declares its values as data; the validator holds one rule for every provider and use cases do not test the provider kind ([ADR-0002]). |
 | Resolver | ProviderResolver, CliProviderResolver | The adapter takes its credentials at construction, and one run spans several configurations, so a port instance per configuration is resolved on demand. |
@@ -500,5 +591,9 @@ and may name every layer.
 [SSD-007]: ./use-cases/uc-004/ssd.md
 [OC-004]: ./use-cases/uc-003/oc.md
 [OC-005]: ./use-cases/uc-004/oc.md
-[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
-[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298
+[ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
+[UC-012]: ./use-cases/uc-012/uc.md
+[SSD-008]: ./use-cases/uc-012/ssd.md
+[OC-006]: ./use-cases/uc-012/oc.md
+[6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
+[77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee

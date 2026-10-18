@@ -4,15 +4,15 @@
 | Key | Value |
 | --- | --- |
 | ID | DM-001 |
-| CrossReference | [UC-001], [UC-002], [UC-003], [UC-004], [UC-006], [UC-007], [UC-008], [UCD-001], [DICT-001] |
+| CrossReference | [UC-001], [UC-002], [UC-003], [UC-004], [UC-006], [UC-007], [UC-008], [UC-012], [UCD-001], [DICT-001] |
 | Language | en |
 | Domain | it |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added the Operation concept for power control (MIL-004)<br>Accepted after RC-056 | [f91e283] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Operation also covers provisioning (MIL-005)<br>Accepted after RC-070 | [aa570c0] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Operation also covers provisioning (MIL-005)<br>Accepted after RC-070 | [aa570c0] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Removal kind and Consequence; Operation also covers removal; Managed server can be ended (MIL-006)<br>Accepted after RC-084 | [6cdd351] |
 
 ---
 
@@ -21,7 +21,8 @@
 The model covers the concepts behind configuring and validating provider access
 ([UC-001]), discovering capabilities and server options ([UC-002]), listing and
 inspecting servers ([UC-007]), the power actions and their operations ([UC-008], [UC-006]), the desired
-configuration ([UC-003]) and the provisioning of a server from it ([UC-004]). Concepts for
+configuration ([UC-003]), the provisioning of a server from it ([UC-004]) and the removal of a
+server with the consequence stated first ([UC-012]). Concepts for
 snapshots, drift and backup are added with their use cases. Terms are the PO terms of
 [DICT-001].
 
@@ -61,6 +62,7 @@ class Server {
 }
 class "Managed server" as MS {
   recorded date
+  ended date
 }
 class Operation {
   action
@@ -78,6 +80,13 @@ class "Desired configuration" as DC {
 class "Provider-specific value" as PV {
   name
   value
+}
+class "Removal kind" as RK {
+  name
+  meaning
+}
+class Consequence {
+  text
 }
 class "Provision intent" as PI {
   server name
@@ -100,6 +109,9 @@ DC "1" --> "0..*" PV : holds
 PI "0..*" --> "1" DC : is made from
 PI "1" --> "0..*" PV : holds
 PI "0..1" --> "0..1" Operation : is followed by
+Provider "0..*" --> "1" RK : ends servers by
+Operation "1" --> "0..1" Consequence : states
+MS "0..1" --> "0..1" Operation : was ended by
 @enduml
 ```
 
@@ -114,10 +126,12 @@ PI "0..1" --> "0..1" Operation : is followed by
 | Capability | An action or option a provider and target support. | name | [UC-002] "capabilities", "actions the provider supports" |
 | Server option | A choice offered when a server is created. | kind, value | [UC-002] "regions or nodes, images or templates, sizes or products" |
 | Server | A machine that runs at a provider. | identifier, name, state, size, addresses | [UC-007] "server", "state, size and addresses" |
-| Managed server | A server recorded as managed by this client. | recorded date | [UC-007] "not managed by this client" |
-| Operation | One requested action at a provider, followed until it ends (start, shutdown, stop, restart or provision). A provision operation may exist before the server is known. | action, state, started, finished, detail | [UC-006] "operation", [UC-008] "start, stop or restart", [UC-004] "submits the request to the provider, follows the operation" |
+| Managed server | A server recorded as managed by this client. It stays on record, with an ended date, after its removal, and no longer counts as managed. | recorded date, ended date | [UC-007] "not managed by this client", [UC-012] "extra confirmation if the server is not managed by this client" |
+| Operation | One requested action at a provider, followed until it ends (start, shutdown, stop, restart, provision or remove). A provision operation may exist before the server is known. For a removal it keeps the consequence that was shown, and its detail holds the outcome, for a cancellation the effective date the provider reports. | action, state, started, finished, detail | [UC-006] "operation", [UC-008] "start, stop or restart", [UC-004] "submits the request to the provider, follows the operation", [UC-012] "follows it to completion", "records the consequence" |
 | Desired configuration | A named, reusable description of the server wanted, checked against the capabilities and options of one provider configuration before it is saved as valid. It never holds a secret; the access keys are only named. | name, image, access key names, bootstrap hint | [UC-003] "named desired configuration", "name, provider and target, size, image, access keys and bootstrap hints" |
 | Provider-specific value | One named choice that only some providers need, such as a node, a storage, a region, a product or a contract period. | name, value | [UC-003] "provider and target, size", [UC-004] "contract period", "node" |
+| Removal kind | The way a provider ends a server: destroyed now, or cancelled with an effective date while the contract runs on until then. | name, meaning | [UC-012] "destroyed now or cancelled with an effective date" |
+| Consequence | The statement, shown before a removal is confirmed, of what the provider will do and what continues until then; it is kept with the operation. | text | [UC-012] "states what removal means at that provider", "the consequence shown to DevOps is recorded with the operation" |
 | Provision intent | The record, made before a creation request is sent, that a server of a given name is about to be created from a desired configuration; it keeps a retry from creating a second server. | server name, reserved identifier, state, recorded date | [UC-004] "Preventing duplicate creation on retry", "provisioning request" |
 
 ## Association Table
@@ -138,6 +152,9 @@ PI "0..1" --> "0..1" Operation : is followed by
 | Provision intent | is made from | Desired configuration | 0..* to 1 |
 | Provision intent | holds | Provider-specific value | 1 to 0..* |
 | Provision intent | is followed by | Operation | 0..1 to 0..1 |
+| Provider | ends servers by | Removal kind | 0..* to 1 |
+| Operation | states | Consequence | 1 to 0..1 |
+| Managed server | was ended by | Operation | 0..1 to 0..1 |
 
 ## Generalizations
 
@@ -152,7 +169,8 @@ None.
 [UC-006]: ./use-cases/uc-006/uc.md
 [UC-007]: ./use-cases/uc-007/uc.md
 [UC-008]: ./use-cases/uc-008/uc.md
+[UC-012]: ./use-cases/uc-012/uc.md
 [UCD-001]: ./use-case-diagram.md
 [DICT-001]: ./dictionary.md
-[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247

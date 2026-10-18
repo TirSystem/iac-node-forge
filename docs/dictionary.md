@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-15 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Operation and Power action (MIL-004)<br>Accepted after RC-057 | [f91e283] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Power action also names provision (MIL-005)<br>Accepted after RC-071 | [aa570c0] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Power action also names provision (MIL-005)<br>Accepted after RC-071 | [aa570c0] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Removal kind and Consequence; Power action also names remove; Managed server can be ended (MIL-006)<br>Accepted after RC-085 | [6cdd351] |
 
 ---
 
@@ -20,8 +20,8 @@
 
 Maps each Product Owner (PO) term to its professional IT term. PO language: English
 (`en`), domain `it`. The dictionary covers the concepts of the domain model for provider
-access, discovery, the listing of servers, power control and provisioning (UC-001, UC-002,
-UC-003, UC-004, UC-006, UC-007 and UC-008). A new concept
+access, discovery, the listing of servers, power control, provisioning and removal (UC-001, UC-002,
+UC-003, UC-004, UC-006, UC-007, UC-008 and UC-012). A new concept
 gets a row here in the same change as in the domain model.
 
 ## Dictionary
@@ -35,11 +35,13 @@ gets a row here in the same change as in the domain model.
 | Capability | en | Capability | An action or option that a provider and target support, for example listing servers. | DM, UC, US | OC, DCD, ERD |
 | Server option | en | ServerOption | A choice the provider offers when a server is created, such as a region, node, image or size. | DM, UC, US | OC, DCD, ERD |
 | Server | en | Server | A machine, virtual or physical, that runs at a provider. | DM, UC, US | OC, DCD, ERD |
-| Managed server | en | ManagedServerRecord | A server that this client has recorded as created or taken over by it. | DM, UC, US | OC, DCD, ERD |
+| Managed server | en | ManagedServerRecord | A server that this client has recorded as created or taken over by it, until a removal ends the record. | DM, UC, US | OC, DCD, ERD |
 | Operation | en | Operation | One requested action at a provider that is followed until it ends. | DM, UC, US | OC, DCD, ERD |
-| Power action | en | PowerAction | One of start, shutdown, stop or restart of a server, or provision, the creation of one; the kind of an operation. | DM, UC, US | OC, DCD, ERD |
+| Power action | en | PowerAction | One of start, shutdown, stop or restart of a server, or provision (the creation of one) or remove (the ending of one); the kind of an operation. | DM, UC, US | OC, DCD, ERD |
 | Desired configuration | en | DesiredConfiguration | A named, reusable description of the server wanted, checked against what the provider offers before it is saved as valid. | DM, UC, US | OC, DCD, ERD |
 | Provider-specific value | en | ProviderValue | One named choice that only some providers need, such as a node, a storage, a region, a product or a contract period. | DM, UC, US | OC, DCD, ERD |
+| Removal kind | en | RemovalKind | The way a provider ends a server, either destroyed now or cancelled with an effective date. | DM, UC, US | OC, DCD, ERD |
+| Consequence | en | Consequence | The statement, shown before a removal is confirmed, of what the provider will do and what continues until then. | DM, UC, US | OC, DCD, ERD |
 | Provision intent | en | ProvisionIntent | The record made before a creation request is sent, so that a retry does not create a second server. | DM, UC, US | OC, DCD, ERD |
 
 ## Rules
@@ -53,5 +55,5 @@ gets a row here in the same change as in the domain model.
 [BC-001]: ./business-case.md
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
-[f91e283]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f91e283c8b54844b30c133036cb74d0cf4de80e0
 [aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
