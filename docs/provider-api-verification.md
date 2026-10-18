@@ -183,6 +183,50 @@ What the live run must still settle: W4 (the real exit status text), W7 (the rea
 timing at Contabo) and W3 (the permission error shape). The status and timing numbers in
 [ADR-0006] (120 seconds, 2 seconds) are design defaults, not provider facts.
 
+## Provisioning (MIL-005)
+
+Task 11 of [MIL-005]. The columns say what the provider documentation states, what the in-process
+mock does (the provisioning contract suite runs the same behaviours against the fake, the Proxmox VE
+adapter and the Contabo adapter), and what the live run of 2026-10-18 showed. Only Proxmox VE was run
+live; no Contabo instance is created by a test, because it costs money and commits the account to a
+contract period.
+
+| # | Statement | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| V1 | Proxmox VE: `POST /nodes/{node}/lxc` creates a container from a template and answers a task identifier | Yes (P3, P6) | Yes | Passed (a container with an Alpine template) |
+| V2 | Proxmox VE: the new identifier is chosen by the caller, from `/cluster/nextid`; a taken identifier fails | Yes (P5) | Yes | Passed for the identifier from `nextid`; a taken one not provoked |
+| V3 | Proxmox VE: the root disk is given as `<storage>:<size in GB>` on a directory storage | Not stated | Assumed | Passed (`local:1`) |
+| V4 | Proxmox VE: templates are listed through the content of the storages (`vztmpl`, `iso`) | Partly (P5; the `content` filter of the storage list is not in the note) | Yes | Passed (the template was offered and the description validated) |
+| V5 | Proxmox VE: creating needs `VM.Allocate`, and a 401 or 403 names it | Yes (P13) | Yes | Not provoked (the token had all privileges) |
+| V6 | Proxmox VE: `POST /nodes/{node}/qemu` creates a virtual machine | Yes (P6) | Yes | Not run |
+| V7 | Contabo: `POST /v1/compute/instances` with image, product, region and a period of 1, 12 or 24 months | Yes (C5, C6) | Yes | Not run (cost) |
+| V8 | Contabo: the products to choose from are listed at `GET /v1/compute/products` | Not stated | Assumed (marked UNVERIFIED in the code) | Not run |
+| V9 | Contabo: a new instance moves through `provisioning` and `installing` to `running`, or to `error` | Partly (C8 lists the values, not the order) | Assumed | Not run |
+| V10 | Both: a timeout of the create request, or a 5xx at Contabo, may hide a created server, so the outcome is unknown and the intent stays pending | Design choice ([ADR-0007]) | Yes | Not provoked |
+| V11 | Both: no write request other than the four power actions and the create requests is ever sent | Not applicable | Yes (recorder answers 405) | Passed (the live test counts the writes) |
+
+### Live run against a Proxmox VE container, 2026-10-18
+
+The AI ran `pytest -m integration -k provision -v` from `iac-node-forge-py` at `8df7390` (the merged
+`main` has the same tests) against the Docker Proxmox VE of `tests/integration/docker-compose.proxmox.yml`,
+with a token for `root@pam` that was removed afterwards and the template `alpine-3.24-default_20260714`:
+**1 passed, 922 deselected in 1042.83 seconds (17 min 22 s)**. The Docker Proxmox VE runs under emulation, so
+the creation and the clean-up are slow.
+
+| Step of the test | Verdict |
+| --- | --- |
+| define a description (container, 128 MB, 1 core, 1 GB) and validate it against the offered options | Passed |
+| preview: ready, no cost text, no request sent | Passed |
+| request with confirmation, follow to the end, complete | Passed (`succeeded`, `completed`) |
+| the server is recorded as managed and listed under the chosen name | Passed |
+| a second request for the same name is refused and sends nothing | Passed (`name_exists`) |
+| no credential value in a text or in the store file | Passed |
+| the test-only clean-up deletes the container | Passed (the container list was empty afterwards) |
+
+What this confirms: V1 to V4 and V11 for a container. What it does not cover: a virtual machine (V6), the
+permission error (V5), a taken identifier on the real service (V2), the lost-answer path (V10) and every
+Contabo statement (V7 to V9).
+
 ## Still open
 
 - Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
@@ -197,6 +241,8 @@ timing at Contabo) and W3 (the permission error shape). The status and timing nu
 [ADR-0003]: ./adr/adr-0003-credential-storage.md
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [MIL-004]: ./milestones/mil-004-power-control.md
+[MIL-005]: ./milestones/mil-005-provisioning.md
+[ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
 [UC-004]: ./use-cases/uc-004/uc.md
 [UC-006]: ./use-cases/uc-006/uc.md
 [UC-009]: ./use-cases/uc-009/uc.md
