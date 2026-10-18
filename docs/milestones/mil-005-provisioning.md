@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-067 (autonomous mode, stand-in) | [2034b4b] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-067 (autonomous mode, stand-in) | [2034b4b] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all ten criteria met (RC-080); stand-in decision, open to challenge | [dad18d0] |
 
 ---
 
@@ -116,3 +117,4 @@ Case states no deadline, so there is no constraint to conflict with.
 [US-001]: ../user-stories.md
 [MIL-004]: ./mil-004-power-control.md
 [2034b4b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/2034b4bbd73cdebb4b9dce6dd98afd83095a798c
+[dad18d0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/dad18d0180d785602c76da8377c9aa9f915a825e
