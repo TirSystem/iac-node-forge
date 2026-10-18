@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0008, SSD-008, OC-006 and RC-083 to RC-089 (MIL-006 design); updated the DM, DICT, DCD and ERD rows | [6cdd351] |
-| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-091 and RC-090 | pending |
+| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-091 and RC-090 | [77de1b9] |
 
 ---
 
@@ -192,3 +192,4 @@ updated whenever an artifact instance is created or reviewed.
 [6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
 [RC-091]: ./reviews/rc-091-python-code-mil-006.md
 [RC-090]: ./reviews/rc-090-dcd-001-rev9.md
+[77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee

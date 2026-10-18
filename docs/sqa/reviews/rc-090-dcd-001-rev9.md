@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [77de1b9] |
 
 ---
 
@@ -51,3 +51,4 @@ Go — every Mandatory criterion passes. Revision 9 corrects the name of the con
 [DCD-001]: ../../dcd.md
 [RC-088]: ./rc-088-dcd-001-rev8.md
 [QC-DCD-001]: ../../../framework/qc/artifacts/qc-dcd.md
+[77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee

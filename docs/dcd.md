@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 8: ServerRemovalPort, RemoveServer, RemovalKind, RemovalBlock, RemovalPreview, RemovalResult, RemovalOutcome; Operation.consequence; ManagedServerRecord can be ended (MIL-006)<br>Accepted after RC-088 | [6cdd351] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | pending |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | [77de1b9] |
 
 ---
 
@@ -596,3 +596,4 @@ and may name every layer.
 [SSD-008]: ./use-cases/uc-012/ssd.md
 [OC-006]: ./use-cases/uc-012/oc.md
 [6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
+[77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee
