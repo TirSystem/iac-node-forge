@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: aligned with the built provisioning code (MIL-005 task 12)<br>Accepted after RC-079 | [9a23c07] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 8: ServerRemovalPort, RemoveServer, RemovalKind, RemovalBlock, RemovalPreview, RemovalResult, RemovalOutcome; Operation.consequence; ManagedServerRecord can be ended (MIL-006)<br>Accepted after RC-088 | [6cdd351] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 8: ServerRemovalPort, RemoveServer, RemovalKind, RemovalBlock, RemovalPreview, RemovalResult, RemovalOutcome; Operation.consequence; ManagedServerRecord can be ended (MIL-006)<br>Accepted after RC-088 | [6cdd351] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | pending |
 
 ---
 
@@ -22,6 +22,13 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised after the code of MIL-006 on 2026-10-18 (revision 9): the flag of `Confirmation` is named `given`, as it
+was for the power and provisioning requests; the adapters leave `Operation.consequence` empty and the use case
+records the text shown in the preview; `completeRemoval` ends only an active managed record recorded at or
+before the start of the operation, so that completing a removal again cannot end a newer server that reuses
+a Proxmox VE identifier; for a blocked server (running, already removed) the preview shows the server and
+no consequence line ([ADR-0008]).
 
 Revised for MIL-006 on 2026-10-18 (revision 8): the write side grows by the removal of a server
 ([ADR-0008]). `ServerRemovalPort` is a fourth narrow port beside `ProviderPort`, `ServerPowerPort`
@@ -449,7 +456,7 @@ CredentialSource ..> CredentialPrompt
 | CredentialPrompt | (credentials) | The boundary to asking the user for a secret. | none | ask |
 | ProviderResolver | (provider) | Gives the provider port, the power port, the provision port and the removal port for one saved configuration, built with that configuration's credentials. | none | providerFor, powerFor, provisionFor, removalFor |
 | AccessCheck, SavedConfiguration, CapabilityReport, ServerSummary, ServerListing, ProviderFailure, OperationSummary, PowerActionResult | (result types) | Data transfer objects that cross from the use cases to presentation so no domain entity does. | outcome, reason, entries, failures | none |
-| Confirmation | Consequence | What the user gave before a request is sent: `confirmed`, and for a removal the identifier typed (`typedIdentifier`) and, for a server not managed by this client, the identifier typed again (`unmanagedIdentifier`). | confirmed, typedIdentifier, unmanagedIdentifier | none |
+| Confirmation | Consequence | What the user gave before a request is sent: `given`, and for a removal the identifier typed (`typedIdentifier`) and, for a server not managed by this client, the identifier typed again (`unmanagedIdentifier`). | given, typedIdentifier, unmanagedIdentifier | none |
 | DesiredConfigurationView | Desired configuration | Result of defining, validating or listing a desired configuration: its name, configuration, image, access key names, bootstrap hint, values, whether it is valid and each problem. | configurationId, name, image, accessKeyNames, bootstrapHint, values, valid, problems | none |
 | ProvisionPreview | Provision intent | What will be created, or why nothing can be: the outcome and reason, provider, configuration, desired name, server name, target, image, size, values and the cost consequence text (empty when the provider imposes none). | outcome, reason, providerName, providerKind, configurationId, desiredName, serverName, target, image, size, values, costConsequence | none |
 | ProvisionResult | Operation | Result of requesting or completing a provisioning: the outcome, the reason, the operation summary when one exists, the server identifier when known, and the state left at the provider. | outcome, reason, operation, serverIdentifier, stateLeft | none |
@@ -588,5 +595,4 @@ and may name every layer.
 [UC-012]: ./use-cases/uc-012/uc.md
 [SSD-008]: ./use-cases/uc-012/ssd.md
 [OC-006]: ./use-cases/uc-012/oc.md
-[9a23c07]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9a23c07674d4681e2dc709d3839956aea75e2298
 [6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247

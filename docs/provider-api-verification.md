@@ -227,6 +227,48 @@ What this confirms: V1 to V4 and V11 for a container. What it does not cover: a 
 permission error (V5), a taken identifier on the real service (V2), the lost-answer path (V10) and every
 Contabo statement (V7 to V9).
 
+## Removal (MIL-006)
+
+Task 11 of [MIL-006]. The columns say what the provider documentation states, what the in-process mock
+does (the removal contract suite runs the same behaviours against the fake, the Proxmox VE adapter and the
+Contabo adapter), and what the live run of 2026-10-18 showed. Only Proxmox VE was run live; no Contabo
+instance is cancelled by a test, because a cancellation cannot be undone from here and the contract runs on.
+
+| # | Statement | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| R1 | Proxmox VE: `DELETE /nodes/{node}/lxc/{vmid}` with `purge` and `destroy-unreferenced-disks` answers a task identifier | Yes (P3, P10) | Yes | Passed (a container) |
+| R2 | Proxmox VE: after the task the guest and its disks are gone, and the server is no longer listed | Yes (P10) | Yes | Passed (the adapter no longer lists it and reports it as not found) |
+| R3 | Proxmox VE: deleting a running guest is refused by the provider | Not stated | Assumed (500) | Not run: the product refuses a running server before any request |
+| R4 | Proxmox VE: the delete needs `VM.Allocate`, and a 401 or 403 names it | Yes (P13) | Yes | Not provoked (the token had all privileges) |
+| R5 | Contabo: `POST /v1/compute/instances/{id}/cancel` sets the status `cancelled` and a `cancelDate` | Partly (C14) | Assumed (the shape of the answer) | Not run |
+| R6 | Contabo: the rule for the cancel date (for example the end of the period) | Not stated | Assumed | Not run; the product shows and records the date the provider reports, or says that none was reported |
+| R7 | Both: a timeout of the removal request, or a 5xx at Contabo, may hide a removal, so the outcome is unknown and the request is not repeated | Design choice ([ADR-0008]) | Yes | Not provoked |
+| R8 | Both: no write request other than the four power actions, the creations and the two removals is ever sent | Not applicable | Yes (recorder answers 405) | Passed (the live test saw exactly one POST and one DELETE) |
+| R9 | Proxmox VE: a freed identifier can be reused, so the managed record is keyed by its recording time too | Not stated | Unit tests | Not provoked |
+
+### Live run against a Proxmox VE container, 2026-10-18
+
+The AI ran `pytest -m integration -k provision -v` from `iac-node-forge-py` at `f081b2c` (the merged `main` has
+the same tests) against the Docker Proxmox VE of `tests/integration/docker-compose.proxmox.yml`, with a token for
+`root@pam` that was removed afterwards and the template `alpine-3.24-default_20260714`: **1 passed, 1163
+deselected in 1183.41 seconds (19 min 43 s)**. The test now creates the container through the product and then
+removes it through the product; the test-only delete helper of MIL-005 no longer exists.
+
+| Step of the test | Verdict |
+| --- | --- |
+| create the container through the product, recorded as managed | Passed (as in the run of MIL-005) |
+| removal preview: ready, stopped, managed, the consequence says the server and its disks are destroyed now | Passed |
+| a wrong typed identifier and a missing confirmation send nothing | Passed |
+| confirmed request, followed to the end, completed | Passed (`succeeded`, `completed`) |
+| the consequence is recorded with the operation and the managed record is ended | Passed |
+| the container is no longer listed, and a second request reports not found and sends nothing | Passed |
+| exactly one POST and one DELETE were sent in all | Passed |
+| no credential value in a text or in the store file | Passed |
+
+What this confirms: R1, R2 and R8 for a container. What it does not cover: a virtual machine, a running guest
+(R3), the permission error (R4), the lost-answer path (R7), the identifier reuse (R9) and every Contabo
+statement (R5 and R6).
+
 ## Still open
 
 - Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
@@ -242,6 +284,8 @@ Contabo statement (V7 to V9).
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [MIL-004]: ./milestones/mil-004-power-control.md
 [MIL-005]: ./milestones/mil-005-provisioning.md
+[MIL-006]: ./milestones/mil-006-delete-or-cancel.md
+[ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
 [ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
 [UC-004]: ./use-cases/uc-004/uc.md
 [UC-006]: ./use-cases/uc-006/uc.md
