@@ -58,6 +58,6 @@ Go — every Mandatory criterion passes. The one failed criterion (13, Optional)
 
 ---
 
-[MIL-006]: ../../milestones/mil-005-provisioning.md
+[MIL-006]: ../../milestones/mil-006-delete-or-cancel.md
 [QC-PY-001]: ../../../framework/qc/code/qc-programming-python.md
 [77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee
