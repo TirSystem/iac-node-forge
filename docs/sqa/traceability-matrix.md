@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-066, the Go/No-Go check of MIL-004 | [5f95f60] |
-| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-005, RC-067 and RC-068 | pending |
+| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-005, RC-067 and RC-068 | [2034b4b] |
 
 ---
 
@@ -150,3 +150,4 @@ updated whenever an artifact instance is created or reviewed.
 [5f95f60]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/5f95f6082305886506f860cadcddaf28cf07af04
 [RC-067]: ./reviews/rc-067-mil-005.md
 [RC-068]: ./reviews/rc-068-pp-001-mil-005.md
+[2034b4b]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/2034b4bbd73cdebb4b9dce6dd98afd83095a798c
