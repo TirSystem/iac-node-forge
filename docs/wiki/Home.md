@@ -16,8 +16,8 @@ iac-node-forge manages servers at Proxmox VE and Contabo from a command-line cli
   your own Contabo account (nothing is created or changed).
 - [Power control live test](Power-Control-Live-Test) — turn a **disposable** server off and on
   through the product, at Proxmox VE or Contabo.
-- [Provisioning live test](Provision-Live-Test) — create a container in the **throw-away** Docker Proxmox VE
-  through the product, then delete it again.
+- [Provisioning and removal live test](Provision-Live-Test) — create a container in the **throw-away**
+  Docker Proxmox VE through the product, then remove it through the product.
 
 ## Appendix
 

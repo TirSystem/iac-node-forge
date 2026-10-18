@@ -1,17 +1,17 @@
 **English**
 
-# Provisioning live test
+# Provisioning and removal live test
 
-> **This test creates a container and then deletes it, in the throw-away Proxmox VE of the
+> **This test creates a container and then removes it, in the throw-away Proxmox VE of the
 > integration tests.** Run it only against that Docker Proxmox VE, never against a Proxmox VE
-> you use for real work. The product itself has no delete: the test removes only the container
-> it created, with a helper that lives in the test file, and only if its name starts with
-> `iacnf-live-`. A Contabo instance is **never** created by a test, because it costs money and
-> commits the account to a contract period.
+> you use for real work. The removal is the product's own (`RemoveServer`, the same as
+> `server remove`), and it touches only the container the test created, whose name starts with
+> `iacnf-live-`. A Contabo instance is **never** created or cancelled by a test, because it costs
+> money and commits the account to a contract period.
 
 The live test acts through the same use cases and adapters as the command line:
-`DefineDesiredConfiguration`, `ProvisionServer` and `TrackOperation` with the real Proxmox VE
-adapter. It is marked `integration`, is skipped unless **everything** below is set, and never
+`DefineDesiredConfiguration`, `ProvisionServer`, `RemoveServer` and `TrackOperation` with the real
+Proxmox VE adapter. It is marked `integration`, is skipped unless **everything** below is set, and never
 runs in CI.
 
 ## What the scenario does
@@ -22,7 +22,13 @@ runs in CI.
 3. Confirm, follow the operation to its end and complete it: expect `succeeded`, a server
    recorded as managed and the container listed under the chosen name.
 4. Ask for the same name again and expect a refusal with **no request**.
-5. A finalizer stops and deletes the container, even when an assertion fails.
+5. Remove it through the product: the preview states that the server and its disks are destroyed
+   now; a wrong typed identifier and a missing confirmation send **nothing**; the confirmed request
+   is followed to its end and completed; the consequence is recorded with the operation, the
+   managed record is ended and the container is no longer listed; a second request reports "not
+   found" with no request.
+6. A finalizer removes the container through the product if the test failed before step 5. If
+   the container is running, the test fails and names it; remove it by hand in that case.
 
 ## 1. Start the Docker Proxmox VE
 
@@ -118,16 +124,16 @@ pytest -m integration -k provision -v -rs
 
 | Result | Meaning |
 | --- | --- |
-| passed | A container was created, followed to its end, recorded as managed, and deleted again. |
+| passed | A container was created, recorded as managed, removed through the product, and the record ended. |
 | skipped, a list of variable names | Those variables are not set in this session. |
 | skipped, "confirmation text does not match" | The confirm variable is wrong; nothing was touched. |
-| a failure in a step | Look in the Proxmox VE web interface (`https://localhost:8006`) for a container named `iacnf-live-...`; the finalizer will have tried to delete it. |
+| a failure in a step | Look in the Proxmox VE web interface (`https://localhost:8006`) for a container named `iacnf-live-...`; the finalizer will have tried to remove it. |
 
 Report the summary lines and the names of failing tests. Never send a token or a password.
 
 ## 4. Take it down
 
-Remove the token and the variables, then stop and delete the container:
+Remove the token and the variables, then stop and delete the Docker container:
 
 **Linux and macOS (bash)**
 

@@ -76,4 +76,4 @@ design needed them, the system sequence diagram (`ssd.md`) and the operation con
 
 The guides in this wiki are in the sidebar: the [Proxmox VE integration test](Integration-Test),
 the [Contabo live test](Contabo-Live-Test), the [power control live test](Power-Control-Live-Test) and the
-[provisioning live test](Provision-Live-Test).
+[provisioning and removal live test](Provision-Live-Test).
