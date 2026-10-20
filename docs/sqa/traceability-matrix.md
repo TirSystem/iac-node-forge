@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-007, RC-093 and RC-094 | [d03efee] |
-| 2026-10-18 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0009, SSD-009, SSD-010, OC-007, OC-008 and RC-095 to RC-103; revised DM-001, DICT-001, DCD-001 and ERD-001 for MIL-007 | [f05b1dd] |
+| 2026-10-20 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-104 and RC-105 | [12e95a3] |
+| 2026-10-20 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-106 and RC-107 | [669e5b8] |
 
 ---
 
@@ -33,7 +33,7 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-004] | MIL | en | it | [BC-001], [US-001], [MIL-003] | - | [RC-053], [RC-064], [RC-066] |
 | [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067], [RC-078], [RC-080] |
 | [MIL-006] | MIL | en | it | [BC-001], [US-001], [MIL-005] | - | [RC-081], [RC-091], [RC-092] |
-| [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093] |
+| [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093], [RC-107] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -54,10 +54,10 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0008] | ADR | - | - | [BC-001], [MIL-005], [MIL-006], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [UC-006] | [UC-012] | [RC-083] |
 | [SSD-008] | SSD | en | it | [UC-012], [DM-001] | [OC-006], [DCD-001] | [RC-086] |
 | [OC-006] | OC | - | - | [SSD-008], [DM-001] | [DCD-001] | [RC-087] |
-| [ADR-0009] | ADR | - | - | [BC-001], [MIL-007], [ADR-0001], [ADR-0004], [ADR-0006], [ADR-0008], [UC-006], [UC-012], [UC-014], [UC-018], [UC-019] | [UC-016], [UC-017] | [RC-095] |
+| [ADR-0009] | ADR | - | - | [BC-001], [MIL-007], [ADR-0001], [ADR-0004], [ADR-0006], [ADR-0008], [UC-006], [UC-012], [UC-014], [UC-018], [UC-019] | [UC-016], [UC-017] | [RC-095], [RC-104] |
 | [SSD-009], [SSD-010] | SSD | en | it | [UC-016], [UC-017], [DM-001] | [OC-007], [OC-008], [DCD-001] | [RC-098], [RC-100] |
-| [OC-007], [OC-008] | OC | - | - | [SSD-009], [SSD-010], [DM-001] | [DCD-001] | [RC-099], [RC-101] |
-| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004] to [OC-006], [SSD-001] to [SSD-003], [SSD-006] to [SSD-010], [OC-007], [OC-008], [ADR-0009] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076], [RC-079], [RC-088], [RC-090], [RC-102] |
+| [OC-007], [OC-008] | OC | - | - | [SSD-009], [SSD-010], [DM-001] | [DCD-001] | [RC-099], [RC-101], [RC-105] |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004] to [OC-006], [SSD-001] to [SSD-003], [SSD-006] to [SSD-010], [OC-007], [OC-008], [ADR-0009] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076], [RC-079], [RC-088], [RC-090], [RC-102], [RC-106] |
 | [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039], [RC-042], [RC-063], [RC-077], [RC-089], [RC-103] |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
@@ -67,7 +67,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-103 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-107 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -214,5 +214,9 @@ updated whenever an artifact instance is created or reviewed.
 [RC-101]: ./reviews/rc-101-oc-008.md
 [RC-102]: ./reviews/rc-102-dcd-001-rev10.md
 [RC-103]: ./reviews/rc-103-erd-001-rev6.md
-[d03efee]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d03efee52274a1fdb79ec4b7e559bd83bb849a29
-[f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[RC-104]: ./reviews/rc-104-adr-0009-rev2.md
+[RC-105]: ./reviews/rc-105-oc-008-rev2.md
+[12e95a3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/12e95a3bc848a2052a13f96f7ce48c1a271bb349
+[RC-107]: ./reviews/rc-107-python-code-mil-007.md
+[RC-106]: ./reviews/rc-106-dcd-001-rev11.md
+[669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643

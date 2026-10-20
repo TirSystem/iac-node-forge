@@ -9,7 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-095 | [f05b1dd] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-095 | [f05b1dd] |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: a restore does not fail on files that were already on the server<br>Accepted after RC-104 | [12e95a3] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -136,8 +137,11 @@ this client) before it writes a byte. The previous version of an overwritten fil
 - **Manifest and verification:** the manifest has, for every regular file, its path relative to the
   destination, its size and its SHA-256, and for every link its target. It is computed on the source side
   (remote with `find` and `sha256sum`, local with `hashlib`) immediately before the copy and on the
-  destination side after it. Any difference, missing file or extra file makes the transfer `FAILED` with
-  the list of differences; it is never reported as done. A file that changes while it is copied shows as a
+  destination side after it. A backup is `FAILED` on any difference, a missing file or an extra file, because
+  its destination starts empty. A restore adds and overwrites and never deletes, so it is `FAILED` only on a
+  missing or changed file; a file that already existed on the server and is not part of the restored data is
+  left in place, and the report says how many there are (a note), without failing the restore. In both cases
+  the transfer is never reported as done while a file is missing or differs. A file that changes while it is copied shows as a
   difference, and the user runs the transfer again.
 - **Room (backup):** the remote total is `du -sk` (kilobytes, accepted by BusyBox) of the chosen paths and
   must fit, with a margin of 10 percent plus 16 MiB, in `shutil.disk_usage` of the destination. If it does
@@ -228,3 +232,4 @@ this client) before it writes a byte. The previous version of an overwritten fil
 [UC-018]: ../use-cases/uc-018/uc.md
 [UC-019]: ../use-cases/uc-019/uc.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[12e95a3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/12e95a3bc848a2052a13f96f7ce48c1a271bb349

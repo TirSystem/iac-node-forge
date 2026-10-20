@@ -8,4 +8,5 @@
 - [Contabo live test](Contabo-Live-Test)
 - [Power control live test](Power-Control-Live-Test)
 - [Provisioning and removal live test](Provision-Live-Test)
+- [File backup and restore live test](File-Transfer-Live-Test)
 - [Appendix: documentation](Appendix-Documentation)
