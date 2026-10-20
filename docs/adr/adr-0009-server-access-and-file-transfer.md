@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-095 | [f05b1dd] |
-| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: a restore does not fail on files that were already on the server<br>Accepted after RC-104 | pending |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: a restore does not fail on files that were already on the server<br>Accepted after RC-104 | [12e95a3] |
 
 Allowed Status values: `Proposed`, `Accepted`, `Rejected`, `Deprecated`, `Superseded by ADR-NNNN`.
 
@@ -232,3 +232,4 @@ this client) before it writes a byte. The previous version of an overwritten fil
 [UC-018]: ../use-cases/uc-018/uc.md
 [UC-019]: ../use-cases/uc-019/uc.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[12e95a3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/12e95a3bc848a2052a13f96f7ce48c1a271bb349

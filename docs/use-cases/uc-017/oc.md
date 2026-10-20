@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-101 | [f05b1dd] |
-| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: extra files already on the Server do not fail a restore<br>Accepted after RC-105 | pending |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: extra files already on the Server do not fail a restore<br>Accepted after RC-105 | [12e95a3] |
 
 ---
 
@@ -118,3 +118,4 @@
 [DICT-001]: ../../dictionary.md
 [ADR-0009]: ../../adr/adr-0009-server-access-and-file-transfer.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[12e95a3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/12e95a3bc848a2052a13f96f7ce48c1a271bb349
