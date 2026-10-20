@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [669e5b8] |
 
 ---
 
@@ -60,3 +60,4 @@ Go — every Mandatory criterion passes (no shell is used locally, no secret is 
 
 [MIL-007]: ../../milestones/mil-007-file-backup-and-restore.md
 [QC-PY-001]: ../../../framework/qc/code/qc-programming-python.md
+[669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643

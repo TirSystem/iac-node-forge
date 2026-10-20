@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 10: DefineServerAccess, BackUpFiles, RestoreFiles, RemoteAccessResolver; RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort, ServerAccessStore; ServerAccess, RemoteAccess, HostKey, Manifest, TransferReport and their DTOs and enums (MIL-007)<br>Accepted after RC-102 | [f05b1dd] |
-| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 11: aligned with the built file transfer code (MIL-007 task 11)<br>Accepted after RC-106 | pending |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 11: aligned with the built file transfer code (MIL-007 task 11)<br>Accepted after RC-106 | [669e5b8] |
 
 ---
 
@@ -891,3 +891,4 @@ and may name every layer.
 [OC-008]: ./use-cases/uc-017/oc.md
 [ADR-0001]: ./adr/adr-0001-provider-test-strategy.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643
