@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | DCD-001 |
-| CrossReference | [DM-001], [OC-001], [OC-002], [OC-003], [SSD-001], [SSD-002], [SSD-003], [SSD-004], [SSD-005], [DICT-001], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [SSD-006], [SSD-007], [OC-004], [OC-005], [ADR-0008], [SSD-008], [OC-006] |
+| CrossReference | [DM-001], [OC-001], [OC-002], [OC-003], [SSD-001], [SSD-002], [SSD-003], [SSD-004], [SSD-005], [DICT-001], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [SSD-006], [SSD-007], [OC-004], [OC-005], [ADR-0008], [SSD-008], [OC-006], [ADR-0001], [ADR-0009], [SSD-009], [OC-007], [SSD-010], [OC-008] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 8: ServerRemovalPort, RemoveServer, RemovalKind, RemovalBlock, RemovalPreview, RemovalResult, RemovalOutcome; Operation.consequence; ManagedServerRecord can be ended (MIL-006)<br>Accepted after RC-088 | [6cdd351] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | [77de1b9] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | [77de1b9] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 10: DefineServerAccess, BackUpFiles, RestoreFiles, RemoteAccessResolver; RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort, ServerAccessStore; ServerAccess, RemoteAccess, HostKey, Manifest, TransferReport and their DTOs and enums (MIL-007)<br>Accepted after RC-102 | [f05b1dd] |
 
 ---
 
@@ -22,6 +22,27 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised for MIL-007 on 2026-10-18 (revision 10): the product reaches the inside of a server
+([ADR-0009]). The use cases `BackUpFiles` and `RestoreFiles` realise [UC-016] and [UC-017] with
+`previewBackup`, `requestBackup`, `previewRestore` and `requestRestore`, and `DefineServerAccess` records the
+connection facts with `defineServerAccess`. There is no operation to follow: a transfer runs to its end
+inside the call and returns a `TransferResult` with a `TransferReport`, so `Operation`, `OperationStore`,
+`TrackOperation` and the provider write ports are not used. The boundary to the server is four narrow
+ports, each with one reason to change: `RemoteReadPort` (the reads on the server: host key check, size,
+manifest, existing data), `FileTransferPort` (the two tar streams, `pull` and `push`), `KnownHostsPort`
+(the one write to the user's own `known_hosts`, on an explicit acceptance) and `LocalFilesystemPort` (room,
+local manifests, the check of the destination and the report file). The reads are kept apart from the
+streams so that the checks of the host key, the size and the manifest have no way to write; the fakes record
+every remote command, so a test shows that a backup ran only reads and one `tar -c`. `ServerAccessStore` keeps the `ServerAccess` of a server in the existing file; `ServerAccess` is
+what is kept (the host may be empty) and `RemoteAccess` is what one run uses (the host resolved from the
+record or from `Server.addresses`). `RemoteAccessResolver` is the one place that checks the server, its
+state, the recorded access, the address and the host key for both use cases, so the rules are written once.
+The accepted fingerprint is a parameter of the preview, not an operation of its own: the preview is where
+the connection is first made. The adapters are `OpenSshRemoteReader`, `OpenSshFileTransfer` and
+`OpenSshKnownHosts`, which build their commands only through `OpenSshCommands` (the allow-list), the
+`LocalDiskFilesystem` and `JsonLinesServerAccessStore`; in-process fakes for the same ports serve the contract
+suite and the unit tests. The `Confirmation` of a restore is the one of a removal.
 
 Revised after the code of MIL-006 on 2026-10-18 (revision 9): the flag of `Confirmation` is named `given`, as it
 was for the power and provisioning requests; the adapters leave `Operation.consequence` empty and the use case
@@ -203,6 +224,87 @@ package domain {
     - minimum : Integer [0..1]
     - maximum : Integer [0..1]
   }
+  class ServerAccess {
+    - configurationId : ConfigurationId
+    - serverIdentifier : Text
+    - host : Text [0..1]
+    - port : Integer
+    - user : Text
+    - identityHint : Text [0..1]
+  }
+  class RemoteAccess {
+    - host : Text
+    - port : Integer
+    - user : Text
+    - identityHint : Text [0..1]
+  }
+  class HostKey {
+    - host : Text
+    - port : Integer
+    - keyType : Text
+    - fingerprint : Text
+  }
+  enum HostKeyStanding {
+    KNOWN
+    UNKNOWN
+    CHANGED
+  }
+  class HostKeyCheck {
+    - standing : HostKeyStanding
+    - hostKey : HostKey [0..1]
+  }
+  enum TransferDirection {
+    BACKUP
+    RESTORE
+  }
+  enum EntryKind {
+    FILE
+    LINK
+  }
+  class ManifestEntry {
+    - path : Text
+    - kind : EntryKind
+    - size : Integer
+    - checksum : Text [0..1]
+    - linkTarget : Text [0..1]
+  }
+  class Manifest {
+    - entries : List
+  }
+  enum DifferenceKind {
+    MISSING
+    EXTRA
+    CHANGED
+  }
+  class ManifestDifference {
+    - path : Text
+    - kind : DifferenceKind
+  }
+  class OverwriteEntry {
+    - path : Text
+    - size : Integer
+    - modifiedAt : Timestamp
+  }
+  class SkippedEntry {
+    - path : Text
+    - reason : Text
+  }
+  class TransferReport {
+    - direction : TransferDirection
+    - configurationId : ConfigurationId
+    - serverIdentifier : Text
+    - startedAt : Timestamp
+    - finishedAt : Timestamp
+    - fileCount : Integer
+    - linkCount : Integer
+    - byteCount : Integer
+    - skipped : List
+    - overwritten : List
+    - differences : List
+    - verified : Boolean
+    - note : Text [0..1]
+    - reportFile : Text [0..1]
+  }
 }
 package application {
   interface ProviderPort {
@@ -343,6 +445,73 @@ package application {
     + listServers(configuration) : ServerListing
     + inspectServer(configuration, serverIdentifier) : ServerSummary
   }
+  interface RemoteReadPort {
+    + checkHostKey(access) : HostKeyCheck
+    + totalSize(access, paths) : Integer
+    + manifest(access, root, relativePaths) : Manifest
+    + existing(access, root, names) : List
+  }
+  interface FileTransferPort {
+    + pull(access, remotePaths, destination) : List
+    + push(access, localPaths, remoteDestination) : List
+  }
+  interface KnownHostsPort {
+    + trust(hostKey) : void
+  }
+  interface LocalFilesystemPort {
+    + freeBytes(directory) : Integer
+    + isNewOrEmpty(directory) : Boolean
+    + missing(paths) : List
+    + size(paths) : Integer
+    + manifestOfPaths(paths) : Manifest
+    + manifestUnder(directory, relativePaths) : Manifest
+    + saveReport(directory, report) : Text
+  }
+  interface ServerAccessStore {
+    + save(access) : void
+    + load(configurationId, serverIdentifier) : ServerAccess [0..1]
+  }
+  class RemoteAccessResolver {
+    + resolve(configuration, serverIdentifier, acceptedFingerprint) : AccessResolution
+  }
+  class DefineServerAccess {
+    + defineServerAccess(configuration, serverIdentifier, host, port, user, identityHint) : ServerAccessView
+  }
+  class BackUpFiles {
+    + previewBackup(configuration, serverIdentifier, remotePaths, destination, acceptedFingerprint) : TransferPreview
+    + requestBackup(configuration, serverIdentifier, remotePaths, destination) : TransferResult
+  }
+  class RestoreFiles {
+    + previewRestore(configuration, serverIdentifier, localPaths, remoteDestination, acceptedFingerprint) : TransferPreview
+    + requestRestore(configuration, serverIdentifier, localPaths, remoteDestination, reportDirectory, confirmation) : TransferResult
+  }
+  enum TransferOutcome {
+    READY
+    COMPLETED
+    VERIFICATION_FAILED
+    TRANSFER_FAILED
+    HOST_KEY_UNKNOWN
+    HOST_KEY_CHANGED
+    CONNECTION_FAILED
+    ACCESS_MISSING
+    SERVER_NOT_FOUND
+    SERVER_NOT_RUNNING
+    PATH_NOT_FOUND
+    INVALID_PATH
+    DESTINATION_NOT_EMPTY
+    NO_ROOM
+    NOT_CONFIRMED
+    IDENTIFIER_MISMATCH
+  }
+  enum AccessOutcome {
+    SAVED
+    INVALID
+    NOT_FOUND
+  }
+  class AccessResolution
+  class ServerAccessView
+  class TransferPreview
+  class TransferResult
 }
 package infrastructure {
   class ProxmoxProvider
@@ -353,6 +522,12 @@ package infrastructure {
   class JsonLinesProvisionIntentStore
   class PlatformCredentialStore
   class ConsoleCredentialPrompt
+  class OpenSshCommands
+  class OpenSshRemoteReader
+  class OpenSshFileTransfer
+  class OpenSshKnownHosts
+  class LocalDiskFilesystem
+  class JsonLinesServerAccessStore
 }
 package presentation {
   class CliApplication
@@ -425,10 +600,59 @@ CliApplication ..> RemoveServer
 CliApplication ..> ControlServerPower
 CliApplication ..> TrackOperation
 CliApplication ..> CredentialPrompt
+CliApplication ..> DefineServerAccess
+CliApplication ..> BackUpFiles
+CliApplication ..> RestoreFiles
 CliProviderResolver ..|> ProviderResolver
 CliApplication ..> CredentialSource
 CredentialSource ..> CredentialStore
 CredentialSource ..> CredentialPrompt
+ServerAccess "0..*" --> "1" ProviderConfiguration
+HostKeyCheck "0..*" --> "1" HostKeyStanding
+HostKeyCheck "0..*" --> "0..1" HostKey
+Manifest "1" *-- "0..*" ManifestEntry
+ManifestEntry "0..*" --> "1" EntryKind
+ManifestDifference "0..*" --> "1" DifferenceKind
+TransferReport "1" *-- "0..*" ManifestDifference
+TransferReport "1" *-- "0..*" OverwriteEntry
+TransferReport "1" *-- "0..*" SkippedEntry
+TransferReport "0..*" --> "1" TransferDirection
+RemoteReadPort ..> RemoteAccess
+RemoteReadPort ..> HostKeyCheck
+RemoteReadPort ..> Manifest
+RemoteReadPort ..> OverwriteEntry
+FileTransferPort ..> RemoteAccess
+FileTransferPort ..> SkippedEntry
+KnownHostsPort ..> HostKey
+LocalFilesystemPort ..> Manifest
+LocalFilesystemPort ..> TransferReport
+ServerAccessStore ..> ServerAccess
+RemoteAccessResolver ..> ProviderResolver
+RemoteAccessResolver ..> ConfigurationStore
+RemoteAccessResolver ..> ServerAccessStore
+RemoteAccessResolver ..> RemoteReadPort
+RemoteAccessResolver ..> KnownHostsPort
+DefineServerAccess ..> ProviderResolver
+DefineServerAccess ..> ConfigurationStore
+DefineServerAccess ..> ServerAccessStore
+BackUpFiles ..> RemoteAccessResolver
+BackUpFiles ..> RemoteReadPort
+BackUpFiles ..> FileTransferPort
+BackUpFiles ..> LocalFilesystemPort
+BackUpFiles ..> ConfigurationStore
+RestoreFiles ..> RemoteAccessResolver
+RestoreFiles ..> RemoteReadPort
+RestoreFiles ..> FileTransferPort
+RestoreFiles ..> LocalFilesystemPort
+RestoreFiles ..> ConfigurationStore
+OpenSshRemoteReader ..|> RemoteReadPort
+OpenSshFileTransfer ..|> FileTransferPort
+OpenSshKnownHosts ..|> KnownHostsPort
+LocalDiskFilesystem ..|> LocalFilesystemPort
+JsonLinesServerAccessStore ..|> ServerAccessStore
+OpenSshRemoteReader ..> OpenSshCommands
+OpenSshFileTransfer ..> OpenSshCommands
+OpenSshKnownHosts ..> OpenSshCommands
 @enduml
 ```
 
@@ -478,6 +702,31 @@ CredentialSource ..> CredentialPrompt
 | RemovalPreview | Consequence | What will happen, or why nothing can be removed: the outcome and reason, provider, configuration, server identifier and name, server state, whether it is managed, the removal kind and the consequence text. | outcome, reason, providerName, providerKind, configurationId, serverIdentifier, serverName, serverState, managed, kind, consequence | none |
 | RemovalResult | Operation | Result of requesting or completing a removal: the outcome, the reason, the operation summary when one exists, the consequence recorded, the state left at the provider (for a cancellation the effective date reported) and whether the managed-server record was ended. | outcome, reason, operation, consequence, stateLeft, managedEnded | none |
 | RemovalOutcome | Operation | The outcomes of a preview, a request and a completion: READY (preview offered), REQUESTED, COMPLETED (operation succeeded; managed record ended when there was one), INCOMPLETE (operation unfinished or unknown), REJECTED (provider refused, or the operation ended as failed), UNSUPPORTED, NOT_FOUND (no such server or operation), RUNNING_REFUSED, ALREADY_REMOVED, NOT_CONFIRMED, IDENTIFIER_MISMATCH. | READY, REQUESTED, COMPLETED, INCOMPLETE, REJECTED, UNSUPPORTED, NOT_FOUND, RUNNING_REFUSED, ALREADY_REMOVED, NOT_CONFIRMED, IDENTIFIER_MISMATCH | none |
+| ServerAccess | Server access | The non-secret connection facts kept for one server, unique by (configurationId, serverIdentifier): the host (empty: the address the provider reports is used at the time of a transfer), the port (22 by default), the user (required, no default), and an identity hint (a key file path or a note, at most 500 characters; passed to `ssh` as `-i` only when it names an existing file). Never holds a password, a passphrase, a key or a token ([ADR-0009]). | configurationId, serverIdentifier, host, port, user, identityHint | none |
+| RemoteAccess | Server access | What one run uses to connect: the host resolved from the record or from `Server.addresses` (without a prefix length), the port, the user and the identity hint; built by `RemoteAccessResolver`, never persisted. | host, port, user, identityHint | none |
+| HostKey | Host key | The key a server shows: the host and port, the key type and the fingerprint (`SHA256:...`). | host, port, keyType, fingerprint | none |
+| HostKeyStanding, HostKeyCheck | Host key | Whether the user trusts the key shown: KNOWN (a scanned key matches `known_hosts`), UNKNOWN (no entry for the host) or CHANGED (an entry exists and no scanned key matches), and the result of a check with the key shown. | KNOWN, UNKNOWN, CHANGED; standing, hostKey | none |
+| TransferDirection, EntryKind, DifferenceKind | Transfer | The direction of a transfer (BACKUP, RESTORE), the kind of a manifest entry (FILE, LINK) and the kind of a difference found by the verification (MISSING, EXTRA, CHANGED). | BACKUP, RESTORE; FILE, LINK; MISSING, EXTRA, CHANGED | none |
+| ManifestEntry, Manifest | Manifest | The entries of the data of a transfer: for a file its path (relative to the destination), size and SHA-256 checksum, for a link its path and target; two entries are equal when path, kind, size, checksum and target are equal. Modes and owners are not part of it. The use cases compare two manifests entry by entry and make the ManifestDifferences. | path, kind, size, checksum, linkTarget; entries | none |
+| ManifestDifference | Manifest | One difference between the manifest at the source and at the destination. | path, kind | none |
+| OverwriteEntry | Overwrite preview | One existing item on the server that a restore would replace. The Overwrite preview (IT term `OverwritePreview`) is not a class: it is the list `overwrites` of `TransferPreview` and the list `overwritten` of `TransferReport`, made of these entries. | path, size, modifiedAt | none |
+| SkippedEntry | Transfer report | One entry that was not copied (a device, a socket or a pipe) and the reason. | path, reason | none |
+| TransferReport | Transfer report | The account of one transfer: direction, server, times, counts of files, links and bytes, what was skipped and overwritten, the differences, whether it is verified, a note (for an incomplete transfer) and the local file it was saved to. Shown and saved; never holds a secret. | direction, configurationId, serverIdentifier, startedAt, finishedAt, fileCount, linkCount, byteCount, skipped, overwritten, differences, verified, note, reportFile | none |
+| RemoteReadPort | Transfer | The boundary for what is read on a server over SSH: the host key check (`ssh-keyscan`, `ssh-keygen`), the total size, the manifest of chosen paths and the existing items under the destination of a restore. Reads only; the commands are the allow-list of [ADR-0009]. | none | checkHostKey, totalSize, manifest, existing |
+| FileTransferPort | Transfer | The boundary for the two tar streams over `ssh`: `pull` unpacks the remote paths into the destination with the safe extraction filter, `push` writes the local paths to the remote destination; each returns the entries skipped. The only port that writes on a server. | none | pull, push |
+| KnownHostsPort | Host key | The boundary to the one write outside a transfer: adding an accepted host key to the user's `known_hosts`. | none | trust |
+| LocalFilesystemPort | Transfer | The boundary to the local files: room at a directory, whether a destination is new or empty, which paths are missing, the size and the manifests of local data, and the saving of the report file. | none | freeBytes, isNewOrEmpty, missing, size, manifestOfPaths, manifestUnder, saveReport |
+| ServerAccessStore | Server access | The boundary to the saved connection facts of servers; `save` replaces the one with the same key. | none | save, load |
+| AccessResolution | (result type) | What `RemoteAccessResolver` found: the outcome (READY, or SERVER_NOT_FOUND, SERVER_NOT_RUNNING, ACCESS_MISSING, HOST_KEY_UNKNOWN, HOST_KEY_CHANGED, CONNECTION_FAILED), the reason, the server, whether it is managed, the RemoteAccess and the HostKey. | outcome, reason, server, managed, access, hostKey | none |
+| RemoteAccessResolver | Server access | Checks, for both transfer use cases, that the server exists at the provider and is running, that an access is recorded and an address is known, and that the host key is known; with an accepted fingerprint that equals the one shown, it has the key trusted; a changed key is never trusted. | none | resolve |
+| DefineServerAccess | Server access | Realises the recording of the connection facts of [SSD-009]: checks the server exists, the user, the port, the host and the hint, and saves the ServerAccess; makes no connection. | none | defineServerAccess |
+| BackUpFiles | Transfer | Realises UC-016: previews with the host key, the size and the room (the data plus a margin of 10 percent and 16 MiB must fit), and on request makes the source manifest, pulls, makes the manifest of the copy, compares and reports; changes nothing on the server. | none | previewBackup, requestBackup |
+| RestoreFiles | Transfer | Realises UC-017: previews with the Overwrite preview and the confirmation required, and on a valid confirmation (the identifier typed, and again for an unmanaged server) lists again what is overwritten, makes the local manifest, pushes, makes the manifest of the copy on the server, compares and reports; writes nothing on the server before the confirmation. | none | previewRestore, requestRestore |
+| TransferOutcome | Transfer | The outcomes of a preview and of a transfer: READY (preview offered), COMPLETED (copied and verified), VERIFICATION_FAILED (the manifests differ), TRANSFER_FAILED (the copy stopped), HOST_KEY_UNKNOWN, HOST_KEY_CHANGED, CONNECTION_FAILED, ACCESS_MISSING, SERVER_NOT_FOUND, SERVER_NOT_RUNNING, PATH_NOT_FOUND, INVALID_PATH, DESTINATION_NOT_EMPTY, NO_ROOM, NOT_CONFIRMED, IDENTIFIER_MISMATCH. | READY, COMPLETED, VERIFICATION_FAILED, TRANSFER_FAILED, HOST_KEY_UNKNOWN, HOST_KEY_CHANGED, CONNECTION_FAILED, ACCESS_MISSING, SERVER_NOT_FOUND, SERVER_NOT_RUNNING, PATH_NOT_FOUND, INVALID_PATH, DESTINATION_NOT_EMPTY, NO_ROOM, NOT_CONFIRMED, IDENTIFIER_MISMATCH | none |
+| AccessOutcome | Server access | The outcomes of recording the connection facts: SAVED, INVALID (a user, port, host or hint that is not valid) and NOT_FOUND (no such server or configuration). | SAVED, INVALID, NOT_FOUND | none |
+| ServerAccessView | Server access | Result of `defineServerAccess`: the outcome and reason, the server, the host as kept (or that the provider's address is used), the port, the user and the hint. | outcome, reason, configurationId, serverIdentifier, host, usesProviderAddress, port, user, identityHint | none |
+| TransferPreview | Transfer | What a transfer will do, or why it cannot: the outcome and reason, direction, provider, configuration, server (identifier, name, state), whether it is managed, host, port, user, the host key, the paths, the destination, the size, the room free and the room required (backup), the items that would be overwritten (restore) and whether the destination exists. | outcome, reason, direction, providerName, configurationId, serverIdentifier, serverName, serverState, managed, host, port, user, hostKey, paths, destination, totalBytes, freeBytes, requiredBytes, overwrites, destinationExists | none |
+| TransferResult | Transfer report | Result of a backup or a restore: the outcome, the reason, the TransferReport when one was made and the HostKey shown when it is unknown or changed. | outcome, reason, report, hostKey | none |
 | ControlServerPower | Operation | Realises UC-008: checks capability, state and confirmation, sends one request and records the operation; a preview does every check but the confirmation and sends nothing; refuses the actions PROVISION and REMOVE, which have their own use cases. | none | previewPowerAction, requestPowerAction |
 | TrackOperation | Operation | Realises UC-006: follows an operation to its end and records the outcome; reads the configuration to build the provider, and uses the provision port's `operationState` for an operation whose action is PROVISION and the removal port's for REMOVE. | none | followOperation, showOperation |
 | ConfigureProviderAccess | Provider configuration | Realises UC-001: validates access and saves a configuration; keeps the validated credentials in memory until the save or the next check, and never persists them. | none | validateAccess, saveProviderConfiguration |
@@ -486,6 +735,12 @@ CredentialSource ..> CredentialPrompt
 | ProxmoxProvider | (provider) | Adapter for the Proxmox VE interface: the reads, the four power requests, the container and virtual machine creations and their deletion (`DESTROY`). | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort, ServerRemovalPort |
 | ContaboProvider | (provider) | Adapter for the Contabo interface (the reads, the four power requests, the instance creation and its cancellation, `CANCEL`): exchanges the four credential values for a bearer token kept in memory, sends a request identifier on every call and renews the token once after a 401. | none | implements ProviderPort, ServerPowerPort, ServerProvisionPort, ServerRemovalPort |
 | JsonLinesConfigurationStore, JsonLinesOperationStore, JsonLinesDesiredConfigurationStore, JsonLinesProvisionIntentStore | (configuration) | Adapters that keep configuration and managed servers, operations, desired configurations and intents as JSON Lines in one file without secrets; each implements one port, because `save` and `loadAll` differ between the ports. | none | each implements its own port |
+| OpenSshCommands | (provider) | Builds the argument lists of `ssh`, `ssh-keyscan` and `ssh-keygen` and the remote command templates of the allow-list of [ADR-0009]; quotes every path for a POSIX shell after `--`, sets `StrictHostKeyChecking=yes` (and `BatchMode=yes` when no terminal can answer), and puts no secret in any argument or environment variable. The three OpenSSH adapters build commands only through it. | none | none |
+| OpenSshRemoteReader | Transfer | Adapter of `RemoteReadPort` that starts `ssh`, `ssh-keyscan` and `ssh-keygen` as processes: reads only. | none | implements RemoteReadPort |
+| OpenSshFileTransfer | Transfer | Adapter of `FileTransferPort`: the remote `tar -cf -` read from the stdout of `ssh` and unpacked with the `data` filter of Python's `tarfile`, and the local tar stream written to the remote `tar -xf -`. | none | implements FileTransferPort |
+| OpenSshKnownHosts | Host key | Adapter of `KnownHostsPort`: appends the accepted key to the user's `known_hosts` as `[host]:port` when the port is not 22. | none | implements KnownHostsPort |
+| LocalDiskFilesystem | Transfer | Adapter of `LocalFilesystemPort` with `pathlib`, `shutil.disk_usage` and `hashlib`; local paths follow the operating system. | none | implements LocalFilesystemPort |
+| JsonLinesServerAccessStore | Server access | Adapter of `ServerAccessStore`: keeps the `server_access` records in the one JSON Lines file, without secrets. | none | implements ServerAccessStore |
 | PlatformCredentialStore | Credential reference | Adapter for the operating system credential store. | none | implements CredentialStore |
 | ConsoleCredentialPrompt | (credentials) | Adapter that asks for each credential name of the provider on the console. | none | implements CredentialPrompt |
 | CliProviderResolver | (provider) | Builds the provider adapter for a configuration after obtaining its credentials. | none | implements ProviderResolver |
@@ -549,6 +804,26 @@ CredentialSource ..> CredentialPrompt
 | CredentialStore.put(reference, credentials) | `saveProviderConfiguration` in [OC-001] (cacheCredential) |
 | CredentialStore.get(reference) | `validateAccess` in [SSD-001] and `discoverCapabilities` in [SSD-002] (stored credentials) |
 | CredentialPrompt.ask(providerKind) | `validateAccess` in [SSD-001] (credentials parameter) |
+| DefineServerAccess.defineServerAccess(configuration, serverIdentifier, host, port, user, identityHint) : ServerAccessView | `defineServerAccess` in [OC-007] and [SSD-009] |
+| BackUpFiles.previewBackup(configuration, serverIdentifier, remotePaths, destination, acceptedFingerprint) : TransferPreview | `previewBackup` in [OC-007] and [SSD-009] |
+| BackUpFiles.requestBackup(configuration, serverIdentifier, remotePaths, destination) : TransferResult | `requestBackup` in [OC-007] and [SSD-009] |
+| RestoreFiles.previewRestore(configuration, serverIdentifier, localPaths, remoteDestination, acceptedFingerprint) : TransferPreview | `previewRestore` in [OC-008] and [SSD-010] |
+| RestoreFiles.requestRestore(configuration, serverIdentifier, localPaths, remoteDestination, reportDirectory, confirmation) : TransferResult | `requestRestore` in [OC-008] and [SSD-010] |
+| RemoteAccessResolver.resolve(configuration, serverIdentifier, acceptedFingerprint) : AccessResolution | Supporting operation: the preconditions on the Server, its state, the Server access, the address and the Host key of `previewBackup` and `requestBackup` in [OC-007] and of `previewRestore` and `requestRestore` in [OC-008] |
+| RemoteReadPort.checkHostKey(access) | `previewBackup` in [OC-007] and `previewRestore` in [OC-008] (the Host key precondition), repeated in `requestBackup` and `requestRestore` |
+| RemoteReadPort.totalSize(access, paths) | `previewBackup` in [OC-007] (the size to copy) and `requestBackup` (the room check) |
+| RemoteReadPort.manifest(access, root, relativePaths) | `requestBackup` in [OC-007] (the Manifest at the Server before the copy) and `requestRestore` in [OC-008] (the Manifest of the copy on the Server) |
+| RemoteReadPort.existing(access, root, names) | `previewRestore` and `requestRestore` in [OC-008] (the Overwrite preview) |
+| FileTransferPort.pull(access, remotePaths, destination) | `requestBackup` in [OC-007] (the copy to the destination) |
+| FileTransferPort.push(access, localPaths, remoteDestination) | `requestRestore` in [OC-008] (the copy to the Server, after the confirmation) |
+| KnownHostsPort.trust(hostKey) | `previewBackup` in [OC-007] and `previewRestore` in [OC-008] (the accepted fingerprint of an unknown Host key) |
+| LocalFilesystemPort.freeBytes(directory), isNewOrEmpty(directory) | `previewBackup` in [OC-007] (the room and the destination preconditions) |
+| LocalFilesystemPort.missing(paths), size(paths) | `previewRestore` in [OC-008] (the local paths exist; the size to copy) |
+| LocalFilesystemPort.manifestOfPaths(paths) | `requestRestore` in [OC-008] (the Manifest of the local data before the copy) |
+| LocalFilesystemPort.manifestUnder(directory, relativePaths) | `requestBackup` in [OC-007] (the Manifest of the copy at the destination) |
+| LocalFilesystemPort.saveReport(directory, report) | `requestBackup` in [OC-007] and `requestRestore` in [OC-008] (the Transfer report saved as a file) |
+| ServerAccessStore.save(access) | `defineServerAccess` in [OC-007] |
+| ServerAccessStore.load(configurationId, serverIdentifier) | `previewBackup` in [OC-007] and `previewRestore` in [OC-008] (the Server access precondition), through `RemoteAccessResolver.resolve` |
 
 ## Pattern Annotations
 
@@ -562,6 +837,10 @@ CredentialSource ..> CredentialPrompt
 | Data-driven validation | ValueRule, DesiredConfigurationValidator | Each provider declares its values as data; the validator holds one rule for every provider and use cases do not test the provider kind ([ADR-0002]). |
 | Resolver | ProviderResolver, CliProviderResolver | The adapter takes its credentials at construction, and one run spans several configurations, so a port instance per configuration is resolved on demand. |
 | Capability set | Capability, ProviderPort.discoverCapabilities | Provider differences are declared, not hidden ([ADR-0002]). |
+| Interface segregation | RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort | Reads on a server, the streams that write, the one write to `known_hosts` and the local files are four ports; the remote reads cannot write by type, and the remote write surface is `FileTransferPort.push` alone, which `BackUpFiles` never calls ([ADR-0009]). |
+| Allow-list | OpenSshCommands | Every command that runs on a server comes from a fixed template in one class, so a test can list them ([ADR-0009]). |
+| Fake | RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort | An in-process implementation of each port runs the transfer contract suite and the unit tests without a network ([ADR-0001], [ADR-0009]). |
+| Single place for shared rules | RemoteAccessResolver | The server, access and host key checks of backup and restore are written once. |
 
 ## Dependency Check
 
@@ -593,7 +872,15 @@ and may name every layer.
 [OC-005]: ./use-cases/uc-004/oc.md
 [ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
 [UC-012]: ./use-cases/uc-012/uc.md
+[UC-016]: ./use-cases/uc-016/uc.md
+[UC-017]: ./use-cases/uc-017/uc.md
 [SSD-008]: ./use-cases/uc-012/ssd.md
 [OC-006]: ./use-cases/uc-012/oc.md
-[6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
+[ADR-0009]: ./adr/adr-0009-server-access-and-file-transfer.md
+[SSD-009]: ./use-cases/uc-016/ssd.md
+[OC-007]: ./use-cases/uc-016/oc.md
+[SSD-010]: ./use-cases/uc-017/ssd.md
+[OC-008]: ./use-cases/uc-017/oc.md
+[ADR-0001]: ./adr/adr-0001-provider-test-strategy.md
 [77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee
+[f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769

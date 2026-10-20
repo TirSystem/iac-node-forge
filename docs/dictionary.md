@@ -11,8 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Desired configuration, Provider-specific value and Provision intent; Power action also names provision (MIL-005)<br>Accepted after RC-071 | [aa570c0] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Removal kind and Consequence; Power action also names remove; Managed server can be ended (MIL-006)<br>Accepted after RC-085 | [6cdd351] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Removal kind and Consequence; Power action also names remove; Managed server can be ended (MIL-006)<br>Accepted after RC-085 | [6cdd351] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Server access, Host key, Transfer, Manifest, Transfer report and Overwrite preview (MIL-007)<br>Accepted after RC-097 | [f05b1dd] |
 
 ---
 
@@ -20,8 +20,8 @@
 
 Maps each Product Owner (PO) term to its professional IT term. PO language: English
 (`en`), domain `it`. The dictionary covers the concepts of the domain model for provider
-access, discovery, the listing of servers, power control, provisioning and removal (UC-001, UC-002,
-UC-003, UC-004, UC-006, UC-007, UC-008 and UC-012). A new concept
+access, discovery, the listing of servers, power control, provisioning, removal and the transfer of
+files (UC-001, UC-002, UC-003, UC-004, UC-006, UC-007, UC-008, UC-012, UC-016 and UC-017). A new concept
 gets a row here in the same change as in the domain model.
 
 ## Dictionary
@@ -43,6 +43,12 @@ gets a row here in the same change as in the domain model.
 | Removal kind | en | RemovalKind | The way a provider ends a server, either destroyed now or cancelled with an effective date. | DM, UC, US | OC, DCD, ERD |
 | Consequence | en | Consequence | The statement, shown before a removal is confirmed, of what the provider will do and what continues until then. | DM, UC, US | OC, DCD, ERD |
 | Provision intent | en | ProvisionIntent | The record made before a creation request is sent, so that a retry does not create a second server. | DM, UC, US | OC, DCD, ERD |
+| Server access | en | ServerAccess | The non-secret facts that this client keeps to reach the inside of one server: its host, port, user name and a hint about which identity to use. | DM, UC, US | OC, DCD, ERD |
+| Host key | en | HostKey | The identity that a server shows when it is reached, with its fingerprint, which the user must trust before data is transferred. | DM, UC, US | OC, DCD, ERD |
+| Transfer | en | Transfer | One copy of chosen files from a server to the local PC or from the local PC to a server, counted as done only when it is verified complete. | DM, UC, US | OC, DCD, ERD |
+| Manifest | en | Manifest | The list of the files of a transfer with the path, size and checksum of each, made at the source and at the destination to compare them. | DM, UC, US | OC, DCD, ERD |
+| Transfer report | en | TransferReport | The account of what a transfer did, including the verification result and any data it overwrote. | DM, UC, US | OC, DCD, ERD |
+| Overwrite preview | en | OverwritePreview | The statement, made before a restore is confirmed, of the existing data on the server that it would replace. | DM, UC, US | OC, DCD, ERD |
 
 ## Rules
 
@@ -55,5 +61,5 @@ gets a row here in the same change as in the domain model.
 [BC-001]: ./business-case.md
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
-[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
 [6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
+[f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769

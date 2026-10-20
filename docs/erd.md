@@ -4,13 +4,13 @@
 | Key | Value |
 | --- | --- |
 | ID | ERD-001 |
-| CrossReference | [DCD-001], [DICT-001], [ADR-0003], [ADR-0006], [ADR-0007], [ADR-0008] |
+| CrossReference | [DCD-001], [DICT-001], [ADR-0003], [ADR-0006], [ADR-0007], [ADR-0008], [ADR-0009] |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added DesiredConfiguration, AccessKeyName, DesiredConfigurationValue, ProvisionIntent and ProvisionIntentValue; OperationRecord.server_identifier is nullable (MIL-005)<br>Accepted after RC-077 | [aa570c0] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: OperationRecord.consequence; ManagedServerRecord is ended, not deleted (ended_at, ended_by_operation_id, recorded_at in the key) (MIL-006)<br>Accepted after RC-089 | [6cdd351] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 5: OperationRecord.consequence; ManagedServerRecord is ended, not deleted (ended_at, ended_by_operation_id, recorded_at in the key) (MIL-006)<br>Accepted after RC-089 | [6cdd351] |
+| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerAccess (`server_access`: host, port, user, identity_hint) (MIL-007)<br>Accepted after RC-103 | [f05b1dd] |
 
 ---
 
@@ -18,9 +18,11 @@
 
 The persisted data of the command-line client in its JSON Lines (JSONL) configuration
 file: provider configurations, credential references, operations, managed servers, desired
-configurations with their access key names and values, and provision intents with their values. A
-removal adds no entity: its consequence is a field of the operation, and the managed-server record
-is ended, not deleted.
+configurations with their access key names and values, provision intents with their values, and the
+connection facts of servers. A removal adds no entity: its consequence is a field of the operation,
+and the managed-server record is ended, not deleted. A transfer adds no entity either: its report is a
+local file written by the command ([ADR-0009]), and the host key is kept in the user's own
+`known_hosts`, not here.
 One client has one file. One line holds one record, and a `record_type` field names the entity;
 a child entity is a line of its own. There is no entity for a secret:
 no record has a field that could hold one ([ADR-0003]).
@@ -93,6 +95,15 @@ entity OperationRecord {
   detail : text
   consequence : text
 }
+entity ServerAccess {
+  * configuration_id : text <<PK>> <<FK>>
+  * server_identifier : text <<PK>>
+  --
+  host : text
+  * port : integer
+  * user : text
+  identity_hint : text
+}
 entity ManagedServerRecord {
   * configuration_id : text <<PK>> <<FK>>
   * server_identifier : text <<PK>>
@@ -105,6 +116,7 @@ entity ManagedServerRecord {
 CredentialReference |o--o{ ProviderConfiguration
 ProviderConfiguration ||--o{ ManagedServerRecord
 ProviderConfiguration ||--o{ OperationRecord
+ProviderConfiguration ||--o{ ServerAccess
 ProviderConfiguration ||--o{ DesiredConfiguration
 DesiredConfiguration ||--o{ AccessKeyName
 DesiredConfiguration ||--o{ DesiredConfigurationValue
@@ -158,6 +170,19 @@ OperationRecord |o--o| ManagedServerRecord
 | provider_reference | text | | Yes | Operation.providerReference (a task identifier, not a secret) |
 | detail | text | | Yes | Operation.detail (bounded, never a credential or header; for a cancellation also the effective date the provider reports) |
 | consequence | text (at most 500 characters) | | Yes | Operation.consequence (the text shown before a removal was confirmed; empty for every other action; never a credential) |
+
+### ServerAccess
+
+The `record_type` is `server_access`. There is no field for a password, a passphrase, a key or a token.
+
+| Attribute | Type | PK/FK | Nullable | Source (DCD class.attribute) |
+| --- | --- | --- | --- | --- |
+| configuration_id | text | PK, FK | No | ServerAccess.configurationId |
+| server_identifier | text | PK | No | ServerAccess.serverIdentifier |
+| host | text (a name or an address) | | Yes | ServerAccess.host (empty: the first address the provider reports for the server is used at the time of a transfer) |
+| port | integer (1 to 65535) | | No | ServerAccess.port (22 when not given) |
+| user | text | | No | ServerAccess.user |
+| identity_hint | text (at most 500 characters; a file path or a note, never a key) | | Yes | ServerAccess.identityHint |
 
 ### DesiredConfiguration
 
@@ -215,6 +240,7 @@ OperationRecord |o--o| ManagedServerRecord
 | ProviderConfiguration | 1:N (0..many) | OperationRecord | configuration_id | An operation belongs to the configuration it was requested through; deleting a configuration removes its records. |
 | ProviderConfiguration | 1:N (0..many) | ManagedServerRecord | configuration_id | A managed server belongs to exactly one configuration; deleting a configuration removes its records. |
 | ProviderConfiguration | 1:N (0..many) | DesiredConfiguration | configuration_id | A desired configuration belongs to exactly one configuration; its name is unique within it; deleting a configuration removes its records. |
+| ProviderConfiguration | 1:N (0..many) | ServerAccess | configuration_id | The connection facts of a server belong to the configuration it is run through; there is at most one per (configuration, server); saving again replaces it; deleting a configuration removes its records. The server is not an entity of this file, as for ManagedServerRecord and OperationRecord. |
 | DesiredConfiguration | 1:N (0..many) | AccessKeyName | configuration_id, desired_name | The names of the access keys to install; removed with the desired configuration. |
 | DesiredConfiguration | 1:N (0..many) | DesiredConfigurationValue | configuration_id, desired_name | The provider-specific values; replaced with the desired configuration. |
 | DesiredConfiguration | 1:N (0..many) | ProvisionIntent | configuration_id, desired_name | An intent is made from one desired configuration; replacing the desired configuration keeps the key, so the intent stays valid. |
@@ -232,7 +258,7 @@ record of what was requested. A removal keeps the consequence on the operation a
 managed-server record (`ended_at` set) instead of deleting it, so the history of what this client
 managed is kept; the key of the record includes `recorded_at`, because Proxmox VE reuses a freed
 identifier and a server created later with the same identifier is a new record. A line written
-before this revision has no `ended_at` and is read as not ended. The file is read whole at start-up; no index is needed
+before this revision has no `ended_at` and is read as not ended. A ServerAccess depends on its key alone; it holds the facts as given, and the address that the provider reports is not copied into it, so that a changed address is followed. The file is read whole at start-up; no index is needed
 at the expected size (tens of records).
 
 ---
@@ -243,5 +269,6 @@ at the expected size (tens of records).
 [ADR-0006]: ./adr/adr-0006-power-actions-and-operation-tracking.md
 [ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
 [ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
-[aa570c0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/aa570c0d24a2840723ff9a2db0e146999ae69381
+[ADR-0009]: ./adr/adr-0009-server-access-and-file-transfer.md
 [6cdd351]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/6cdd35154d6b48fceaa782699c9cbe88785b8247
+[f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
