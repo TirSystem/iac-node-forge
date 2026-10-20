@@ -9,7 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-101 | [f05b1dd] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-101 | [f05b1dd] |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 2: extra files already on the Server do not fail a restore<br>Accepted after RC-105 | pending |
 
 ---
 
@@ -106,7 +107,7 @@
 | The confirmation is missing or refused, or the extra confirmation of an unmanaged Server is missing | Reported as not confirmed; nothing is written on the Server. |
 | The identifier typed, or the one typed again, differs from the Server's identifier | Reported as identifier mismatch; nothing is written on the Server. |
 | Any other exception of `previewRestore` | The same outcome; nothing is written on the Server. |
-| The copy differs from the source (a changed, missing or extra file) | Reported as verification failed with each difference; never reported as done; the data already written stays on the Server and the report says so. |
+| The copy differs from the source (a changed or missing file) | Reported as verification failed with each difference; never reported as done; the data already written stays on the Server and the report says so. A file that was already on the Server and is not part of the restored data is not a difference: it is left in place and the report notes how many there are. |
 | The connection is lost, or the remote unpacking command fails, during the copy | Reported as transfer failed with the reason; the Server may hold part of the data, and the report says the restore is incomplete. |
 | The report cannot be written | The result is reported with the reason and the verification result is still stated. |
 

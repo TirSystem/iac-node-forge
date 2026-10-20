@@ -18,6 +18,8 @@ iac-node-forge manages servers at Proxmox VE and Contabo from a command-line cli
   through the product, at Proxmox VE or Contabo.
 - [Provisioning and removal live test](Provision-Live-Test) — create a container in the **throw-away**
   Docker Proxmox VE through the product, then remove it through the product.
+- [File backup and restore live test](File-Transfer-Live-Test) — copy files to and from a **throw-away** SSH server in
+  Docker; your own `~/.ssh` is never touched.
 
 ## Appendix
 
