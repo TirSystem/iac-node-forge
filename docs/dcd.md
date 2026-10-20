@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 9: aligned with the built removal code (MIL-006 task 12)<br>Accepted after RC-090 | [77de1b9] |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 10: DefineServerAccess, BackUpFiles, RestoreFiles, RemoteAccessResolver; RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort, ServerAccessStore; ServerAccess, RemoteAccess, HostKey, Manifest, TransferReport and their DTOs and enums (MIL-007)<br>Accepted after RC-102 | [f05b1dd] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 10: DefineServerAccess, BackUpFiles, RestoreFiles, RemoteAccessResolver; RemoteReadPort, FileTransferPort, KnownHostsPort, LocalFilesystemPort, ServerAccessStore; ServerAccess, RemoteAccess, HostKey, Manifest, TransferReport and their DTOs and enums (MIL-007)<br>Accepted after RC-102 | [f05b1dd] |
+| 2026-10-20 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 11: aligned with the built file transfer code (MIL-007 task 11)<br>Accepted after RC-106 | pending |
 
 ---
 
@@ -22,6 +22,14 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised after the code of MIL-007 on 2026-10-20 (revision 11): `AccessResolution` also carries the
+`configuration`, so that the previews can name the provider and the configuration; the transfer DTOs are in
+their own module; `CliServices` holds the transfer adapters as one group; the local checks (path syntax, an
+empty destination) run before the resolver, so they are reported without a connection; a backup of `/`, or
+of nested or duplicate paths, is `INVALID_PATH`; a link that the pull refuses is left out of the comparison
+and listed; a restore fails only on a missing or changed file and reports the files left in place, so a
+verified `TransferReport` may list `EXTRA` differences ([ADR-0009] revision 2).
 
 Revised for MIL-007 on 2026-10-18 (revision 10): the product reaches the inside of a server
 ([ADR-0009]). The use cases `BackUpFiles` and `RestoreFiles` realise [UC-016] and [UC-017] with
@@ -882,5 +890,4 @@ and may name every layer.
 [SSD-010]: ./use-cases/uc-017/ssd.md
 [OC-008]: ./use-cases/uc-017/oc.md
 [ADR-0001]: ./adr/adr-0001-provider-test-strategy.md
-[77de1b9]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/77de1b95c1cbfa8f502579b770c2f6bd538952ee
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769

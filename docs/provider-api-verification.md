@@ -269,6 +269,33 @@ What this confirms: R1, R2 and R8 for a container. What it does not cover: a vir
 (R3), the permission error (R4), the lost-answer path (R7), the identifier reuse (R9) and every Contabo
 statement (R5 and R6).
 
+## File transfer (MIL-007)
+
+Task 10 of [MIL-007]. This slice does not use the provider API: it reaches the server itself over SSH
+([ADR-0009]). The columns say what the design assumes, what the in-process fake does (the transfer contract
+suite runs the same behaviours against the fake and against the OpenSSH adapters), and what the live run of
+2026-10-20 showed. The live server was a throw-away OpenSSH 9.9 server with BusyBox 1.37 in an Alpine container
+on the same machine, reached with a key pair generated for the run, a temporary `known_hosts` and an empty
+`ssh_config`; the real `~/.ssh` was not read or changed (its files kept their modification times). Two clients
+were tried: the OpenSSH of Git for Windows (10.2) and the Windows-native OpenSSH (9.5).
+
+| # | Statement | Design | Fake | Live |
+| --- | --- | --- | --- | --- |
+| T1 | The system `ssh` started as a process honours a key file given by hint, the user's config and `known_hosts`, with `BatchMode` and `StrictHostKeyChecking=yes` | ADR-0004, ADR-0009 | Not applicable | Passed (both clients; the test used a temporary config and `known_hosts`) |
+| T2 | A tar stream over `ssh` copies a tree in both directions, including a nested folder, an empty file, a non-ASCII name and a relative link | ADR-0009 | Yes | Passed (BusyBox `tar`) |
+| T3 | The manifest is built with `find`, `sha256sum`, `stat` and `readlink`, and a changed byte shows as a difference | ADR-0009 | Yes | Passed on BusyBox; a GNU userland was checked by hand only |
+| T4 | `du -sk` gives the size for the room check | ADR-0009 | Yes | Passed on BusyBox |
+| T5 | `tar --no-same-owner` is probed on an empty archive to see whether the remote `tar` accepts it | ADR-0009 | Yes | Passed on BusyBox |
+| T6 | An unknown host key stops the transfer and shows its fingerprint; the same fingerprint accepts it; a changed key stops it and is never accepted, not even with the fingerprint | ADR-0004, ADR-0009 | Yes | Passed |
+| T7 | A restore adds and overwrites and never deletes: files already on the server stay and are reported | ADR-0009 revision 2 | Yes | Passed (found by this run; the first rule failed such a restore) |
+| T8 | The OpenSSH 9.9 server bans a client that runs `ssh-keyscan` many times in a short while | Not foreseen | Not applicable | Observed: the throw-away server sets `PerSourcePenalties no`; how a real server rate-limits repeated key scans is not known |
+| T9 | The Windows-native OpenSSH 9.5 client cannot negotiate the post-quantum key exchange a 9.9 server offers first | Not foreseen | Not applicable | Observed: the throw-away server restricts `KexAlgorithms`; a real server with an old client can behave the same |
+| T10 | A password or key passphrase prompt, a password-only server, the Windows ssh-agent service and a user without the right to create links | ADR-0009 | Not applicable | Not run |
+
+What the live run confirms: T1 to T7 on one server type. It does not cover a GNU userland server, a server that
+needs a password or a passphrase, `ProxyJump`, a long transfer (the four-hour stream time limit is untested), or
+any Linux or macOS client.
+
 ## Still open
 
 - Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
@@ -285,6 +312,8 @@ statement (R5 and R6).
 [MIL-004]: ./milestones/mil-004-power-control.md
 [MIL-005]: ./milestones/mil-005-provisioning.md
 [MIL-006]: ./milestones/mil-006-delete-or-cancel.md
+[MIL-007]: ./milestones/mil-007-file-backup-and-restore.md
+[ADR-0009]: ./adr/adr-0009-server-access-and-file-transfer.md
 [ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
 [ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
 [UC-004]: ./use-cases/uc-004/uc.md
