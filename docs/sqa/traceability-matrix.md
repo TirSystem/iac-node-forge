@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-20 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-104 and RC-105 | [12e95a3] |
 | 2026-10-20 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-106 and RC-107 | [669e5b8] |
+| 2026-10-21 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-108, the Go/No-Go check of MIL-007 | [4909c5e] |
 
 ---
 
@@ -33,7 +33,7 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-004] | MIL | en | it | [BC-001], [US-001], [MIL-003] | - | [RC-053], [RC-064], [RC-066] |
 | [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067], [RC-078], [RC-080] |
 | [MIL-006] | MIL | en | it | [BC-001], [US-001], [MIL-005] | - | [RC-081], [RC-091], [RC-092] |
-| [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093], [RC-107] |
+| [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093], [RC-107], [RC-108] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -67,7 +67,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-107 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-108 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -216,7 +216,8 @@ updated whenever an artifact instance is created or reviewed.
 [RC-103]: ./reviews/rc-103-erd-001-rev6.md
 [RC-104]: ./reviews/rc-104-adr-0009-rev2.md
 [RC-105]: ./reviews/rc-105-oc-008-rev2.md
-[12e95a3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/12e95a3bc848a2052a13f96f7ce48c1a271bb349
 [RC-107]: ./reviews/rc-107-python-code-mil-007.md
 [RC-106]: ./reviews/rc-106-dcd-001-rev11.md
 [669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643
+[RC-108]: ./reviews/rc-108-mil-007-go-no-go.md
+[4909c5e]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/4909c5ee2cb7d406ed77f1de41daf4c4130b09ca
