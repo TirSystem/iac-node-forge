@@ -11,7 +11,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-093 (autonomous mode, stand-in) | [d03efee] |
+| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-093 (autonomous mode, stand-in) | [d03efee] |
+| 2026-10-21 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Go decision: all eleven criteria met (RC-108); stand-in decision, open to challenge | pending |
 
 ---
 
