@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 6: ServerAccess (`server_access`: host, port, user, identity_hint) (MIL-007)<br>Accepted after RC-103 | [f05b1dd] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: BackupRecord (`backup`: backup_id, kind, location, created_at, operation_id); OperationRecord.action also backup and restore (MIL-008)<br>Accepted after RC-119 | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 7: BackupRecord (`backup`: backup_id, kind, location, created_at, operation_id); OperationRecord.action also backup and restore (MIL-008)<br>Accepted after RC-119 | [9fd15f2] |
 
 ---
 
@@ -305,3 +305,4 @@ at the expected size (tens of records).
 [ADR-0009]: ./adr/adr-0009-server-access-and-file-transfer.md
 [ADR-0010]: ./adr/adr-0010-whole-server-backup-and-restore.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa

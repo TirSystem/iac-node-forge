@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-20 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 11: aligned with the built file transfer code (MIL-007 task 11)<br>Accepted after RC-106 | [669e5b8] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 12: ServerBackupPort, BackupStore, BackUpServer, ListBackups, RestoreServer; Backup, BackupKind, BackupRecord, RestoreEffect, BackupBlock and their DTOs and outcomes; PowerAction gains BACKUP and RESTORE (MIL-008)<br>Accepted after RC-118 | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 12: ServerBackupPort, BackupStore, BackUpServer, ListBackups, RestoreServer; Backup, BackupKind, BackupRecord, RestoreEffect, BackupBlock and their DTOs and outcomes; PowerAction gains BACKUP and RESTORE (MIL-008)<br>Accepted after RC-118 | [9fd15f2] |
 
 ---
 
@@ -1095,3 +1095,4 @@ and may name every layer.
 [SSD-012]: ./use-cases/uc-019/ssd.md
 [OC-010]: ./use-cases/uc-019/oc.md
 [669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643
+[9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa

@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Server access, Host key, Transfer, Manifest, Transfer report and Overwrite preview (MIL-007)<br>Accepted after RC-097 | [f05b1dd] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Backup, Backup kind and Restore effect; Power action also names backup and restore; Consequence also precedes a restore (MIL-008)<br>Accepted after RC-113 | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added Backup, Backup kind and Restore effect; Power action also names backup and restore; Consequence also precedes a restore (MIL-008)<br>Accepted after RC-113 | [9fd15f2] |
 
 ---
 
@@ -65,3 +65,4 @@ gets a row here in the same change as in the domain model.
 [SA-001]: ./stakeholder-analysis.md
 [DM-001]: ./domain-model.md
 [f05b1dd]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/f05b1dd98b3282a9b01ed2875fb706e6326af769
+[9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa

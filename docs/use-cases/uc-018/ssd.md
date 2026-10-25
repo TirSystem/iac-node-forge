@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-114 | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version<br>Accepted after RC-114 | [9fd15f2] |
 
 ---
 
@@ -69,3 +69,4 @@ storages and the existing backups in step 1 changes nothing.
 [SSD-005]: ../uc-006/ssd.md
 [UC-006]: ../uc-006/uc.md
 [OC-009]: ./oc.md
+[9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa
