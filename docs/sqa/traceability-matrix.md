@@ -10,7 +10,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-009, RC-120 and RC-121 | [a6a22f3] |
-| 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-122 and RC-123 | pending |
+| 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-122 and RC-123 | [c305ec0] |
 
 ---
 
@@ -247,3 +247,4 @@ updated whenever an artifact instance is created or reviewed.
 [a6a22f3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a6a22f33658bdb9ac659439f88517554e6408462
 [RC-123]: ./reviews/rc-123-python-code-mil-008.md
 [RC-122]: ./reviews/rc-122-dcd-001-rev13.md
+[c305ec0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c305ec0e8a87bb87381a6d635f2ebb6eb870fb99
