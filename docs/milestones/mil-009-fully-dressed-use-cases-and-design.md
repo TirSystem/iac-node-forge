@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-120 (autonomous mode, stand-in) | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-120 (autonomous mode, stand-in) | [a6a22f3] |
 
 ---
 
@@ -110,3 +110,4 @@ states no deadline, so there is no constraint to conflict with.
 [BC-001]: ../business-case.md
 [US-001]: ../user-stories.md
 [MIL-008]: ./mil-008-whole-server-backup-and-restore.md
+[a6a22f3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a6a22f33658bdb9ac659439f88517554e6408462

@@ -12,7 +12,7 @@
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-25 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-110 (autonomous mode, stand-in) | [b7e3ae8] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-121 (autonomous mode, stand-in) | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-121 (autonomous mode, stand-in) | [a6a22f3] |
 
 ---
 
@@ -156,3 +156,4 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-008]: ./milestones/mil-008-whole-server-backup-and-restore.md
 [MIL-009]: ./milestones/mil-009-fully-dressed-use-cases-and-design.md
 [b7e3ae8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b7e3ae8dfcb5e1cfa2ff917875e557775a691d7a
+[a6a22f3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a6a22f33658bdb9ac659439f88517554e6408462
