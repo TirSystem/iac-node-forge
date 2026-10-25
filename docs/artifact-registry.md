@@ -14,16 +14,16 @@ document of a type. `Primary File` may contain a glob (e.g.
 | BC | Business Case | docs/business-case.md | 002 |
 | SA | Stakeholder Analysis | docs/stakeholder-analysis.md | 002 |
 | PP | Project Plan | docs/project-plan.md | 002 |
-| MIL | Milestone / Gateway | docs/milestones/mil-*.md | 008 |
-| ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0010 |
+| MIL | Milestone / Gateway | docs/milestones/mil-*.md | 009 |
+| ADR | Architecture Decision Record | docs/adr/adr-NNNN-*.md | 0011 |
 | UCD | Use Case Diagram | docs/use-case-diagram.md | 002 |
 | US | User Story | docs/user-stories.md | 002 |
-| RC | SQA Review Record | docs/sqa/reviews/rc-*.md | 109 |
+| RC | SQA Review Record | docs/sqa/reviews/rc-*.md | 120 |
 | TM | Traceability Matrix | docs/sqa/traceability-matrix.md | 002 |
 | DICT | Domain Dictionary | docs/dictionary.md | 002 |
 | DM | Domain Model | docs/domain-model.md | 002 |
-| SSD | System Sequence Diagram | docs/use-cases/uc-*/ssd.md | 011 |
-| OC | Operation Contract | docs/use-cases/uc-*/oc.md | 009 |
+| SSD | System Sequence Diagram | docs/use-cases/uc-*/ssd.md | 013 |
+| OC | Operation Contract | docs/use-cases/uc-*/oc.md | 011 |
 | DCD | Design Class Diagram | docs/dcd.md | 002 |
 | ERD | Entity Relationship Diagram | docs/erd.md | 002 |
 | UC | Use Case | docs/use-cases/uc-*/uc.md | 020 |

@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-20 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-106 and RC-107 | [669e5b8] |
-| 2026-10-21 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-108, the Go/No-Go check of MIL-007 | [4909c5e] |
+| 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-008, RC-109 and RC-110 | [b7e3ae8] |
+| 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added ADR-0010, SSD-011, SSD-012, OC-009, OC-010 and RC-111 to RC-119; revised DM, DICT, DCD and ERD (MIL-008) | [9fd15f2] |
 
 ---
 
@@ -26,7 +26,7 @@ updated whenever an artifact instance is created or reviewed.
 | --- | --- | --- | --- | --- | --- | --- |
 | [BC-001] | BC | en | it | - | [SA-001], [PP-001], [UCD-001] | [RC-001] |
 | [SA-001] | SA | en | it | [BC-001] | [BC-001], [MIL-001] | [RC-002] |
-| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031], [RC-048], [RC-054], [RC-068], [RC-082], [RC-094] |
+| [PP-001] | PP | en | it | [BC-001], [SA-001] | [MIL-001] | [RC-031], [RC-048], [RC-054], [RC-068], [RC-082], [RC-094], [RC-110] |
 | [MIL-001] | MIL | en | it | [BC-001], [PP-001] | [US-001], [UC-001] to [UC-019] | [RC-029] |
 | [MIL-002] | MIL | en | it | [BC-001], [US-001], [MIL-001] | - | [RC-030], [RC-043], [RC-045], [RC-046] |
 | [MIL-003] | MIL | en | it | [BC-001], [US-001], [MIL-002] | - | [RC-047], [RC-051], [RC-052] |
@@ -34,6 +34,7 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067], [RC-078], [RC-080] |
 | [MIL-006] | MIL | en | it | [BC-001], [US-001], [MIL-005] | - | [RC-081], [RC-091], [RC-092] |
 | [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093], [RC-107], [RC-108] |
+| [MIL-008] | MIL | en | it | [BC-001], [US-001], [MIL-007] | - | [RC-109] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
 | [ADR-0003] | ADR | - | - | [BC-001], [MIL-001] | [UC-001], [ADR-0004] | [RC-006] |
@@ -41,8 +42,8 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0005] | ADR | - | - | [BC-001], [MIL-003], [ADR-0002], [ADR-0003] | [UC-001] | [RC-049] |
 | [UCD-001] | UCD | en | it | [SA-001], [BC-001] | [UC-001] to [UC-019] | [RC-008] |
 | [US-001] | US | en | it | [BC-001], [MIL-001] | [UC-001] to [UC-019] | [RC-009] |
-| [DICT-001] | DICT | en | it | [BC-001], [SA-001] | [DM-001] | [RC-033], [RC-057], [RC-071], [RC-085], [RC-097] |
-| [DM-001] | DM | en | it | [UC-001], [UC-002], [UC-003], [UC-004], [UC-007], [UC-012], [UC-016], [UC-017], [UCD-001] | [SSD-001], [DCD-001] | [RC-032], [RC-056], [RC-070], [RC-084], [RC-096] |
+| [DICT-001] | DICT | en | it | [BC-001], [SA-001] | [DM-001] | [RC-033], [RC-057], [RC-071], [RC-085], [RC-097], [RC-113] |
+| [DM-001] | DM | en | it | [UC-001], [UC-002], [UC-003], [UC-004], [UC-007], [UC-012], [UC-016], [UC-017], [UC-018], [UC-019], [UCD-001] | [SSD-001], [DCD-001] | [RC-032], [RC-056], [RC-070], [RC-084], [RC-096], [RC-112] |
 | [SSD-001] to [SSD-003] | SSD | en | it | [UC-001], [UC-002], [UC-007], [DM-001] | [OC-001], [DCD-001] | [RC-034] to [RC-036], [RC-041] |
 | [OC-001] | OC | - | - | [SSD-001], [DM-001] | [DCD-001] | [RC-037] |
 | [OC-002], [OC-003] | OC | - | - | [SSD-004], [SSD-005], [DM-001] | [DCD-001] | [RC-060], [RC-061] |
@@ -54,11 +55,14 @@ updated whenever an artifact instance is created or reviewed.
 | [ADR-0008] | ADR | - | - | [BC-001], [MIL-005], [MIL-006], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [UC-006] | [UC-012] | [RC-083] |
 | [SSD-008] | SSD | en | it | [UC-012], [DM-001] | [OC-006], [DCD-001] | [RC-086] |
 | [OC-006] | OC | - | - | [SSD-008], [DM-001] | [DCD-001] | [RC-087] |
+| [ADR-0010] | ADR | - | - | [BC-001], [MIL-008], [ADR-0002], [ADR-0005], [ADR-0006], [ADR-0007], [ADR-0008], [ADR-0009], [UC-006], [UC-009], [UC-016] | [UC-018], [UC-019] | [RC-111] |
 | [ADR-0009] | ADR | - | - | [BC-001], [MIL-007], [ADR-0001], [ADR-0004], [ADR-0006], [ADR-0008], [UC-006], [UC-012], [UC-014], [UC-018], [UC-019] | [UC-016], [UC-017] | [RC-095], [RC-104] |
 | [SSD-009], [SSD-010] | SSD | en | it | [UC-016], [UC-017], [DM-001] | [OC-007], [OC-008], [DCD-001] | [RC-098], [RC-100] |
 | [OC-007], [OC-008] | OC | - | - | [SSD-009], [SSD-010], [DM-001] | [DCD-001] | [RC-099], [RC-101], [RC-105] |
-| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004] to [OC-006], [SSD-001] to [SSD-003], [SSD-006] to [SSD-010], [OC-007], [OC-008], [ADR-0009] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076], [RC-079], [RC-088], [RC-090], [RC-102], [RC-106] |
-| [ERD-001] | ERD | - | - | [DCD-001] | - | [RC-039], [RC-042], [RC-063], [RC-077], [RC-089], [RC-103] |
+| [SSD-011], [SSD-012] | SSD | en | it | [UC-018], [UC-019], [DM-001] | [OC-009], [OC-010], [DCD-001] | [RC-114], [RC-115] |
+| [OC-009], [OC-010] | OC | - | - | [SSD-011], [SSD-012], [DM-001] | [DCD-001] | [RC-116], [RC-117] |
+| [DCD-001] | DCD | - | - | [DM-001], [OC-001], [OC-004] to [OC-006], [SSD-001] to [SSD-003], [SSD-006] to [SSD-010], [OC-007], [OC-008], [ADR-0009], [SSD-011], [SSD-012], [OC-009], [OC-010], [ADR-0010] | [ERD-001] | [RC-038], [RC-040], [RC-050], [RC-062], [RC-065], [RC-076], [RC-079], [RC-088], [RC-090], [RC-102], [RC-106], [RC-118] |
+| [ERD-001] | ERD | - | - | [DCD-001], [ADR-0010] | - | [RC-039], [RC-042], [RC-063], [RC-077], [RC-089], [RC-103], [RC-119] |
 | UC-001 to UC-019 | UC | en | it | [UCD-001], [US-001], [SA-001] | - | RC-010 to RC-028 (one per use case) |
 
 ---
@@ -67,7 +71,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-108 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-119 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -142,6 +146,7 @@ updated whenever an artifact instance is created or reviewed.
 [MIL-004]: ../milestones/mil-004-power-control.md
 [MIL-006]: ../milestones/mil-006-delete-or-cancel.md
 [MIL-007]: ../milestones/mil-007-file-backup-and-restore.md
+[MIL-008]: ../milestones/mil-008-whole-server-backup-and-restore.md
 [ADR-0008]: ../adr/adr-0008-removal-of-a-server.md
 [SSD-008]: ../use-cases/uc-012/ssd.md
 [OC-006]: ../use-cases/uc-012/oc.md
@@ -218,6 +223,22 @@ updated whenever an artifact instance is created or reviewed.
 [RC-105]: ./reviews/rc-105-oc-008-rev2.md
 [RC-107]: ./reviews/rc-107-python-code-mil-007.md
 [RC-106]: ./reviews/rc-106-dcd-001-rev11.md
-[669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643
 [RC-108]: ./reviews/rc-108-mil-007-go-no-go.md
-[4909c5e]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/4909c5ee2cb7d406ed77f1de41daf4c4130b09ca
+[RC-109]: ./reviews/rc-109-mil-008.md
+[RC-110]: ./reviews/rc-110-pp-001-mil-008.md
+[ADR-0010]: ../adr/adr-0010-whole-server-backup-and-restore.md
+[SSD-011]: ../use-cases/uc-018/ssd.md
+[SSD-012]: ../use-cases/uc-019/ssd.md
+[OC-009]: ../use-cases/uc-018/oc.md
+[OC-010]: ../use-cases/uc-019/oc.md
+[RC-111]: ./reviews/rc-111-adr-0010.md
+[RC-112]: ./reviews/rc-112-dm-001-rev6.md
+[RC-113]: ./reviews/rc-113-dict-001-rev6.md
+[RC-114]: ./reviews/rc-114-ssd-011.md
+[RC-115]: ./reviews/rc-115-ssd-012.md
+[RC-116]: ./reviews/rc-116-oc-009.md
+[RC-117]: ./reviews/rc-117-oc-010.md
+[RC-118]: ./reviews/rc-118-dcd-001-rev12.md
+[RC-119]: ./reviews/rc-119-erd-001-rev7.md
+[b7e3ae8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b7e3ae8dfcb5e1cfa2ff917875e557775a691d7a
+[9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa
