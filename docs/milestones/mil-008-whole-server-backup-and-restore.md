@@ -11,7 +11,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-109 (autonomous mode, stand-in) | pending |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-109 (autonomous mode, stand-in) | [b7e3ae8] |
 
 ---
 
@@ -116,3 +116,4 @@ states no deadline, so there is no constraint to conflict with.
 [MIL-005]: ./mil-005-provisioning.md
 [MIL-006]: ./mil-006-delete-or-cancel.md
 [MIL-007]: ./mil-007-file-backup-and-restore.md
+[b7e3ae8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b7e3ae8dfcb5e1cfa2ff917875e557775a691d7a
