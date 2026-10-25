@@ -296,9 +296,78 @@ What the live run confirms: T1 to T7 on one server type. It does not cover a GNU
 needs a password or a passphrase, `ProxyJump`, a long transfer (the four-hour stream time limit is untested), or
 any Linux or macOS client.
 
+## Backup and restore (MIL-008)
+
+Task 1 of [MIL-008]. The columns say what the provider documentation states (with the earlier statement
+numbers where one applies), what the in-process mock does and what a live run showed. The mocks and the live
+run come in later tasks, so those columns say `Pending`, or `Not applicable` where the statement is about what
+a provider does not offer. Verdicts in the Documentation column use the words of the table at the top: Verified,
+Partly, Not stated, Differs.
+
+**Sources and how they were read.** Proxmox VE: the API viewer schema `apidoc.js` (449 paths, read on
+2026-10-25: parameters, return types, permissions), and the administration guide pages `chapter-vzdump`,
+`chapter-pvesm`, `chapter-pct`, `pct.1` and `qmrestore.1` at `pve.proxmox.com/pve-docs`, read through a page
+reader that summarises (so the wording is a paraphrase). The `pct` and `qm` chapters did not yield the
+overwrite rules; for a running guest one web search found only a 2020 developer-list patch, which is not
+documentation. Contabo: the OpenAPI 3.0.3 spec embedded in `https://api.contabo.com/` (read 2026-10-25),
+snapshot, product, instance and upgrade paths and schemas, searched for limits and for asynchronous wording.
+The Docker Proxmox VE could not be started: no `/dev/kvm` (`docker run --rm --privileged alpine ls /dev/kvm`
+failed once; not retried), so no Live column was read there.
+
+### Proxmox VE
+
+| # | Statement | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| B1 | `POST /nodes/{node}/vzdump` creates a backup and answers a string, the task identifier (UPID), followed as in P4 | Verified (P3) | Pending | Not run (no `/dev/kvm`) |
+| B2 | Parameters: `vmid` (the guest), `storage` (where the file goes), `mode` (`snapshot` default, `suspend`, `stop`), `compress` (`0` default, `1`, `gzip`, `lzo`, `zstd`), `notes-template` (variables `{{cluster}}`, `{{guestname}}`, `{{node}}`, `{{vmid}}`), `protected`, `remove` (default true: prune older backups per `prune-backups`), `prune-backups` | Verified | Pending | Not run |
+| B3 | `remove` prunes only by the retention rule, and the default `prune-backups` is `keep-all=1` (nothing is deleted); a storage can carry its own retention | Partly (the guide gives the default for jobs; the storage-level value is read from the storage configuration, which needs `Datastore.Allocate`) | Pending | Not run |
+| B4 | A running guest can be backed up: `snapshot` mode copies while it runs (a container is briefly suspended for the snapshot), `suspend` suspends it, `stop` shuts it down and starts it again | Verified | Pending | Not run |
+| B5 | A storage declares what it holds with its `content` list; `backup` is the content type for vzdump files, stored in the `dump/` folder of a directory storage; the default `local` storage (`/var/lib/vz`) is documented as `iso,vztmpl,backup` | Verified (guide); the install on a given host can have changed it, so the product must check | Pending | Not run |
+| B6 | `GET /nodes/{node}/storage?content=backup` lists the storages that accept backups, and each storage entry carries its `content` list | Verified (P5) | Pending | Not run |
+| B7 | The produced archive is found again with `GET /nodes/{node}/storage/{storage}/content?content=backup&vmid=N`; each item has `volid`, `format`, `ctime`, `size`, `vmid`, `notes` (first line), `protected`, `verification` (Proxmox Backup Server only) | Verified | Pending | Not run |
+| B8 | The `volid` has the form `storage:backup/<file>`; the file name encodes the guest type, the id and the time, for example `vzdump-lxc-105-2009_10_09-11_04_43.tar` with the extension `.zst`, `.gz`/`.tgz` or `.lzo` for the compression | Partly (the guide's own example has no `.zst`; the `storage:backup/` prefix is the volume identifier form, not spelled out in the guide) | Pending | Not run |
+| B9 | The backup task's identifier does not name the archive; the archive is picked by listing and taking the newest `ctime` for the vmid (or by matching the `notes`) | Not stated (an inference from B1 and B7) | Pending | Not run |
+| B10 | A container is restored with `POST /nodes/{node}/lxc` and a virtual machine with `POST /nodes/{node}/qemu`; `archive` (a volume identifier or a path) selects the backup, `vmid` the target, `storage` the target storage, `unique` a new MAC address, `start` starts it after; both answer a UPID. For a container the schema names `ostemplate` ("the OS template or backup file") together with `restore=1` | Verified (P6); `lxc` takes `ostemplate` with `restore`, not `archive` | Pending | Not run |
+| B11 | `force` ("allow to overwrite existing" guest) lets a restore replace a guest that already has the vmid; without it a restore onto an existing vmid is refused | Partly (`force` is documented; the refusal without it is not worded in the schema) | Pending | Not run |
+| B12 | A restore over an existing guest needs that guest to be stopped | Not stated in the documentation (only a 2020 developer-list patch implies a running container aborts); the product must refuse or stop first and a live run must settle it | Pending | Not run |
+| B13 | What `force` overwrites: the guest is replaced by the archive's configuration and disks; the guest's own disks and settings that are not in the archive are not documented as kept | Not stated | Pending | Not run |
+| B14 | Permissions. Dump: `VM.Backup` on the guest and `Datastore.AllocateSpace` on the backup storage (`Datastore.Allocate` for `prune-backups`; `root@pam` only for `tmpdir`, `dumpdir`, `script`, `job-id`). Restore: `VM.Allocate` on the guest, or only `VM.Backup` when the guest already exists, and `Datastore.AllocateSpace` on the storage; a privileged container also needs `Sys.Modify` on `/`. Listing the archives: `Datastore.Audit` or `Datastore.AllocateSpace` | Verified (P13) | Not modelled | Not run |
+| B15 | No call downloads a backup file to the local machine: `download-url` (the server fetches a URL) and `upload` (the client sends a file) accept only the contents `iso`, `vztmpl` and `import`, not `backup`; the only `download` path is `file-restore/download`, which extracts a file or folder as a zip from a Proxmox Backup Server backup | Verified (absence in the schema; the UC-018 note holds) | Not applicable | Not applicable |
+| B16 | Deleting a backup is `DELETE /nodes/{node}/storage/{storage}/content/{volume}`, answering a task identifier or nothing; it needs `Datastore.Allocate`, or `Datastore.AllocateSpace` plus `VM.Backup` for a backup volume. A `protected` backup is not removed by pruning. Out of scope for MIL-008 | Verified | Not applicable | Not applicable |
+
+### Contabo
+
+| # | Statement | Documentation | Mock | Live |
+| --- | --- | --- | --- | --- |
+| B17 | Snapshots: `POST /v1/compute/instances/{instanceId}/snapshots` (body `name` required, 1 to 30 characters, letters, numbers, spaces and dashes; `description`, 1 to 255) answers 201 and `data`, an array holding the snapshot (`snapshotId`, `name`, `description`, `instanceId`, `createdDate`, `autoDeleteDate`, `imageId`, `imageName`); `GET` lists them (paginated), `GET .../{snapshotId}` reads one, `PATCH` renames, `DELETE` answers 204 | Verified (C11) | Pending | Not applicable (no snapshot is created by a test: cost) |
+| B18 | `POST .../snapshots/{snapshotId}/rollback` (empty body) answers 200 and the snapshot; rolling back to a snapshot that is not the latest deletes all newer snapshots of the instance | Verified (C12) | Pending | Not applicable (a rollback deletes newer snapshots) |
+| B19 | A snapshot has an `autoDeleteDate`, so the provider deletes it by itself on that date; the rule for the date (a fixed number of days) is not stated | Partly (the field and example show about a month after creation; no rule) | Pending | Not applicable |
+| B20 | Whether create and rollback are asynchronous, and how their end is seen: there is no task resource (C7), no snapshot status, and no instance status for snapshotting or restoring. The listed statuses (C8) include `running`, `stopped`, `installing`, `error` but the spec does not say which one a snapshot or rollback passes through | Not stated | Pending (assumed: the snapshot appears in the list; the rollback leaves the status unchanged) | Not applicable |
+| B21 | The number of snapshots allowed: no limit in the snapshot paths. The product list gives each product a `snapshots` count ("number of snapshots included in the product", example 0), so a limit exists per product and a plan can include none; what happens at the limit (an error, or paid snapshots) and the price are not stated | Partly (C13 now: limit per product, value read from the product, behaviour at the limit not stated) | Pending | Not applicable |
+| B22 | There is no real backup interface: no path for backup, export, download or copy of a snapshot or an image; images can only be provided by URL (`POST /v1/compute/images`). The one backup feature is a paid "automated backup" add-on (`POST .../upgrade` with `backup: {}`, price `backupPrice`, flags `backupAvailable` and `hasBackupAddon`), and no path lists, restores or downloads what it keeps | Verified (absence in the spec); Differs from the UC-018 note "no backup API" only in that the add-on exists, purchasable but not usable through the API; C17 notes the upgrade description names only firewall and private network | Not applicable | Not applicable |
+| B23 | The snapshot audit (`GET /v1/compute/snapshots/audits`) lists the snapshot actions triggered through the API | Verified (C9) | Pending | Not applicable |
+
+### What the product can claim
+
+| # | Statement | Basis | Mock | Live |
+| --- | --- | --- | --- | --- |
+| B24 | Neither provider documents copying a backup to the local PC (Proxmox VE has no download of a vzdump file; Contabo has no download of a snapshot), so the product claims no such copy | B15, B22 | Not applicable | Not applicable |
+| B25 | A backup is at Proxmox VE a file on a storage with `backup` content (on the same host unless the storage is remote), and at Contabo a snapshot held by the provider, which the provider may delete on `autoDeleteDate`; neither is off-site by itself | B5, B19 | Not applicable | Not applicable |
+| B26 | A restore at Proxmox VE replaces the guest with the same id (configuration and disks, `force`); at Contabo it reverts the instance's disk to the snapshot and deletes every newer snapshot | B11, B13, B18 | Pending | Not run |
+| B27 | Cost and retention: at Proxmox VE the storage space; the default retention keeps everything. At Contabo a snapshot may count against the product's included number, and the price per extra snapshot is not stated, so the product states "cost not stated" instead of a figure | B3, B21 | Not applicable | Not applicable |
+
+What this changes for the design: the plan holds for Contabo. For Proxmox VE the plan needs three checks it
+did not name: the target storage must declare `backup` content (B5, B6), the archive is found by listing and
+not by the task (B9), and a running guest may have to be stopped before a restore (B12). The
+overwrite rule (B11, B13) and the running-guest rule are not in the documentation and are what the live run of
+task 13 has to settle. No statement contradicts the milestone, apart from the add-on in B22.
+
 ## Still open
 
-- Contabo token lifetime (C2), snapshot limits (C13), cancel date rule (C14) and upgrade behaviour (C17).
+- Contabo token lifetime (C2), cancel date rule (C14) and upgrade behaviour (C17). Snapshot limits (C13) are
+  now partly answered (B21): a count per product, behaviour at the limit still not stated.
+- Backup and restore (MIL-008): restore over a running guest and what `force` overwrites (B12, B13), the archive
+  name and volume form (B8), the snapshot and rollback completion at Contabo (B20), the `autoDeleteDate` rule (B19).
 - Proxmox VE snapshot-by-storage rules (P9).
 - Anything about real behaviour (timing, error cases). That needs a Proxmox VE VM and read-only Contabo calls, as in [ADR-0001].
 
@@ -313,6 +382,7 @@ any Linux or macOS client.
 [MIL-005]: ./milestones/mil-005-provisioning.md
 [MIL-006]: ./milestones/mil-006-delete-or-cancel.md
 [MIL-007]: ./milestones/mil-007-file-backup-and-restore.md
+[MIL-008]: ./milestones/mil-008-whole-server-backup-and-restore.md
 [ADR-0009]: ./adr/adr-0009-server-access-and-file-transfer.md
 [ADR-0008]: ./adr/adr-0008-removal-of-a-server.md
 [ADR-0007]: ./adr/adr-0007-desired-configuration-and-provisioning.md
