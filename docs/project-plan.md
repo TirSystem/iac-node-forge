@@ -4,15 +4,15 @@
 | Key | Value |
 | --- | --- |
 | ID | PP-001 |
-| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008] |
+| CrossReference | [BC-001], [SA-001], [MIL-001], [MIL-002], [MIL-003], [MIL-004], [MIL-005], [MIL-006], [MIL-007], [MIL-008], [MIL-009] |
 | Language | en |
 | Domain | it |
 
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-18 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-094 (autonomous mode, stand-in) | [d03efee] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-110 (autonomous mode, stand-in) | [b7e3ae8] |
+| 2026-10-25 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-110 (autonomous mode, stand-in) | [b7e3ae8] |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Accepted after RC-121 (autonomous mode, stand-in) | [a6a22f3] |
 
 ---
 
@@ -43,6 +43,8 @@ states no duration or deadline yet, so the plan has no fixed end date.
   that reaches the inside of a server over SSH and does not depend on the provider.
 - The seventh software milestone is the backup and restore of a whole server, chosen by S01 on 2026-10-25; it is the
   last of the agreed core actions and the one where the two providers differ most.
+- The eighth milestone is documentation, not software: the fully dressed use cases and the design (sequence diagrams and
+  the design class diagram) that a second client in C# needs; chosen by S01 on 2026-10-25, to run after MIL-008.
 - The first software milestone is a read-only slice: Proxmox VE with the Python command-line
   interface (CLI), decided by S01 on 2026-10-15.
 
@@ -58,6 +60,7 @@ states no duration or deadline yet, so the plan has no fixed end date.
 | Delete or cancel a server | [MIL-006] | 2026-10-19 to 2026-11-27 | 2026-11-27 | S01 | US-001.08 | Removal of a server at Proxmox VE (destroy) and Contabo (cancel with an effective date) through the CLI, protection against accidental removal, removal record, removal contract suite, opt-in live run in the Docker Proxmox VE | |
 | File backup and restore | [MIL-007] | 2026-10-19 to 2026-12-11 | 2026-12-11 | S01 | US-001.09, US-001.10 | Backup of server files to the local PC and restore to a server over SSH through the CLI, verified copies, overwrite preview, host key rules, transfer contract suite, opt-in round trip against a throw-away SSH server | |
 | Whole-server backup and restore | [MIL-008] | 2026-10-26 to 2026-12-18 | 2026-12-18 | S01 | US-001.11, US-001.12 | Verified backup and restore facts, backup and restore of a whole server at Proxmox VE (archive) and Contabo (snapshot) through the CLI, confirmation and consequence of a restore, backup record, backup contract suite, opt-in live run in the Docker Proxmox VE | |
+| Fully dressed use cases and the design | [MIL-009] | 2026-12-21 to 2027-02-12 | 2027-02-12 | S01 | all of US-001 | All 19 use cases fully dressed, system sequence diagrams, operation contracts and design sequence diagrams complete, platform-neutral design class diagram traced to the sequence diagrams, design of the Python client, comparison with the built code | |
 
 ```plantuml
 @startgantt
@@ -78,6 +81,8 @@ Project starts 2026-10-14
 [MIL-007 Go/No-Go] happens 2026-12-11
 [MIL-008 Whole-server backup and restore] starts 2026-10-26 and ends 2026-12-18
 [MIL-008 Go/No-Go] happens 2026-12-18
+[MIL-009 Fully dressed use cases and design] starts 2026-12-21 and ends 2027-02-12
+[MIL-009 Go/No-Go] happens 2027-02-12
 @endgantt
 ```
 
@@ -86,7 +91,7 @@ Project starts 2026-10-14
 | Business Case scope item | Gateway |
 | --- | --- |
 | Provider access and validation for Proxmox VE and Contabo | MIL-001 (use cases); MIL-002 (Proxmox VE with the CLI); MIL-003 (Contabo, read-only) |
-| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); MIL-005 (define and provision); MIL-006 (delete or cancel); MIL-007 (file backup and restore); MIL-008 (whole-server backup and restore); others not yet planned |
+| Server lifecycle use cases | MIL-001 (use cases); MIL-002 and MIL-003 (discover and list); MIL-004 (power control); MIL-005 (define and provision); MIL-006 (delete or cancel); MIL-007 (file backup and restore); MIL-008 (whole-server backup and restore); MIL-009 (documentation: use cases and design); others not yet planned |
 | Display of servers not managed by this client | MIL-001 (use case UC-07); MIL-002 and MIL-003 (read-only list) |
 | Python command-line interface (CLI) and WinUI 3 application | MIL-002 and MIL-003 (CLI, three use cases); WinUI 3 not yet planned |
 | JSON Lines (JSONL) configuration file per client | MIL-002 (CLI client) |
@@ -94,7 +99,7 @@ Project starts 2026-10-14
 ## Dependencies
 
 ```
-MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> MIL-005 Provisioning -> MIL-006 Delete or cancel -> MIL-007 File backup and restore -> MIL-008 Whole-server backup and restore -> (later phases, not yet planned)
+MIL-001 Use case baseline -> MIL-002 Read-only slice (Proxmox VE, CLI) -> MIL-003 Contabo read-only adapter -> MIL-004 Power control -> MIL-005 Provisioning -> MIL-006 Delete or cancel -> MIL-007 File backup and restore -> MIL-008 Whole-server backup and restore -> MIL-009 Fully dressed use cases and design -> (later phases, not yet planned)
 ```
 
 A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
@@ -119,6 +124,7 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 | The product reaches the server with the user's own SSH identity | A wrong or spoofed server receives data | The host key is checked against the user's `known_hosts`; an unknown key needs explicit acceptance and a changed key stops the transfer; no key, password or passphrase is stored or put on a command line |
 | A restore replaces a guest, or deletes newer snapshots at Contabo | Lost data or lost snapshots | The consequence is stated first, the identifier is always typed, a server not managed by this client needs one more confirmation, and the live run uses a throw-away Docker Proxmox VE; no Contabo snapshot is rolled back by a test |
 | The backup and restore interfaces are only partly verified, and neither provider documents copying a backup to the local PC | The design could rest on a wrong fact | Task 1 verifies the facts first; copying to the local PC is left out of this milestone |
+| A second client (C#, WinUI 3) is built from documents that are only briefs and a design corrected to the Python code | The two clients drift apart, against objective 3 of the Business Case | MIL-009 completes the use cases and the sequence diagrams, rebuilds the neutral design from them and records the platform mapping before the WinUI 3 work starts |
 | No deadline or budget limit (confirmed by S01) | Plan cannot be checked against a constraint | Plan later phases by effort; revisit if a deadline appears |
 
 ## Open Issues
@@ -129,7 +135,8 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 - The MIL-006 window (2026-10-19 to 2026-11-27) is an assumption to be confirmed by S01.
 - The MIL-007 window (2026-10-19 to 2026-12-11) is an assumption to be confirmed by S01.
 - The MIL-008 window (2026-10-26 to 2026-12-18) is an assumption to be confirmed by S01.
-- Which milestone follows MIL-008 (snapshots, operation history, WinUI 3) is decided when MIL-008 has a Go.
+- The MIL-009 window (2026-12-21 to 2027-02-12) is an assumption to be confirmed by S01.
+- Which milestone follows MIL-009 (snapshots, operation history, WinUI 3) is decided when MIL-009 has a Go.
 - Later phases (state-changing actions, second provider, second client) are
   candidates only and have no `MIL-*` document yet.
 - The diagram, with MIL-002, was rendered on `plantuml.tirsystem.com` on 2026-10-15
@@ -147,5 +154,6 @@ A No-Go on MIL-001 delays every later phase, because nothing under `src/` or
 [MIL-006]: ./milestones/mil-006-delete-or-cancel.md
 [MIL-007]: ./milestones/mil-007-file-backup-and-restore.md
 [MIL-008]: ./milestones/mil-008-whole-server-backup-and-restore.md
-[d03efee]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/d03efee52274a1fdb79ec4b7e559bd83bb849a29
+[MIL-009]: ./milestones/mil-009-fully-dressed-use-cases-and-design.md
 [b7e3ae8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/b7e3ae8dfcb5e1cfa2ff917875e557775a691d7a
+[a6a22f3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a6a22f33658bdb9ac659439f88517554e6408462
