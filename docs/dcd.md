@@ -9,8 +9,8 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-10-20 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 11: aligned with the built file transfer code (MIL-007 task 11)<br>Accepted after RC-106 | [669e5b8] |
-| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 12: ServerBackupPort, BackupStore, BackUpServer, ListBackups, RestoreServer; Backup, BackupKind, BackupRecord, RestoreEffect, BackupBlock and their DTOs and outcomes; PowerAction gains BACKUP and RESTORE (MIL-008)<br>Accepted after RC-118 | [9fd15f2] |
+| 2026-10-25 | Deprecated | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 12: ServerBackupPort, BackupStore, BackUpServer, ListBackups, RestoreServer; Backup, BackupKind, BackupRecord, RestoreEffect, BackupBlock and their DTOs and outcomes; PowerAction gains BACKUP and RESTORE (MIL-008)<br>Accepted after RC-118 | [9fd15f2] |
+| 2026-10-25 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Revision 13: aligned with the built whole-server backup code (MIL-008 task 12)<br>Accepted after RC-122 | [c305ec0] |
 
 ---
 
@@ -22,6 +22,15 @@ architecture: `domain`, `application`, `infrastructure` and `presentation`. Name
 IT terms of [DICT-001], in the language-neutral spelling; each language applies its own
 naming convention. Dependencies point inward: `application` depends on `domain`;
 `infrastructure` and `presentation` depend on `application` and `domain`.
+
+Revised after the code of MIL-008 on 2026-10-25 (revision 13): the DTOs of the backup are in their own module; the
+adapters check the block again before they write a restore, and a restore that the block forbids ends as a failed
+operation without any request; at Contabo a restore or backup of an instance that is `stopped` succeeds as well as
+one that is `running`, a 404 on a restore ends as a failed operation (a missing snapshot and a missing instance
+cannot be told apart), a snapshot without a creation date is left out of the listing, and the list of newer snapshots
+in the consequence names three and then counts the rest; `RestoreResult.stateAfter` is the state word, and the state
+read after a restore is also put at the start of the operation's detail; the typed-identifier and not-confirmed
+handling is shared with the removal ([ADR-0010]).
 
 Revised for MIL-008 on 2026-10-25 (revision 12): the write side grows by the backup and restore of a whole
 server ([ADR-0010]). `ServerBackupPort` is a fifth narrow port beside `ProviderPort`, `ServerPowerPort`,
@@ -1094,5 +1103,5 @@ and may name every layer.
 [OC-009]: ./use-cases/uc-018/oc.md
 [SSD-012]: ./use-cases/uc-019/ssd.md
 [OC-010]: ./use-cases/uc-019/oc.md
-[669e5b8]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/669e5b88a76d381a95affaac63b4547029536643
 [9fd15f2]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/9fd15f248c031b5899ed480055d33b09a2ea62fa
+[c305ec0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c305ec0e8a87bb87381a6d635f2ebb6eb870fb99

@@ -9,4 +9,5 @@
 - [Power control live test](Power-Control-Live-Test)
 - [Provisioning and removal live test](Provision-Live-Test)
 - [File backup and restore live test](File-Transfer-Live-Test)
+- [Whole-server backup and restore live test](Full-Backup-Live-Test)
 - [Appendix: documentation](Appendix-Documentation)
