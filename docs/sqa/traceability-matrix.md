@@ -11,7 +11,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-009, RC-120 and RC-121 | [a6a22f3] |
 | 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-122 and RC-123 | [c305ec0] |
-| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-124, the Go/No-Go check of MIL-008 | pending |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-124, the Go/No-Go check of MIL-008 | [87dc597] |
 
 ---
 
@@ -250,3 +250,4 @@ updated whenever an artifact instance is created or reviewed.
 [RC-124]: ./reviews/rc-124-mil-008-go-no-go.md
 [RC-122]: ./reviews/rc-122-dcd-001-rev13.md
 [c305ec0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c305ec0e8a87bb87381a6d635f2ebb6eb870fb99
+[87dc597]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/87dc597a9a63fd1c59b36e78c6eb25d91f61bcf6

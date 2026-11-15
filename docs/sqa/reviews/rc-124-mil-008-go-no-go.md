@@ -9,7 +9,7 @@
 ## Version History
 | Date | Status | Author | Reviewer | Change | Commit |
 | --- | --- | --- | --- | --- | --- |
-| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | pending |
+| 2026-11-15 | Accepted | Jens Tirsvad Nielsen | AI as stand-in for S02 | Initial version; accepted in autonomous mode | [87dc597] |
 
 ---
 
@@ -56,3 +56,4 @@ Go — all ten criteria pass. This is the stand-in's decision in autonomous mode
 ---
 
 [MIL-008]: ../../milestones/mil-008-whole-server-backup-and-restore.md
+[87dc597]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/87dc597a9a63fd1c59b36e78c6eb25d91f61bcf6
