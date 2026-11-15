@@ -11,6 +11,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added MIL-009, RC-120 and RC-121 | [a6a22f3] |
 | 2026-10-25 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-122 and RC-123 | [c305ec0] |
+| 2026-11-15 | Proposed | Jens Tirsvad Nielsen | AI as stand-in for S02 | Added RC-124, the Go/No-Go check of MIL-008 | pending |
 
 ---
 
@@ -34,7 +35,7 @@ updated whenever an artifact instance is created or reviewed.
 | [MIL-005] | MIL | en | it | [BC-001], [US-001], [MIL-004] | - | [RC-067], [RC-078], [RC-080] |
 | [MIL-006] | MIL | en | it | [BC-001], [US-001], [MIL-005] | - | [RC-081], [RC-091], [RC-092] |
 | [MIL-007] | MIL | en | it | [BC-001], [US-001], [MIL-006] | - | [RC-093], [RC-107], [RC-108] |
-| [MIL-008] | MIL | en | it | [BC-001], [US-001], [MIL-007] | - | [RC-109], [RC-123] |
+| [MIL-008] | MIL | en | it | [BC-001], [US-001], [MIL-007] | - | [RC-109], [RC-123], [RC-124] |
 | [MIL-009] | MIL | en | it | [BC-001], [US-001], [MIL-008] | - | [RC-120] |
 | [ADR-0001] | ADR | - | - | [BC-001], [MIL-001] | - | [RC-004], [RC-044] |
 | [ADR-0002] | ADR | - | - | [BC-001], [MIL-001], [ADR-0001] | [UC-002], [UC-004], [UC-008], [UC-009], [UC-012], [UC-014], [UC-015] | [RC-005] |
@@ -72,7 +73,7 @@ updated whenever an artifact instance is created or reviewed.
 
 - Types with no instance yet: KPI, RA, BMC, BPMN, DM, SSD, OC, SD, DCD, ERD, DICT, GOV.
 - `-` in Upstream means foundational; in Downstream, nothing is built on it yet; in Last Reviewed, no review record exists.
-- Reviews RC-001 to RC-123 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
+- Reviews RC-001 to RC-124 were done by the AI at S01's instruction and are not independent; S02 confirmation is open.
 
 ---
 
@@ -246,5 +247,6 @@ updated whenever an artifact instance is created or reviewed.
 [RC-121]: ./reviews/rc-121-pp-001-mil-009.md
 [a6a22f3]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/a6a22f33658bdb9ac659439f88517554e6408462
 [RC-123]: ./reviews/rc-123-python-code-mil-008.md
+[RC-124]: ./reviews/rc-124-mil-008-go-no-go.md
 [RC-122]: ./reviews/rc-122-dcd-001-rev13.md
 [c305ec0]: https://git.tirsystem.com/TirSystem/iac-node-forge/commit/c305ec0e8a87bb87381a6d635f2ebb6eb870fb99
